@@ -4,20 +4,14 @@ import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
 
 public class StatoHackathonInCorso implements StatoHackathon {
-    @Override
-    public boolean inviaSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
-        // TODO: Impelementa invio sottomissione
-        return false;
+        @Override
+    public void inviaSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
+        hackathon.getSottomissioni().add(sottomissione);
     }
 
     @Override
-    public boolean aggiornaSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
-        // TODO: Impelementa aggiorna sottomissione
-        return false;
-    }
+    public StatoHackathon prossimoStato() { return new StatoHackathonValutazione(); }
 
     @Override
-    public String getNome() {
-        return "IN_CORSO";
-    }
+    public String getNome() { return "IN_CORSO"; }
 }

@@ -1,16 +1,19 @@
 package unicam.dreamteam.domain.model;
 
+import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
-
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "utenti")
-@Inheritance(strategy = InheritanceType.JOINED)
 @Access(AccessType.FIELD)
+@NoArgsConstructor
 public class Utente {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -22,7 +25,7 @@ public class Utente {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 
@@ -33,10 +36,6 @@ public class Utente {
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public Utente() {
-
     }
 
     public Long getId() {
@@ -58,8 +57,25 @@ public class Utente {
     public void setPassword(String password) { this.password = password; }
     public Team getTeam() { return team; }
     public void setTeam(Team team) { this.team = team; }
+
+    public boolean hasTeam() {
+        return this.team != null;
+    }
+
     public Set<Invito> getInviti() {
         return inviti;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Utente utente
+                && Objects.equals(id, utente.id)
+                && Objects.equals(username, utente.username)
+                && Objects.equals(email, utente.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, email);
+    }
 }

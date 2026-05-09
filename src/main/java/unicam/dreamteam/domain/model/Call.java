@@ -18,7 +18,7 @@ public class Call {
     private LocalDateTime dataOra;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ticket_id", nullable = false)
+    @JoinColumn(name = "richiesta_supporto_id", nullable = false)
     private RichiestaSupporto richiestaSupporto;
 
     public Call() {}

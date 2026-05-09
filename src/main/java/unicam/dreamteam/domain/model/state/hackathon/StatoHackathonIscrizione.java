@@ -5,13 +5,14 @@ import unicam.dreamteam.domain.model.Team;
 
 public class StatoHackathonIscrizione implements StatoHackathon {
     @Override
-    public boolean iscriviTeam(Hackathon hackathon, Team team) {
-        // TODO: Implementare iscrizione team all'hackathon
-        return false;
+    public void iscrivi(Hackathon hackathon, Team team) {
+        hackathon.getTeamIscritti().add(team);
+        team.getHackathons().add(hackathon);
     }
 
     @Override
-    public String getNome() {
-        return "ISCRIZIONE";
-    }
+    public StatoHackathon prossimoStato() { return new StatoHackathonInCorso(); }
+
+    @Override
+    public String getNome() { return "ISCRIZIONE"; }
 }

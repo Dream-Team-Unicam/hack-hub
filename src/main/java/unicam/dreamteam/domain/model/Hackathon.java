@@ -2,8 +2,6 @@ package unicam.dreamteam.domain.model;
 
 import jakarta.persistence.*;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
-import unicam.dreamteam.domain.model.staff.Giudice;
-import unicam.dreamteam.domain.model.staff.Organizzatore;
 import unicam.dreamteam.domain.model.state.hackathon.StatoHackathon;
 import unicam.dreamteam.domain.model.state.hackathon.StatoHackathonCreato;
 import unicam.dreamteam.infrastructure.persistence.converter.StatoHackathonConverter;
@@ -14,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "hackathons")
+@Access(AccessType.FIELD)
 public class Hackathon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +21,10 @@ public class Hackathon {
     @Column(nullable = false)
     private String nome;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String descrizione;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String regolamento;
 
     @Column(nullable = false)
@@ -48,11 +47,11 @@ public class Hackathon {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organizzatore_id", nullable = false)
-    private Organizzatore organizzatore;
+    private Utente organizzatore;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "giudice_id")
-    private Giudice giudice;
+    private Utente giudice;
 
     @ManyToMany
     @JoinTable(
@@ -60,7 +59,7 @@ public class Hackathon {
             joinColumns = @JoinColumn(name = "hackathon_id"),
             inverseJoinColumns = @JoinColumn(name = "mentore_id")
     )
-    private Set<Utente> mentori;
+    private Set<Utente> mentori = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vincitore_id")
@@ -156,24 +155,21 @@ public class Hackathon {
     }
 
     public void aggiungiMentore(Utente mentore) {
-        // TODO: Implementare l'aggiunta mentore all'hackathon
+        mentori.add(mentore);
     }
 
     public Set<Team> getTeamIscritti() {
         return teamIscritti;
     }
 
-    public void aggiungiTeam(Team team) {
-        // TODO: Aggiunta team alla lista dei team partecipanti all'hackathon
+    public void iscrivi(Team team) {
+        stato.iscrivi(this, team);
     }
 
     public Set<Sottomissione> getSottomissioni() {
         return sottomissioni;
     }
 
-    public void aggiungiSottomissioni(Sottomissione sottomissione) {
-        // TODO: Aggiungi sottomissione alla lista di tutte le sottomissioni dell'hackathon
-    }
 
     public StatoHackathon getStato() {
         return stato;

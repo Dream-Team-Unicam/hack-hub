@@ -5,6 +5,7 @@ import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.Team;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "sottomissioni")
@@ -20,7 +21,7 @@ public class Sottomissione {
     @Column
     private LocalDate dataUltimoAggiornamento;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String contenuto;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -46,6 +47,7 @@ public class Sottomissione {
     }
 
     public void aggiorna(String nuovoContenuto) {
+        if (isValutata()) throw new RuntimeException("Non consentito aggiornare una sottomissione valutata.");
         this.contenuto = nuovoContenuto;
         this.dataUltimoAggiornamento = LocalDate.now();
     }
@@ -69,5 +71,14 @@ public class Sottomissione {
     }
     public Valutazione getValutazione() {
         return valutazione;
+    }
+
+    public boolean isValutata() {
+        return this.valutazione != null;
+    }
+
+    public void setValutazione(Valutazione valutazione) {
+        if (!Objects.equals(valutazione.getSottomissione().getId(), this.id)) throw new RuntimeException("La valutazione non è assegnata alla sottomissione corretta.");
+        this.valutazione = valutazione;
     }
 }

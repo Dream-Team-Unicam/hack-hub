@@ -17,7 +17,7 @@ public class Team {
     @Column(nullable = false, unique = true)
     private String nome;
 
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String descrizione;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -43,10 +43,10 @@ public class Team {
     private final Set<Invito> inviti = new HashSet<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final Set<Segnalazione> segnalazioni = new HashSet<>();
-
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<RichiestaSupporto> richiesteSupporto = new HashSet<>();
+
+    @OneToMany(mappedBy = "teamSegnalato", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final Set<Segnalazione> segnalazioni = new HashSet<>();
 
     public Team(String name) {
         this.nome = name;

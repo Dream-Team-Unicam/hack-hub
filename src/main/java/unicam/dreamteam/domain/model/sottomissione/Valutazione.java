@@ -1,7 +1,7 @@
 package unicam.dreamteam.domain.model.sottomissione;
 
 import jakarta.persistence.*;
-import unicam.dreamteam.domain.model.staff.Giudice;
+import unicam.dreamteam.domain.model.Utente;
 
 @Entity
 @Table(name = "valutazioni")
@@ -14,20 +14,21 @@ public class Valutazione {
     @Column(nullable = false)
     private Integer punteggio;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private Integer giudizio;
+    @Column(nullable = false)
+    private String giudizio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "giudice_id", nullable = false)
-    private Giudice giudice;
+    private Utente giudice;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sottomissione_id", nullable = false)
     private Sottomissione sottomissione;
 
-    public Valutazione(Sottomissione sottomissione, Integer punti, Giudice giudice) {
+    public Valutazione(Sottomissione sottomissione, Integer punteggio, String giudizio, Utente giudice) {
         this.sottomissione = sottomissione;
-        this.punteggio = punti;
+        this.punteggio = punteggio;
+        this.giudizio = giudizio;
         this.giudice = giudice;
     }
 
@@ -35,6 +36,6 @@ public class Valutazione {
 
     public Long getId() { return id; }
     public Integer getPunteggio() { return punteggio; }
-    public Giudice getGiudice() { return giudice; }
+    public Utente getGiudice() { return giudice; }
     public Sottomissione getSottomissione() { return sottomissione; }
 }

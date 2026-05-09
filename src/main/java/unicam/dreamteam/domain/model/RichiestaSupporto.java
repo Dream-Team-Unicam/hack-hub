@@ -17,7 +17,7 @@ public class RichiestaSupporto {
     @Column(nullable = false)
     private String oggetto;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String descrizione;
 
     @Column(nullable = false)
