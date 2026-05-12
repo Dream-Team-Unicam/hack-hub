@@ -1,8 +1,10 @@
 package unicam.dreamteam.domain.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import unicam.dreamteam.domain.model.state.invito.StatoInvito;
 import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
+import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.infrastructure.persistence.converter.StatoInvitoConverter;
 
 import java.time.LocalDate;
@@ -10,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "inviti")
 @Access(AccessType.FIELD)
+@Getter
 public class Invito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,10 +51,4 @@ public class Invito {
     public void rifiuta() {
         this.stato = this.stato.rifiuta();
     }
-
-    public Long getId() { return id; }
-    public LocalDate getDataInvito() { return dataInvito; }
-    public Team getTeam() { return team; }
-    public Utente getUtente() { return utente; }
-    public StatoInvito getStato() { return stato; }
 }

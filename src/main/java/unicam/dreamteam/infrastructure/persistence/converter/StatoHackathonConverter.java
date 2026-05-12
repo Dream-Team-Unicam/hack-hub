@@ -12,15 +12,15 @@ public class StatoHackathonConverter implements AttributeConverter<StatoHackatho
     }
 
     @Override
-    public StatoHackathon convertToEntityAttribute(String dbValue) {
-        if (dbValue == null) return null;
-        return switch (dbValue) {
+    public StatoHackathon convertToEntityAttribute(String name) {
+        if (name == null) return null;
+        return switch (name) {
             case "CREATO"     -> new StatoHackathonCreato();
             case "ISCRIZIONE"    -> new StatoHackathonIscrizione();
             case "IN_CORSO"    -> new StatoHackathonInCorso();
             case "VALUTAZIONE"    -> new StatoHackathonValutazione();
             case "CONCLUSO" -> new StatoHackathonConcluso();
-            default -> throw new IllegalArgumentException("Stato sconosciuto: " + dbValue);
+            default -> throw new IllegalArgumentException(String.format("Stato sconosciuto: %s", name));
         };
     }
 }

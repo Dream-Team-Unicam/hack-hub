@@ -1,12 +1,16 @@
 package unicam.dreamteam.domain.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.users.Utente;
 
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "segnalazioni")
 @Access(AccessType.FIELD)
+@Getter
 public class Segnalazione {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +24,13 @@ public class Segnalazione {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentore_id", nullable = false)
-    private Utente mentore;
+    private Staff mentore;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
     private Team teamSegnalato;
 
-    public Segnalazione(String descrizione, Utente mentore, Team teamSegnalato) {
+    public Segnalazione(String descrizione, Staff mentore, Team teamSegnalato) {
         this.descrizione = descrizione;
         this.mentore = mentore;
         this.teamSegnalato = teamSegnalato;
@@ -34,10 +38,4 @@ public class Segnalazione {
     }
 
     public Segnalazione() {}
-
-    public Long getId() { return id; }
-    public String getDescrizione() { return descrizione; }
-    public LocalDate getDataSegnalazione() { return dataSegnalazione; }
-    public Utente getMentore() { return mentore; }
-    public Team getTeamSegnalato() { return teamSegnalato; }
 }

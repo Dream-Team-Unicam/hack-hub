@@ -1,6 +1,7 @@
 package unicam.dreamteam.domain.model.sottomissione;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.Team;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "sottomissioni")
 @Access(AccessType.FIELD)
+@Getter
 public class Sottomissione {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,27 +52,6 @@ public class Sottomissione {
         if (isValutata()) throw new RuntimeException("Non consentito aggiornare una sottomissione valutata.");
         this.contenuto = nuovoContenuto;
         this.dataUltimoAggiornamento = LocalDate.now();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-    public String getContenuto() {
-        return contenuto;
-    }
-    public LocalDate getDataCaricamento() {
-        return dataCaricamento;
-    }
-    public LocalDate getDataUltimoAggiornamento() {
-        return dataUltimoAggiornamento;
-    }
-    public Team getTeam() { return team; }
-    public Hackathon getHackathon() {
-        return hackathon;
-    }
-    public Valutazione getValutazione() {
-        return valutazione;
     }
 
     public boolean isValutata() {

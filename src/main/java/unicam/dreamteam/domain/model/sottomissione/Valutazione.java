@@ -1,11 +1,13 @@
 package unicam.dreamteam.domain.model.sottomissione;
 
 import jakarta.persistence.*;
-import unicam.dreamteam.domain.model.Utente;
+import lombok.Getter;
+import unicam.dreamteam.domain.model.users.Utente;
 
 @Entity
 @Table(name = "valutazioni")
 @Access(AccessType.FIELD)
+@Getter
 public class Valutazione {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +35,4 @@ public class Valutazione {
     }
 
     public Valutazione() {}
-
-    public Long getId() { return id; }
-    public Integer getPunteggio() { return punteggio; }
-    public Utente getGiudice() { return giudice; }
-    public Sottomissione getSottomissione() { return sottomissione; }
 }

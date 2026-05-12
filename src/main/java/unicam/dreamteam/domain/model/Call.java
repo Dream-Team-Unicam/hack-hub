@@ -1,11 +1,14 @@
 package unicam.dreamteam.domain.model;
 
 import jakarta.persistence.*;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "calls")
+@Getter
+@Setter
 public class Call {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,24 +25,4 @@ public class Call {
     private RichiestaSupporto richiestaSupporto;
 
     public Call() {}
-
-    public Long getId() { return id; }
-    public String getLinkMeeting() {
-        return linkMeeting;
-    }
-    public void setLinkMeeting(String linkMeeting) {
-        this.linkMeeting = linkMeeting;
-    }
-    public LocalDateTime getDataOra() {
-        return dataOra;
-    }
-    public void setDataOra(LocalDateTime dataOra) {
-        this.dataOra = dataOra;
-    }
-    public RichiestaSupporto getTicket() {
-        return richiestaSupporto;
-    }
-    public void setRichiestaSupporto(RichiestaSupporto richiestaSupporto) {
-        this.richiestaSupporto = richiestaSupporto;
-    }
 }

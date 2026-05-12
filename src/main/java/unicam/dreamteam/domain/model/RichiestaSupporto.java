@@ -2,6 +2,8 @@ package unicam.dreamteam.domain.model;
 
 import jakarta.persistence.*;
 import unicam.dreamteam.domain.model.state.ticket.StatoRichiestaSupporto;
+import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.users.Utente;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -25,7 +27,7 @@ public class RichiestaSupporto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mentore_id")
-    private Utente mentore;
+    private Staff mentore;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
