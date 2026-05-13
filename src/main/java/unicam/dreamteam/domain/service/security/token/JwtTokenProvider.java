@@ -9,24 +9,27 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
-    @Value("${jwt.expiration}")
-    private Long expiration;
-
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${jwt.expiration}")
+    private Long expiration;
+
+    @Value("${jwt.issuer}")
+    private String issuer;
+
+    @Value("${jwt.audience}")
+    private String audience;
+
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String usename = getUsernameFromToken(token);
-        return (usename.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return usename.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     public String generateToken(UserDetails userDetails) {
@@ -44,13 +47,22 @@ public class JwtTokenProvider implements TokenProvider {
                 .findFirst()
                 .orElse(null);
 
-        claims.put("ruolo", ruolo);
+        Date now = new Date();
+        Date exp = new Date(now.getTime() + (expiration * 1000));
 
-        return generateToken(
-                claims,
-                userDetails,
-                new Date(System.currentTimeMillis() + (expiration * 1000))
-        );
+        claims.put("roles", List.of(ruolo));
+        claims.put("jti", UUID.randomUUID().toString());
+
+        return Jwts.builder()
+                .claims().add(claims).and()
+                .issuer(issuer)
+                .audience().add(audience).and()
+                .subject(userDetails.getUsername())
+                .notBefore(now)
+                .issuedAt(now)
+                .expiration(exp)
+                .signWith(key())
+                .compact();
     }
 
     private String generateToken(Map<String, Object> claims, UserDetails userDetails, Date expiration) {
@@ -69,12 +81,13 @@ public class JwtTokenProvider implements TokenProvider {
 
 
     private Claims getAllClaimsFromToken(String token) {
-       return Jwts.parser()
-               .verifyWith(key())
-               .build()
-               .parseSignedClaims(token)
-               .getPayload();
-
+        return Jwts.parser()
+                .verifyWith(key())
+                .requireIssuer(issuer)
+                .requireAudience(audience)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private Boolean isTokenExpired(String token) {
