@@ -1,20 +1,21 @@
 package unicam.dreamteam.presentation.api.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
 import unicam.dreamteam.domain.service.HackathonService;
-import unicam.dreamteam.presentation.dto.CreaHackathonDTO;
+import unicam.dreamteam.domain.service.UtenteService;
+import unicam.dreamteam.presentation.dto.hackathon.CreaHackathonRequest;
 import unicam.dreamteam.presentation.dto.HackathonDTO;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/api/hackathons")
+@AllArgsConstructor
 public class HackathonController {
-    @Autowired
     private HackathonService hackathonService;
+    private UtenteService utenteService;
 
     @GetMapping
     public List<HackathonDTO> getAllHackathons() {
@@ -23,7 +24,8 @@ public class HackathonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public HackathonDTO creaHackathon(@RequestBody CreaHackathonDTO dto) {
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public HackathonDTO creaHackathon(@RequestBody CreaHackathonRequest dto) {
 
         // TODO: Implementare
         return null;

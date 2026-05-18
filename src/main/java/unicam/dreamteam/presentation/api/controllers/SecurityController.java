@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import unicam.dreamteam.presentation.dto.security.LoginRequest;
-import unicam.dreamteam.presentation.dto.security.RegisterRequest;
-import unicam.dreamteam.presentation.dto.security.TokenResponse;
+import unicam.dreamteam.presentation.dto.security.requests.LoginRequest;
+import unicam.dreamteam.presentation.dto.security.requests.RegisterRequest;
+import unicam.dreamteam.presentation.dto.security.response.TokenResponse;
 
 @RestController
 @RequestMapping("/api/auth")

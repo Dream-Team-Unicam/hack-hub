@@ -40,6 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails buildUserDetails(Autenticabile account) {
+        // TODO: Rimuovere Permesso?
         Set<Permesso> permessi = account.getRuolo().getPermessi().contains(Permesso.ALL)
                 ? Set.of(Permesso.values())
                 : account.getRuolo().getPermessi();

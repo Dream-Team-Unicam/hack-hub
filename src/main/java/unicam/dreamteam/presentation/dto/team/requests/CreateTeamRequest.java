@@ -1,4 +1,4 @@
-package unicam.dreamteam.presentation.dto.team;
+package unicam.dreamteam.presentation.dto.team.requests;
 
 import jakarta.validation.constraints.NotBlank;
 import unicam.dreamteam.domain.model.Invito;

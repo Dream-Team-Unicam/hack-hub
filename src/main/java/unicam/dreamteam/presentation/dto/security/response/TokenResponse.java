@@ -1,4 +1,4 @@
-package unicam.dreamteam.presentation.dto.security;
+package unicam.dreamteam.presentation.dto.security.response;
 
 public record TokenResponse(
         String accessToken,

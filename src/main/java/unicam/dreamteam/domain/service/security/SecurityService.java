@@ -5,7 +5,7 @@ import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.repository.StaffRepository;
 import unicam.dreamteam.domain.repository.UtenteRepository;
 import unicam.dreamteam.domain.service.security.token.TokenProvider;
-import unicam.dreamteam.presentation.dto.security.TokenResponse;
+import unicam.dreamteam.presentation.dto.security.response.TokenResponse;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
