@@ -34,14 +34,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (authorizationHeaderValue != null && authorizationHeaderValue.startsWith("Bearer ")) {
             try {
-                final String token = authorizationHeaderValue.substring(7); // "<Token>"
+                final String token = authorizationHeaderValue.substring(7);
+                logger.info("Token estratto, lunghezza: " + token.length());
+
                 final String username = tokenProvider.getUsernameFromToken(token);
+                logger.info("Username: " + username);
 
                 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                logger.info("Authentication esistente: " + authentication);
 
                 if (username != null && authentication == null) {
                     UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-                    if (tokenProvider.validateToken(token, userDetails)) setAuthentication(request, userDetails);
+                    boolean valid = tokenProvider.validateToken(token, userDetails);
+                    logger.info("Token valido: " + valid);
+                    if (valid) setAuthentication(request, userDetails);
                 }
             } catch (Exception exception) {
                 logger.error("JWT authentication error", exception);

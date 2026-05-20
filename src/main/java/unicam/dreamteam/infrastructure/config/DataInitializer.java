@@ -7,7 +7,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.repository.StaffRepository;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.infrastructure.repository.StaffRepository;
 
 @Component
 @AllArgsConstructor
@@ -23,7 +24,8 @@ public class DataInitializer implements ApplicationRunner {
         Staff admin = new Staff(
                 "admin",
                 "admin@hack-hub.it",
-                passwordEncoder.encode("admin")
+                passwordEncoder.encode("admin"),
+                RuoloStaff.ADMIN
         );
         staffRepository.save(admin);
         System.out.println("Admin creato: admin/admin");

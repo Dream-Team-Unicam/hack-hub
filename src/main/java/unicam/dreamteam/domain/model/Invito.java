@@ -1,5 +1,6 @@
 package unicam.dreamteam.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import unicam.dreamteam.domain.model.state.invito.StatoInvito;

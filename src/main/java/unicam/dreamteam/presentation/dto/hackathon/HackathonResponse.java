@@ -1,8 +1,8 @@
-package unicam.dreamteam.presentation.dto;
+package unicam.dreamteam.presentation.dto.hackathon;
 
 import java.time.LocalDate;
 
-public record HackathonDTO(
+public record HackathonResponse(
         Long id,
         String nome,
         String descrizione,

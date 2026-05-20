@@ -1,6 +1,10 @@
 package unicam.dreamteam.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
@@ -18,40 +22,34 @@ import java.util.Set;
 @Table(name = "hackathons")
 @Access(AccessType.FIELD)
 @Getter
+@Setter
 public class Hackathon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, unique = true)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Setter
     @Column(nullable = false)
     private String nome;
 
-    @Setter
     @Column
     private String descrizione;
 
-    @Setter
     @Column(nullable = false)
     private String regolamento;
 
-    @Setter
     @Column(nullable = false)
     private LocalDate dataInizio;
 
-    @Setter
     @Column(nullable = false)
     private LocalDate dataFine;
 
-    @Setter
     @Column(nullable = false)
     private LocalDate dataScadenzaIscrizioni;
 
-    @Setter
     private String luogo;
-    @Setter
     private Double premioDenaro;
-    @Setter
     private Integer dimMaxTeam;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,7 +58,6 @@ public class Hackathon {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "giudice_id")
-    @Setter
     private Staff giudice;
 
     @ManyToMany
@@ -83,10 +80,61 @@ public class Hackathon {
 
     @Convert(converter = StatoHackathonConverter.class)
     @Column(nullable = false)
-    @Setter
     private StatoHackathon stato = new StatoHackathonCreato();
 
     public Hackathon() {
+    }
+
+    public Hackathon(
+            Long id,
+            String nome,
+            String descrizione,
+            String regolamento,
+            LocalDate dataInizio,
+            LocalDate dataFine,
+            LocalDate dataScadenzaIscrizioni,
+            String luogo,
+            Double premioDenaro,
+            Integer dimMaxTeam,
+            Staff organizzatore,
+            Staff giudice) {
+        this.id = id;
+        this.nome = nome;
+        this.descrizione = descrizione;
+        this.regolamento = regolamento;
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
+        this.dataScadenzaIscrizioni = dataScadenzaIscrizioni;
+        this.luogo = luogo;
+        this.premioDenaro = premioDenaro;
+        this.dimMaxTeam = dimMaxTeam;
+        this.organizzatore = organizzatore;
+        this.giudice = giudice;
+    }
+
+    public Hackathon(
+            String nome,
+            String descrizione,
+            String regolamento,
+            LocalDate dataInizio,
+            LocalDate dataFine,
+            LocalDate dataScadenzaIscrizioni,
+            String luogo,
+            Double premioDenaro,
+            Integer dimMaxTeam,
+            Staff organizzatore,
+            Staff giudice) {
+        this.nome = nome;
+        this.descrizione = descrizione;
+        this.regolamento = regolamento;
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
+        this.dataScadenzaIscrizioni = dataScadenzaIscrizioni;
+        this.luogo = luogo;
+        this.premioDenaro = premioDenaro;
+        this.dimMaxTeam = dimMaxTeam;
+        this.organizzatore = organizzatore;
+        this.giudice = giudice;
     }
 
 
@@ -98,4 +146,5 @@ public class Hackathon {
         stato.iscrivi(this, team);
     }
 
+    // TODO: Rincontrollare i costruttori
 }

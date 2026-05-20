@@ -2,8 +2,9 @@ package unicam.dreamteam.domain.service.security;
 
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.domain.repository.StaffRepository;
-import unicam.dreamteam.domain.repository.UtenteRepository;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.infrastructure.repository.StaffRepository;
+import unicam.dreamteam.infrastructure.repository.UtenteRepository;
 import unicam.dreamteam.domain.service.security.token.TokenProvider;
 import unicam.dreamteam.presentation.dto.security.response.TokenResponse;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -46,17 +47,18 @@ public class SecurityService implements IAuthentication {
             throw new BadCredentialsException("Email già in uso.");
         Utente utente = new Utente(username, email, passwordEncoder.encode(password));
         utenteRepository.save(utente);
+
         return getTokenResponse(utente);
     }
 
-
-    public TokenResponse registerStaff(String username, String email, String password) {
+    public TokenResponse creaStaff(String username, String email, String password, RuoloStaff ruolo) {
         if (utenteRepository.existsByUsername(username) || staffRepository.existsByUsername(username))
             throw new BadCredentialsException("Username già in uso.");
         if (utenteRepository.existsByEmail(email) || staffRepository.existsByEmail(email))
             throw new BadCredentialsException("Email già in uso.");
-        Staff staff = new Staff(username, email, passwordEncoder.encode(password));
+        Staff staff = new Staff(username, email, passwordEncoder.encode(password), ruolo);
         staffRepository.save(staff);
+
         return getTokenResponse(staff);
     }
 

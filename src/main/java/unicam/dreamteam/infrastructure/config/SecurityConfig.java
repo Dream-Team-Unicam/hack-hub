@@ -13,7 +13,6 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.service.security.token.JwtRequestFilter;
 
 @Configuration
@@ -29,9 +28,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/hackathos").permitAll()
-                        .requestMatchers("/api/auth/register/staff").hasRole(RuoloStaff.ADMIN.getName())
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/hackathons").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(

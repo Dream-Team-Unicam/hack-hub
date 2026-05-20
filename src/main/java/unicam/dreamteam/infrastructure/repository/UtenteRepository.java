@@ -1,4 +1,4 @@
-package unicam.dreamteam.domain.repository;
+package unicam.dreamteam.infrastructure.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import unicam.dreamteam.domain.model.users.Utente;

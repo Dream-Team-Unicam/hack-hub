@@ -2,11 +2,14 @@ package unicam.dreamteam.domain.model.users;
 
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.service.security.Autenticabile;
+
 import jakarta.persistence.*;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+
 import java.util.Objects;
 
 @Entity
@@ -25,21 +28,21 @@ public class Staff implements Autenticabile {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
-    private String password;
-
     @Column(nullable = false, unique = true)
     private String email;
+
+    @Column(nullable = false)
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RuoloStaff ruolo;
 
-    public Staff(String username, String email, String password) {
+    public Staff(String username, String email, String password, RuoloStaff ruolo) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.ruolo = RuoloStaff.ADMIN;
+        this.ruolo = ruolo;
     }
 
     @Override
