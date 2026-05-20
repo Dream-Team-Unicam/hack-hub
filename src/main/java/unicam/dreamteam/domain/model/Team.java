@@ -1,5 +1,6 @@
 package unicam.dreamteam.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
 import unicam.dreamteam.domain.model.users.Utente;
 import jakarta.persistence.*;
@@ -54,8 +55,10 @@ public class Team {
     @OneToMany(mappedBy = "teamSegnalato", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Segnalazione> segnalazioni = new HashSet<>();
 
-    public Team(String name) {
+    public Team(String name, String descrizione, Utente owner) {
         this.nome = name;
+        this.descrizione = descrizione;
+        this.membri.add(owner);
     }
 
     public Team() {
