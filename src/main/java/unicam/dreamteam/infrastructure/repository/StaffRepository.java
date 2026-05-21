@@ -2,11 +2,14 @@ package unicam.dreamteam.infrastructure.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StaffRepository extends JpaRepository<Staff, Long> {
     Optional<Staff> findByUsername(String username);
+    List<Staff> findByRuolo(RuoloStaff ruolo);
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 }

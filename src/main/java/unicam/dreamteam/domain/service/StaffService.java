@@ -3,6 +3,7 @@ package unicam.dreamteam.domain.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.infrastructure.repository.StaffRepository;
 
 import java.util.List;
@@ -19,5 +20,9 @@ public class StaffService {
 
     public Optional<Staff> getByUsername(String username) {
         return this.staffRepository.findByUsername(username);
+    }
+
+    public List<Staff> getByRuolo(RuoloStaff ruolo) {
+        return this.staffRepository.findByRuolo(ruolo);
     }
 }

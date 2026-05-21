@@ -32,7 +32,7 @@ public class HackathonService {
                 request.premioDenaro(),
                 request.dimMaxTeam(),
                 organizzatore,
-                request.giudiceId()
+                organizzatore
         );
         return this.hackathonRepository.save(newHackathon);
     }
