@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.domain.model.users.ruolo.Permesso;
 import unicam.dreamteam.infrastructure.repository.StaffRepository;
 import unicam.dreamteam.infrastructure.repository.UtenteRepository;
 import unicam.dreamteam.domain.service.security.Autenticabile;
@@ -40,19 +39,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails buildUserDetails(Autenticabile account) {
-        // TODO: Rimuovere Permesso?
-        Set<Permesso> permessi = account.getRuolo().getPermessi().contains(Permesso.ALL)
-                ? Set.of(Permesso.values())
-                : account.getRuolo().getPermessi();
-
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(account.getRuolo().toAuthority()));
-        permessi.stream()
-                .map(p -> new SimpleGrantedAuthority(p.name()))
-                .forEach(authorities::add);
-
         System.out.println("Authorities per " + account.getUsername() + ": " + authorities);
-
         return new User(account.getUsername(), account.getPassword(), authorities);
     }
 }

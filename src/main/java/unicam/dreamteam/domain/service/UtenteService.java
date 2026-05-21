@@ -15,8 +15,17 @@ import java.util.Optional;
 public class UtenteService {
     private final UtenteRepository utenteRepository;
 
-    public Optional<Utente> getByUsername(String username) {
-        return utenteRepository.findByUsername(username);
+    public Utente getByUsername(String username) {
+        Optional<Utente> utente = utenteRepository.findByUsername(username);
+
+        if(utente.isEmpty()) throw new EntityNotFoundException(
+                String.format(
+                        "Utente.username=%s",
+                        username
+                )
+        );
+
+        return utente.get();
     }
 
     public Utente getById(Long id) {

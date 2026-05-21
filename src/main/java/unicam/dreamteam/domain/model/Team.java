@@ -55,14 +55,12 @@ public class Team {
     @OneToMany(mappedBy = "teamSegnalato", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Segnalazione> segnalazioni = new HashSet<>();
 
-    public Team(String name, String descrizione, Utente owner) {
-        this.nome = name;
-        this.descrizione = descrizione;
-        this.membri.add(owner);
+    public Team() {
     }
 
-    public Team() {
-
+    public Team(String nome, String descrizione) {
+        this.nome = nome;
+        this.descrizione = descrizione;
     }
 
     public void aggiungiMembro(Utente utente) {

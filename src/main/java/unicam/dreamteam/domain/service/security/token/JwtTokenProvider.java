@@ -50,7 +50,7 @@ public class JwtTokenProvider implements TokenProvider {
         Date now = new Date();
         Date exp = new Date(now.getTime() + (expiration * 1000));
 
-        claims.put("roles", List.of(ruolo));
+        claims.put("role", ruolo);
         claims.put("jti", UUID.randomUUID().toString());
 
         return Jwts.builder()

@@ -27,6 +27,7 @@ public class DataInitializer implements ApplicationRunner {
                 passwordEncoder.encode("admin"),
                 RuoloStaff.ADMIN
         );
+
         staffRepository.save(admin);
         System.out.println("Admin creato: admin/admin");
     }

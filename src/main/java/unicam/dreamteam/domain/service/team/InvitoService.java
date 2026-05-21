@@ -1,12 +1,15 @@
 package unicam.dreamteam.domain.service.team;
 
-import jakarta.persistence.EntityNotFoundException;
 import unicam.dreamteam.domain.model.Invito;
 import unicam.dreamteam.domain.model.Team;
+import unicam.dreamteam.domain.model.state.invito.StatoInvito;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.infrastructure.repository.InvitoRepository;
 import unicam.dreamteam.infrastructure.repository.TeamRepository;
 import unicam.dreamteam.infrastructure.repository.UtenteRepository;
+
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -19,24 +22,24 @@ public class InvitoService {
     private TeamRepository teamRepository;
     private UtenteRepository utenteRepository;
 
-    public Invito invita(Team team, Long idUtenteInvitato) {
+    public Invito invita(Team team, String usernameUtenteInvitato) {
+        Optional<Utente> opUtenteInvitato = this.utenteRepository.findByUsername(usernameUtenteInvitato);
+        if (opUtenteInvitato.isEmpty()) throw new EntityNotFoundException(
+                String.format("Utente.username=%s", usernameUtenteInvitato));
 
-        Optional<Utente> utenteInvitato = this.utenteRepository.findById(idUtenteInvitato);
+        Utente utenteInvitato = opUtenteInvitato.get();
 
-        if (utenteInvitato.isEmpty()) throw new EntityNotFoundException(
-                String.format(
-                        "Utente.id=%s",
-                        idUtenteInvitato
-                )
-        );
-
-        if (this.invitoRepository.)
+        if (this.invitoRepository.existsByUtenteIdAndTeamId(utenteInvitato.getId(), team.getId()))
+            throw new EntityExistsException(String.format("Invito.Team.id=%s,Invito.Utente.id=%s, Invito.Utente.username=%s",
+                    team.getId(),
+                    utenteInvitato.getId(),
+                    usernameUtenteInvitato
+            ));
 
         Invito newInvito = new Invito(
                 team,
-                utenteInvitato.get()
+                utenteInvitato
         );
-
         return this.invitoRepository.save(newInvito);
     }
 
@@ -48,6 +51,18 @@ public class InvitoService {
 
         return this.invitoRepository.findByTeamId(idTeam);
     }
+
+    public List<Invito> getInvitiByUtenteAndStato(Utente utenteInvitato, StatoInvito statoInvito) {
+        return this.invitoRepository.
+                findByUtenteIdAndStato(
+                        utenteInvitato.getId(),
+                        statoInvito
+                );
+    }
+    public List<Invito> getInvitiByStato(StatoInvito statoInvito) {
+        return this.invitoRepository.findByStato(statoInvito);
+    }
+
 
     public boolean esisteInvitoUtenteTeam(Long idUtente, Long idTeam) {
         return this.invitoRepository.existsByUtenteIdAndTeamId(

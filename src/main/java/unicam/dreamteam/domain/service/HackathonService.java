@@ -18,6 +18,9 @@ public class HackathonService {
     private final StaffRepository staffRepository;
 
     public Hackathon createHackathon(HackathonRequest request, Staff organizzatore) {
+
+        
+
         Hackathon newHackathon = new Hackathon(
                 request.nome(),
                 request.descrizione(),
@@ -29,7 +32,7 @@ public class HackathonService {
                 request.premioDenaro(),
                 request.dimMaxTeam(),
                 organizzatore,
-                organizzatore
+                request.giudiceId()
         );
         return this.hackathonRepository.save(newHackathon);
     }
