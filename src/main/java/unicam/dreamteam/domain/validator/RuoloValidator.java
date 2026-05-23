@@ -1,0 +1,67 @@
+package unicam.dreamteam.domain.validator;
+
+import org.springframework.stereotype.Component;
+import unicam.dreamteam.domain.exception.ruolo.RuoloNonAutorizzatoException;
+import unicam.dreamteam.domain.model.users.ruolo.Ruolo;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloUtente;
+
+@Component
+public class RuoloValidator implements Validator<Ruolo> {
+
+    @Override
+    public void valida(Ruolo ruolo, Ruolo ruoloAtteso) {
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+
+    public void validaAdmin(RuoloStaff ruolo) {
+        RuoloStaff ruoloAtteso = RuoloStaff.ADMIN;
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+
+    public void validaOrganizzatore(RuoloStaff ruolo) {
+        RuoloStaff ruoloAtteso = RuoloStaff.ORGANIZZATORE;
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+
+    public void validaGiudice(RuoloStaff ruolo) {
+        RuoloStaff ruoloAtteso = RuoloStaff.GIUDICE;
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+
+    public void validaMentore(RuoloStaff ruolo) {
+        RuoloStaff ruoloAtteso = RuoloStaff.MENTORE;
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+
+    public void validaUtente(RuoloUtente ruolo) {
+        RuoloUtente ruoloAtteso = RuoloUtente.UTENTE;
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+
+    public void validaTeamLeader(RuoloUtente ruolo) {
+        RuoloUtente ruoloAtteso = RuoloUtente.TEAM_LEADER;
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+
+    public void validaTeamMember(RuoloUtente ruolo) {
+        RuoloUtente ruoloAtteso = RuoloUtente.TEAM_MEMBER;
+        if (ruolo == ruoloAtteso) return;
+
+        throw new RuoloNonAutorizzatoException(ruolo, ruoloAtteso);
+    }
+}

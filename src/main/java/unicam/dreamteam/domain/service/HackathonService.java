@@ -1,63 +1,73 @@
 package unicam.dreamteam.domain.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import unicam.dreamteam.domain.model.Hackathon;
+import unicam.dreamteam.domain.model.builder.HackathonBuilder;
 import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.infrastructure.repository.StaffRepository;
+import unicam.dreamteam.domain.validator.RuoloValidator;
 import unicam.dreamteam.infrastructure.repository.HackathonRepository;
-import unicam.dreamteam.presentation.dto.hackathon.HackathonRequest;
-import unicam.dreamteam.presentation.dto.hackathon.HackathonResponse;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
+import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class HackathonService {
     private final HackathonRepository hackathonRepository;
-    private final StaffRepository staffRepository;
+    private final RuoloValidator ruoloValidator;
 
-    public Hackathon createHackathon(HackathonRequest request, Staff organizzatore) {
+    public Hackathon getById(Long id) {
+        Optional<Hackathon> hackathon = this.hackathonRepository.findById(id);
 
-        
-
-        Hackathon newHackathon = new Hackathon(
-                request.nome(),
-                request.descrizione(),
-                request.regolamento(),
-                request.dataInizio(),
-                request.dataFine(),
-                request.dataScadenzaIscrizioni(),
-                request.luogo(),
-                request.premioDenaro(),
-                request.dimMaxTeam(),
-                organizzatore,
-                organizzatore
+        if (hackathon.isEmpty()) throw new EntityNotFoundException(
+                String.format(
+                        "Hackathon.id=%s",
+                        id
+                )
         );
+
+        return hackathon.get();
+    }
+
+    public List<Hackathon> getAllByGiudice(Staff giudice) {
+        this.ruoloValidator.validaGiudice(giudice.getRuolo());
+
+        return this.hackathonRepository.findAllByGiudiceId(giudice.getId());
+    }
+
+    public Hackathon save(HackathonDTO request, Staff organizzatore, Staff giudice) {
+        this.ruoloValidator.validaGiudice(giudice.getRuolo());
+
+        Hackathon newHackathon = new HackathonBuilder()
+                .nome(request.getNome())
+                .descrizione(request.getDescrizione())
+                .regolamento(request.getRegolamento())
+                .dataInizio(request.getDataInizio())
+                .dataFine(request.getDataFine())
+                .dataScadenzaIscrizioni(request.getDataScadenzaIscrizioni())
+                .premioDenaro(request.getPremioDenaro())
+                .luogo(request.getLuogo())
+                .dimMaxTeam(request.getDimMaxTeam())
+                .organizzatore(organizzatore)
+                .giudice(giudice)
+                .build();
+
         return this.hackathonRepository.save(newHackathon);
     }
 
+    public Hackathon aggiungi(Hackathon hackathon, Staff mentore) {
+        this.ruoloValidator.validaMentore(mentore.getRuolo());
+
+        hackathon.aggiungiMentore(mentore);
+        return this.hackathonRepository.save(hackathon);
+    }
+
     public List<Hackathon> getAllHackathons() {
-        return null;
+        return hackathonRepository.findAllWithDetails();
     }
 
 
-    public HackathonResponse toResponse(Hackathon hackathon) {
-        return new HackathonResponse(
-                hackathon.getId(),
-                hackathon.getNome(),
-                hackathon.getDescrizione(),
-                hackathon.getRegolamento(),
-                hackathon.getDataInizio(),
-                hackathon.getDataFine(),
-                hackathon.getDataScadenzaIscrizioni(),
-                hackathon.getLuogo(),
-                hackathon.getPremioDenaro(),
-                hackathon.getDimMaxTeam(),
-                hackathon.getStato().getNome(),
-                hackathon.getOrganizzatore().getId(),
-                hackathon.getGiudice().getId(),
-                hackathon.getTeamVincitore().getId()
-        );
-    }
 }

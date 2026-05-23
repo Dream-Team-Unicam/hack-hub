@@ -1,19 +1,14 @@
 package unicam.dreamteam.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
 import unicam.dreamteam.domain.model.state.hackathon.StatoHackathon;
 import unicam.dreamteam.domain.model.state.hackathon.StatoHackathonCreato;
-import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.infrastructure.persistence.converter.StatoHackathonConverter;
-
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -137,14 +132,10 @@ public class Hackathon {
         this.giudice = giudice;
     }
 
-
     public void aggiungiMentore(Staff mentore) {
         mentori.add(mentore);
     }
-
     public void iscrivi(Team team) {
         stato.iscrivi(this, team);
     }
-
-    // TODO: Rincontrollare i costruttori
 }

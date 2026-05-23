@@ -52,7 +52,7 @@ public class Staff implements Autenticabile {
                 && Objects.equals(username, staff.username)
                 && Objects.equals(email, staff.email);
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(id, username, email);
