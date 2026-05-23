@@ -25,5 +25,12 @@ public interface HackathonRepository extends JpaRepository<Hackathon, Long> {
             "WHERE h.id = :id")
     Optional<Hackathon> findByIdWithDetails(@Param("id") Long id);
 
-    List<Hackathon> findAllByGiudiceId(Long id);
+    @Query("SELECT DISTINCT h FROM Hackathon h " +
+            "LEFT JOIN FETCH h.mentori " +
+            "LEFT JOIN FETCH h.teamIscritti " +
+            "LEFT JOIN FETCH h.organizzatore " +
+            "LEFT JOIN FETCH h.giudice " +
+            "WHERE h.giudice.id = :giudiceId")
+    List<Hackathon> findAllByGiudiceIdWithDetails(@Param("giudiceId") Long giudiceId);
+
 }

@@ -1,4 +1,4 @@
-package unicam.dreamteam.infrastructure.config;
+package unicam.dreamteam.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

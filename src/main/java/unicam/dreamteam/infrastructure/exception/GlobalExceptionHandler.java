@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 
@@ -87,6 +88,21 @@ public class GlobalExceptionHandler {
                 status.value(),
                 status.getReasonPhrase(),
                 exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(status)
+                .body(error);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Response> handleNoResourceFound(NoResourceFoundException exception) {
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        Response error = new Response(
+                status.value(),
+                status.getReasonPhrase(),
+                "Risorsa non trovata.",
                 LocalDateTime.now()
         );
 

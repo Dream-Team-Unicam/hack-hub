@@ -36,7 +36,7 @@ public class HackathonService {
     public List<Hackathon> getAllByGiudice(Staff giudice) {
         this.ruoloValidator.validaGiudice(giudice.getRuolo());
 
-        return this.hackathonRepository.findAllByGiudiceId(giudice.getId());
+        return this.hackathonRepository.findAllByGiudiceIdWithDetails(giudice.getId());
     }
 
     public Hackathon save(HackathonDTO request, Staff organizzatore, Staff giudice) {

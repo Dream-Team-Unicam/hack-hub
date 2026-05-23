@@ -4,7 +4,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.service.HackathonService;
 import unicam.dreamteam.domain.service.StaffService;
+import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 import unicam.dreamteam.presentation.dto.security.response.AccountResponse;
 import unicam.dreamteam.presentation.mapper.AccountMapper;
 
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
+import unicam.dreamteam.presentation.mapper.HackathonMapper;
 
 
 @RestController
@@ -23,7 +26,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class StaffController {
     private StaffService staffService;
+    private HackathonService hackathonService;
     private AccountMapper accountMapper;
+    private HackathonMapper hackathonMapper;
 
 
     @GetMapping()
@@ -54,22 +59,6 @@ public class StaffController {
                 .toList();
     }
 
-    @GetMapping("/giudici/hackathons")
-    @PreAuthorize("hasAnyRole('ADMIN', 'GIUDICE')")
-    public List<AccountResponse> getAllGiudiceHackthons(
-            @RequestBody Long idGiudice, Authentication authentication
-    ) {
-        Staff currentUser = this.staffService.getByUsername(authentication.getName());
-        if (currentUser.getRuolo() == RuoloStaff.ADMIN) {
-
-        }
-
-        return this.staffService.getAllByRuolo(RuoloStaff.GIUDICE)
-                .stream()
-                .map(accountMapper::toResponse)
-                .toList();
-    }
-
     @GetMapping("/organizzatori")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public List<AccountResponse> getAllOrganizzatori() {
@@ -90,4 +79,14 @@ public class StaffController {
                 .toList();
     }
 
+    @GetMapping("/giudici/hackathons")
+    @PreAuthorize("hasRole('GIUDICE')")
+    public List<HackathonDTO> getAllGiudiceHackathons(Authentication authentication) {
+        Staff currentUser = this.staffService.getByUsername(authentication.getName());
+
+        return this.hackathonService.getAllByGiudice(currentUser)
+                .stream()
+                .map(hackathonMapper::toResponse)
+                .toList();
+    }
 }
