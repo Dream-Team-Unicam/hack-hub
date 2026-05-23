@@ -1,10 +1,11 @@
 package unicam.dreamteam.domain.validator;
 
-import org.springframework.stereotype.Component;
-import unicam.dreamteam.domain.exception.ruolo.RuoloNonAutorizzatoException;
 import unicam.dreamteam.domain.model.users.ruolo.Ruolo;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloUtente;
+import unicam.dreamteam.domain.exception.ruolo.RuoloNonAutorizzatoException;
+
+import org.springframework.stereotype.Component;
 
 @Component
 public class RuoloValidator implements Validator<Ruolo> {

@@ -1,15 +1,8 @@
-package unicam.dreamteam.presentation.api.controllers;
+package unicam.dreamteam.presentation.api.controllers.team;
 
-import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
 import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.service.UtenteService;
-import unicam.dreamteam.domain.service.security.Autenticabile;
 import unicam.dreamteam.domain.service.security.SecurityService;
 import unicam.dreamteam.domain.service.team.InvitoService;
 import unicam.dreamteam.domain.service.team.TeamService;
@@ -18,6 +11,13 @@ import unicam.dreamteam.presentation.dto.team.response.InvitoResponse;
 import unicam.dreamteam.presentation.dto.team.response.TeamResponse;
 import unicam.dreamteam.presentation.mapper.InvitoMapper;
 import unicam.dreamteam.presentation.mapper.TeamMapper;
+
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +37,10 @@ public class TeamController {
     private final InvitoMapper invitoMapper;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'UTENTE')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<TeamResponse>> getAllTeamsByAccount(Authentication authentication) {
-        Autenticabile account = securityService.getAccountByUsername(authentication.getName());
         return ResponseEntity.ok(
-                teamService.getTeamsForAccount(account).stream()
+                teamService.getAll().stream()
                         .map(teamMapper::toResponse)
                         .toList()
         );

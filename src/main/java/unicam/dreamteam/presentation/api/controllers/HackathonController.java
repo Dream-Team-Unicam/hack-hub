@@ -1,12 +1,10 @@
 package unicam.dreamteam.presentation.api.controllers;
 
-import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.service.HackathonService;
 import unicam.dreamteam.domain.service.StaffService;
 import unicam.dreamteam.domain.service.UtenteService;
 import unicam.dreamteam.domain.service.security.SecurityService;
-import unicam.dreamteam.domain.validator.RuoloValidator;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 import unicam.dreamteam.presentation.mapper.HackathonMapper;
 
@@ -24,9 +22,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class HackathonController {
     private HackathonService hackathonService;
-    private SecurityService securityService;
     private StaffService staffService;
-    private UtenteService utenteService;
 
     private HackathonMapper hackathonMapper;
 
@@ -56,15 +52,12 @@ public class HackathonController {
     @PostMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> aggiungiMentore(@PathVariable Long id, @RequestBody Long mentoreId, Authentication authentication) {
-        Staff currentUser = this.staffService.getByUsername(authentication.getName());
+    public ResponseEntity<HackathonDTO> aggiungiMentore(@PathVariable Long id, @RequestBody Long mentoreId) {
         Staff mentore = this.staffService.getById(mentoreId);
-
-        Hackathon hackathon = this.hackathonService.getById(id);
 
         return ResponseEntity.ok(
                 this.hackathonMapper.toResponse(
-                        this.hackathonService.aggiungi(hackathon, mentore)
+                        this.hackathonService.aggiungi(id, mentore)
                 )
         );
     }

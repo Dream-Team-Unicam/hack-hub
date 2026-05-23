@@ -1,6 +1,7 @@
 package unicam.dreamteam.domain.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.builder.HackathonBuilder;
 import unicam.dreamteam.domain.model.users.Staff;
@@ -58,11 +59,19 @@ public class HackathonService {
         return this.hackathonRepository.save(newHackathon);
     }
 
-    public Hackathon aggiungi(Hackathon hackathon, Staff mentore) {
+    @Transactional
+    public Hackathon aggiungi(Long hackathonId, Staff mentore) {
         this.ruoloValidator.validaMentore(mentore.getRuolo());
 
+        Hackathon hackathon = hackathonRepository.findById(hackathonId)
+                .orElseThrow(() -> new EntityNotFoundException("Hackathon.id=" + hackathonId));
+
         hackathon.aggiungiMentore(mentore);
-        return this.hackathonRepository.save(hackathon);
+        hackathonRepository.save(hackathon);
+
+        // ricarica con tutti i dettagli
+        return hackathonRepository.findByIdWithDetails(hackathonId)
+                .orElseThrow();
     }
 
     public List<Hackathon> getAllHackathons() {

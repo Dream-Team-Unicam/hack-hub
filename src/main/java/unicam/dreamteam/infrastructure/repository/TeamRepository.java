@@ -5,6 +5,4 @@ import unicam.dreamteam.domain.model.Team;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
     boolean existsByNome(String nome);
-
-    Long id(Long id);
 }
