@@ -3,8 +3,6 @@ package unicam.dreamteam.presentation.api.controllers;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.service.HackathonService;
 import unicam.dreamteam.domain.service.StaffService;
-import unicam.dreamteam.domain.service.UtenteService;
-import unicam.dreamteam.domain.service.security.SecurityService;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 import unicam.dreamteam.presentation.mapper.HackathonMapper;
 
@@ -23,11 +21,10 @@ import lombok.AllArgsConstructor;
 public class HackathonController {
     private HackathonService hackathonService;
     private StaffService staffService;
-
     private HackathonMapper hackathonMapper;
 
     @GetMapping
-    public ResponseEntity<List<HackathonDTO>> getAllHackathons() {
+    public ResponseEntity<List<HackathonDTO>> index() {
         return ResponseEntity.ok(
                 this.hackathonService.getAllHackathons().stream()
                         .map(this.hackathonMapper::toResponse)
@@ -49,12 +46,23 @@ public class HackathonController {
         );
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/{id}/add/mentore")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> aggiungiMentore(@PathVariable Long id, @RequestBody Long mentoreId) {
         Staff mentore = this.staffService.getById(mentoreId);
+        return ResponseEntity.ok(
+                this.hackathonMapper.toResponse(
+                        this.hackathonService.aggiungi(id, mentore)
+                )
+        );
+    }
 
+    @PostMapping("/{id}/remove/mentore")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public ResponseEntity<HackathonDTO> rimuoviMentore(@PathVariable Long id, @RequestBody Long mentoreId) {
+        Staff mentore = this.staffService.getById(mentoreId);
         return ResponseEntity.ok(
                 this.hackathonMapper.toResponse(
                         this.hackathonService.aggiungi(id, mentore)

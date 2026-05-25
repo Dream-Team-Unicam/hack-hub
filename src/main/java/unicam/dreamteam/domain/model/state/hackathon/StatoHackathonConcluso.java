@@ -1,9 +1,11 @@
 package unicam.dreamteam.domain.model.state.hackathon;
 
+import unicam.dreamteam.domain.exception.hackathon.HackathonException;
+
 public class StatoHackathonConcluso implements StatoHackathon {
     @Override
     public StatoHackathon prossimoStato() {
-        throw new IllegalStateException("L'hackathon è già concluso");
+        throw new HackathonException("L'hackathon è già concluso");
     }
 
     @Override

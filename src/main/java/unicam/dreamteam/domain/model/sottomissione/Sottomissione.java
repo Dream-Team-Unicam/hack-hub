@@ -1,6 +1,5 @@
 package unicam.dreamteam.domain.model.sottomissione;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import unicam.dreamteam.domain.model.Hackathon;
@@ -27,11 +26,11 @@ public class Sottomissione {
     @Column(nullable = false)
     private String contenuto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hackathon_id", nullable = false)
     private Hackathon hackathon;
 

@@ -20,7 +20,7 @@ public class Call {
     @Column(nullable = false)
     private LocalDateTime dataOra;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "richiesta_supporto_id", nullable = false)
     private RichiestaSupporto richiestaSupporto;
 

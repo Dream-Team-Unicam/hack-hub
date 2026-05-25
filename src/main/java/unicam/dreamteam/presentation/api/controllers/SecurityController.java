@@ -1,8 +1,6 @@
 package unicam.dreamteam.presentation.api.controllers;
 
 import jakarta.validation.ValidationException;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.presentation.dto.security.requests.LoginRequest;
@@ -11,10 +9,8 @@ import unicam.dreamteam.presentation.dto.security.response.AccountResponse;
 import unicam.dreamteam.presentation.dto.security.response.TokenResponse;
 import unicam.dreamteam.domain.service.security.SecurityService;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.BadCredentialsException;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

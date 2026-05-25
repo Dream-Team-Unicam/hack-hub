@@ -1,7 +1,5 @@
 package unicam.dreamteam.domain.model.users.ruolo;
 
-import java.util.Arrays;
-
 public interface Ruolo {
     /**
      * Restituisce la rappresentazione testuale del ruolo

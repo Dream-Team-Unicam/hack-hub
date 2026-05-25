@@ -1,6 +1,6 @@
 package unicam.dreamteam.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import unicam.dreamteam.domain.exception.team.TeamException;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
 import unicam.dreamteam.domain.model.users.Utente;
 import jakarta.persistence.*;
@@ -21,7 +21,7 @@ public class Team {
 
     @Column(nullable = false, unique = true)
     @Setter
-    private String nome;
+    private String nome; // TODO: Mettere un dispalyName e name(una sorta di username ma per il team)
 
     @Column
     @Setter
@@ -30,7 +30,7 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<Sottomissione> sottomissioni = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "team_utenti",
             joinColumns = @JoinColumn(name = "team_id"),
@@ -38,7 +38,7 @@ public class Team {
     )
     private final Set<Utente> membri = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "team_hackathons",
             joinColumns = @JoinColumn(name = "team_id"),
@@ -64,7 +64,7 @@ public class Team {
     }
 
     public void aggiungiMembro(Utente utente) {
-        if (utente.getTeam() != null) throw new IllegalStateException("L'utente è già in un team");
+        if (utente.getTeam() != null) throw new TeamException("L'utente è già in un team");
         membri.add(utente);
         utente.setTeam(this);
     }

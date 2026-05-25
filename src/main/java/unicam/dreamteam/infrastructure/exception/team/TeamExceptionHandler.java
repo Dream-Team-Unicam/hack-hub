@@ -1,7 +1,6 @@
 package unicam.dreamteam.infrastructure.exception.team;
 
-import unicam.dreamteam.domain.exception.team.TeamNameAlreadyExistsException;
-import unicam.dreamteam.domain.exception.team.UserNotInATeamException;
+import unicam.dreamteam.domain.exception.team.TeamException;
 import unicam.dreamteam.infrastructure.exception.Response;
 
 import org.springframework.http.HttpStatus;
@@ -13,23 +12,8 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class TeamExceptionHandler {
-    @ExceptionHandler(UserNotInATeamException.class)
-    public ResponseEntity<Response> handleUserNotInATeamException(UserNotInATeamException exception) {
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        Response error = new Response(
-                status.value(),
-                status.getReasonPhrase(),
-                exception.getMessage(),
-                LocalDateTime.now()
-        );
-
-        return ResponseEntity
-                .status(status)
-                .body(error);
-    }
-
-    @ExceptionHandler(TeamNameAlreadyExistsException.class)
-    public ResponseEntity<Response> handleTeamNameAlreadyExistsException(TeamNameAlreadyExistsException exception) {
+    @ExceptionHandler(TeamException.class)
+    public ResponseEntity<Response> handleTeamException(TeamException exception) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Response error = new Response(
                 status.value(),

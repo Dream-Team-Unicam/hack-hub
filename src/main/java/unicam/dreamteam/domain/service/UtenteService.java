@@ -3,7 +3,6 @@ package unicam.dreamteam.domain.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import unicam.dreamteam.domain.model.Invito;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.infrastructure.repository.UtenteRepository;
 

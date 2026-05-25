@@ -19,16 +19,25 @@ public class DataInitializer implements ApplicationRunner {
     // TODO: Rimuovere. Usare solo a scopo di sviluppo.
     @Override
     public void run(@NonNull ApplicationArguments args) {
-        if (staffRepository.existsByUsername("admin")) return;
+        staffAccount("admin", "admin@hack-hub.it", "admin", RuoloStaff.ADMIN);
+    }
+
+    private void staffAccount(String username, String email, String password, RuoloStaff ruolo) {
+        if (staffRepository.existsByUsername(username)) return;
 
         Staff admin = new Staff(
-                "admin",
-                "admin@hack-hub.it",
-                passwordEncoder.encode("admin"),
-                RuoloStaff.ADMIN
+                username,
+                email,
+                passwordEncoder.encode(password),
+                ruolo
         );
 
         staffRepository.save(admin);
-        System.out.println("Admin creato: admin/admin");
+        System.out.printf(
+                "%s creato: %s, %s%n",
+                ruolo.getName(),
+                username,
+                password
+        );
     }
 }

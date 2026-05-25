@@ -1,5 +1,6 @@
 package unicam.dreamteam.domain.model.state.hackathon;
 
+import unicam.dreamteam.domain.exception.hackathon.HackathonException;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
 import unicam.dreamteam.domain.model.sottomissione.Valutazione;
@@ -16,7 +17,7 @@ public class StatoHackathonValutazione implements StatoHackathon {
         boolean tutteValutate = hackathon.getSottomissioni().stream()
                 .allMatch(s -> s.getValutazione() != null);
         if (!tutteValutate)
-            throw new IllegalStateException("Non tutte le sottomissioni sono state valutate");
+            throw new HackathonException("Non tutte le sottomissioni sono state valutate");
         hackathon.setStato(prossimoStato());
     }
 

@@ -47,11 +47,11 @@ public class Hackathon {
     private Double premioDenaro;
     private Integer dimMaxTeam;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organizzatore_id", nullable = false)
     private Staff organizzatore;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "giudice_id")
     private Staff giudice;
 
@@ -63,7 +63,7 @@ public class Hackathon {
     )
     private Set<Staff> mentori = new HashSet<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vincitore_id")
     private Team teamVincitore;
 

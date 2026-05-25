@@ -19,11 +19,11 @@ public class Valutazione {
     @Column(nullable = false)
     private String giudizio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "giudice_id", nullable = false)
     private Utente giudice;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sottomissione_id", nullable = false)
     private Sottomissione sottomissione;
 

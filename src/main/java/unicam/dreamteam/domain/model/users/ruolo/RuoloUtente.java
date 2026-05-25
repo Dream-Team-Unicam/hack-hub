@@ -2,8 +2,6 @@ package unicam.dreamteam.domain.model.users.ruolo;
 
 import lombok.Getter;
 
-import java.util.Arrays;
-
 @Getter
 public enum RuoloUtente implements Ruolo {
     UTENTE,

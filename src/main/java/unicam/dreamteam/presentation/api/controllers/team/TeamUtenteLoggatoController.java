@@ -2,9 +2,12 @@ package unicam.dreamteam.presentation.api.controllers.team;
 
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.service.UtenteService;
+import unicam.dreamteam.domain.service.team.InvitoService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.UtenteValidator;
+import unicam.dreamteam.presentation.dto.team.response.InvitoResponse;
 import unicam.dreamteam.presentation.dto.team.response.TeamResponse;
+import unicam.dreamteam.presentation.mapper.InvitoMapper;
 import unicam.dreamteam.presentation.mapper.TeamMapper;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 
 
 @RestController
@@ -24,16 +28,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class TeamUtenteLoggatoController {
     private final TeamService teamService;
     private final UtenteService utenteService;
+    private final InvitoService invitoService;
+
     private final TeamMapper teamMapper;
+    private final InvitoMapper invitoMapper;
     private final UtenteValidator validator;
 
+    /**
+     * Mostra le informazioni del proprio team.
+     */
     @GetMapping
-    @PreAuthorize("hasRole('UTENTE')")
     public ResponseEntity<TeamResponse> getMyTeam(Authentication authentication) {
         Utente currentUser = this.utenteService.getByUsername(authentication.getName());
-
-        this.validator.validInTeam(currentUser);
+        this.validator.validaInTeam(currentUser);
 
         return ResponseEntity.ok(this.teamMapper.toResponse(currentUser.getTeam()));
+    }
+
+    /**
+     * Mostra gli inviti del proprio team. (Quelli inviati dal proprio team)
+     */
+    @GetMapping("/inviti")
+    public ResponseEntity<List<InvitoResponse>> invitiDelTeam(Authentication authentication) {
+        Utente currentUser = this.utenteService.getByUsername(authentication.getName());
+
+        return ResponseEntity.ok(
+                this.invitoService.getAllByUtentesTeam(currentUser).stream()
+                        .map(this.invitoMapper::toResponse)
+                        .toList()
+        );
     }
 }

@@ -1,10 +1,9 @@
 package unicam.dreamteam.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import lombok.Getter;
 import unicam.dreamteam.domain.model.state.ticket.StatoRichiestaSupporto;
 import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,6 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "richieste_supporto")
+@Getter
+// TODO: USO LOMBOK
 public class RichiestaSupporto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +27,11 @@ public class RichiestaSupporto {
     @Column(nullable = false)
     private LocalDate dataApertura;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mentore_id")
     private Staff mentore;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
@@ -52,35 +53,16 @@ public class RichiestaSupporto {
         this.stato = stato;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getOggetto() {
-        return oggetto;
-    }
 
     public void setOggetto(String oggetto) {
         this.oggetto = oggetto;
-    }
-
-    public String getDescrizione() {
-        return descrizione;
     }
 
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
 
-    public LocalDate getDataApertura() {
-        return dataApertura;
-    }
-
     public void setDataApertura(LocalDate dataApertura) {
         this.dataApertura = dataApertura;
-    }
-
-    public StatoRichiestaSupporto getStato() {
-        return stato;
     }
 }

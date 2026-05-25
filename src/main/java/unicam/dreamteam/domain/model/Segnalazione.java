@@ -1,10 +1,8 @@
 package unicam.dreamteam.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
 
 import java.time.LocalDate;
 
@@ -23,11 +21,11 @@ public class Segnalazione {
     @Column(nullable = false)
     private LocalDate dataSegnalazione;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mentore_id", nullable = false)
     private Staff mentore;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id", nullable = false)
     private Team teamSegnalato;
 

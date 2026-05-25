@@ -1,8 +1,8 @@
 package unicam.dreamteam.domain.service.team;
 
+import unicam.dreamteam.domain.exception.team.TeamException;
 import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.domain.exception.team.TeamNameAlreadyExistsException;
 import unicam.dreamteam.infrastructure.repository.TeamRepository;
 import unicam.dreamteam.infrastructure.repository.UtenteRepository;
 
@@ -32,14 +32,15 @@ public class TeamService {
                         idTeam
                 )
         );
-
         return team.get();
     }
 
     public Team creaTeam(String nome, String descrizione, Utente owner) {
-        if (owner.hasTeam()) throw new IllegalStateException("Sei già membro di un team");
+        if (owner.hasTeam()) throw new TeamException("Sei già membro di un team");
         if (teamRepository.existsByNome(nome))
-            throw new TeamNameAlreadyExistsException(String.format("Team.nome=%s", nome));
+            throw new TeamException(
+                    String.format("Un team(nome=%s) esiste già con questo nome.", nome)
+            );
 
         Team newTeam = new Team(nome, descrizione);
         newTeam = teamRepository.save(newTeam);

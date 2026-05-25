@@ -1,7 +1,6 @@
 package unicam.dreamteam.presentation.api.controllers;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestBody;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.service.HackathonService;

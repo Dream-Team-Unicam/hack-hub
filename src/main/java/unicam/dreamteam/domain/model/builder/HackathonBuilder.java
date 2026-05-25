@@ -1,5 +1,6 @@
 package unicam.dreamteam.domain.model.builder;
 
+import unicam.dreamteam.domain.exception.team.TeamException;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.users.Staff;
 
@@ -143,7 +144,7 @@ public class HackathonBuilder implements Builder<Hackathon> {
             throw new IllegalStateException("Il premio in denaro non può essere negativo");
         }
         if (dimMaxTeam != null && dimMaxTeam <= 0) {
-            throw new IllegalStateException("La dimensione massima del team deve essere positiva");
+            throw new TeamException("La dimensione massima del team deve essere positiva");
         }
     }
 }

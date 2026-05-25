@@ -1,6 +1,7 @@
 package unicam.dreamteam.domain.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ValidationException;
 import org.springframework.transaction.annotation.Transactional;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.builder.HackathonBuilder;
@@ -36,7 +37,7 @@ public class HackathonService {
     public List<Hackathon> getAllByGiudice(Staff giudice) {
         this.ruoloValidator.validaGiudice(giudice.getRuolo());
 
-        return this.hackathonRepository.findAllByGiudiceIdWithDetails(giudice.getId());
+        return this.hackathonRepository.findAllByGiudiceId(giudice.getId());
     }
 
     public Hackathon save(HackathonDTO request, Staff organizzatore, Staff giudice) {
@@ -59,23 +60,41 @@ public class HackathonService {
         return this.hackathonRepository.save(newHackathon);
     }
 
-    @Transactional
     public Hackathon aggiungi(Long hackathonId, Staff mentore) {
         this.ruoloValidator.validaMentore(mentore.getRuolo());
 
         Hackathon hackathon = hackathonRepository.findById(hackathonId)
                 .orElseThrow(() -> new EntityNotFoundException("Hackathon.id=" + hackathonId));
 
+        if (hackathon.getMentori().contains(mentore)) throw new ValidationException(
+                "Mentore già nell'Hackathon"
+        );
+
         hackathon.aggiungiMentore(mentore);
         hackathonRepository.save(hackathon);
 
         // ricarica con tutti i dettagli
-        return hackathonRepository.findByIdWithDetails(hackathonId)
+        return hackathonRepository.findById(hackathonId)
+                .orElseThrow();
+    }
+
+    public Hackathon rimuovi(Long hackathonId, Staff mentore) {
+        this.ruoloValidator.validaMentore(mentore.getRuolo());
+
+        Hackathon hackathon = hackathonRepository.findById(hackathonId)
+                .orElseThrow(() -> new EntityNotFoundException("Hackathon.id=" + hackathonId));
+
+
+        hackathon.aggiungiMentore(mentore);
+        hackathonRepository.save(hackathon);
+
+        // ricarica con tutti i dettagli
+        return hackathonRepository.findById(hackathonId)
                 .orElseThrow();
     }
 
     public List<Hackathon> getAllHackathons() {
-        return hackathonRepository.findAllWithDetails();
+        return hackathonRepository.findAll();
     }
 
 

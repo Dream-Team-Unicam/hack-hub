@@ -1,6 +1,5 @@
 package unicam.dreamteam.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import unicam.dreamteam.domain.model.state.invito.StatoInvito;
@@ -22,11 +21,11 @@ public class Invito {
     @Column(nullable = false)
     private LocalDate dataInvito;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "utente_id")
     private Utente utente;
 
