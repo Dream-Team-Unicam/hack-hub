@@ -11,14 +11,15 @@ import unicam.dreamteam.presentation.dto.hackathon.sottomissione.ValutazioneDTO;
 @AllArgsConstructor
 public class SottomissioneMapper {
 
+    private final TeamMapper teamMapper;
+
     public SottomissioneDTO toResponse(Sottomissione sottomissione) {
         return new SottomissioneDTO(
                 sottomissione.getId(),
                 sottomissione.getDataCaricamento(),
                 sottomissione.getDataUltimoAggiornamento(),
                 sottomissione.getContenuto(),
-                sottomissione.getTeam().getId(),
-                sottomissione.getTeam().getNome(),
+                teamMapper.toResponse(sottomissione.getTeam()),
                 sottomissione.getHackathon().getId(),
                 sottomissione.getHackathon().getNome(),
                 sottomissione.getValutazione() == null ? null : toValutazioneDTO(sottomissione.getValutazione())

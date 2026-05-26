@@ -69,60 +69,75 @@ public class HackathonController {
         );
     }
 
-    @PostMapping("/{id}/remove/mentore")
-    @ResponseStatus(HttpStatus.CREATED)
+    @DeleteMapping("/{hackathonId}/mentori/{mentoreId}")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> rimuoviMentore(@PathVariable Long id, @RequestBody Long mentoreId) {
-        Staff mentore = this.staffService.getById(mentoreId);
-        return ResponseEntity.ok(
-                this.hackathonMapper.toResponse(
-                        this.hackathonService.aggiungi(id, mentore)
-                )
-        );
-    }
-
-    @PostMapping("/{id}/apri-iscrizioni")
-    @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> apriIscrizioni(@PathVariable Long id) {
+    public ResponseEntity<HackathonDTO> rimuoviMentore(
+            @PathVariable Long hackathonId,
+            @PathVariable Long mentoreId) {
+        Staff mentore = staffService.getById(mentoreId);
         return ResponseEntity.ok(
                 hackathonMapper.toResponse(
-                        hackathonFacade.apriIscrizioni(id)
+                        hackathonService.remove(hackathonId, mentore)
                 )
         );
     }
 
-    @PostMapping("/{id}/iscrivi")
+    @PostMapping("/{hackathonId}/apri-iscrizioni")
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public ResponseEntity<HackathonDTO> apriIscrizioni(@PathVariable Long hackathonId) {
+        return ResponseEntity.ok(
+                hackathonMapper.toResponse(
+                        hackathonFacade.apriIscrizioni(hackathonId)
+                )
+        );
+    }
+
+    @PostMapping("/{hackathonId}/iscrivi")
     @PreAuthorize("hasAnyRole('UTENTE', 'TEAM_LEADER')")
     public ResponseEntity<HackathonDTO> iscriviTeam(
-            @PathVariable Long id,
+            @PathVariable Long hackathonId,
             Authentication authentication) {
         Utente utente = utenteService.getByUsername(authentication.getName());
-        Hackathon hackathon = hackathonFacade.iscriviTeam(id, utente);
+        Hackathon hackathon = hackathonFacade.iscriviTeam(hackathonId, utente);
         return ResponseEntity.ok(
                 this.hackathonMapper.toResponse(hackathon)
         );
     }
 
-    @PostMapping("/{id}/avvia")
+    @PostMapping("/{hackathonId}/avvia")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> avviaHackathon(@PathVariable Long id) {
+    public ResponseEntity<HackathonDTO> avviaHackathon(@PathVariable Long hackathonId) {
         return ResponseEntity.ok(
                 hackathonMapper.toResponse(
-                        hackathonFacade.avviaHackathon(id)
+                        hackathonFacade.avviaHackathon(hackathonId)
                 )
         );
     }
 
-    @PostMapping("/{id}/sottomissioni")
+    @PostMapping("/{hackathonId}/sottomissioni")
     @PreAuthorize("hasAnyRole('UTENTE', 'TEAM_MEMBER', 'TEAM_LEADER')")
     public ResponseEntity<SottomissioneDTO> inviaSottomissione(
-            @PathVariable Long id,
+            @PathVariable Long hackathonId,
             @RequestBody String contenuto,
             Authentication authentication) {
         Utente utente = utenteService.getByUsername(authentication.getName());
         return ResponseEntity.ok(
                 this.sottomissioneMapper.toResponse(
-                        this.hackathonFacade.inviaSottomissione(id, utente, contenuto)
+                        this.hackathonFacade.inviaSottomissione(hackathonId, utente, contenuto)
+                )
+        );
+    }
+
+    @PutMapping("/{hackathonId}/sottomissioni")
+    @PreAuthorize("hasAnyRole('UTENTE', 'TEAM_MEMBER', 'TEAM_LEADER')")
+    public ResponseEntity<SottomissioneDTO> aggiornaSottomissione(
+            @PathVariable Long hackathonId,
+            @RequestBody String nuovoContenuto,
+            Authentication authentication) {
+        Utente utente = utenteService.getByUsername(authentication.getName());
+        return ResponseEntity.ok(
+                sottomissioneMapper.toResponse(
+                        hackathonFacade.aggiornaSottomissione(hackathonId, utente, nuovoContenuto)
                 )
         );
     }

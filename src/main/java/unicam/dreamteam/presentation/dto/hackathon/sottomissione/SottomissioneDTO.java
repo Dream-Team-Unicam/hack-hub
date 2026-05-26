@@ -1,5 +1,7 @@
 package unicam.dreamteam.presentation.dto.hackathon.sottomissione;
 
+import unicam.dreamteam.presentation.dto.team.response.TeamResponse;
+
 import java.time.LocalDate;
 
 public record SottomissioneDTO(
@@ -7,8 +9,7 @@ public record SottomissioneDTO(
         LocalDate dataCaricamento,
         LocalDate dataUltimoAggiornamento,
         String contenuto,
-        Long teamId,
-        String teamNome,
+        TeamResponse teamResponse,
         Long hackathonId,
         String hackathonNome,
         ValutazioneDTO valutazione

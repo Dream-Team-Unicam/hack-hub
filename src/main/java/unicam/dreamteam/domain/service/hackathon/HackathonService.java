@@ -81,6 +81,16 @@ public class HackathonService {
                 .orElseThrow();
     }
 
+    public Hackathon remove(Long hackathonId, Staff mentore) {
+        this.ruoloValidator.validaMentore(mentore.getRuolo());
+
+        Hackathon hackathon = hackathonRepository.findById(hackathonId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Hackathon.id=%s",hackathonId)));
+
+        hackathon.getMentori().remove(mentore);
+        return hackathonRepository.save(hackathon);
+    }
+
     public Hackathon rimuovi(Long hackathonId, Staff mentore) {
         this.ruoloValidator.validaMentore(mentore.getRuolo());
 

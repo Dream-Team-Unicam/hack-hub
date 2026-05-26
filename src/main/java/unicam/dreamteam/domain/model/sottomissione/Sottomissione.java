@@ -34,7 +34,7 @@ public class Sottomissione {
     @JoinColumn(name = "hackathon_id", nullable = false)
     private Hackathon hackathon;
 
-    @OneToOne(mappedBy = "sottomissione", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "sottomissione", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Valutazione valutazione;
 
     public Sottomissione(String contenuto, Team team, Hackathon hackathon) {

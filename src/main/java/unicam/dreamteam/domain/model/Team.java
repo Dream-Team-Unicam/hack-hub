@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -72,5 +73,17 @@ public class Team {
     public void rimuoviMembro(Utente utente) {
         membri.remove(utente);
         utente.setTeam(null);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Team team
+                && Objects.equals(id, team.id)
+                && Objects.equals(nome, team.nome);
     }
 }

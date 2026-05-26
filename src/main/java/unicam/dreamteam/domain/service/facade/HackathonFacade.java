@@ -9,6 +9,7 @@ import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.service.hackathon.HackathonService;
+import unicam.dreamteam.domain.service.hackathon.sottomissione.SottomissioneService;
 import unicam.dreamteam.domain.service.team.InvitoService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.UtenteValidator;
@@ -20,6 +21,7 @@ public class HackathonFacade {
     private final TeamService teamService;
     private final InvitoService invitoService;
     private final UtenteValidator utenteValidator;
+    private final SottomissioneService sottomissioneService;
 
     public Hackathon iscriviTeam(Long hackathonId, Utente utente) {
         utenteValidator.validaInTeam(utente);
@@ -70,6 +72,21 @@ public class HackathonFacade {
                 .orElseThrow();
     }
 
+    public Sottomissione aggiornaSottomissione(Long hackathonId, Utente utente, String nuovoContenuto) {
+        utenteValidator.validaInTeam(utente);
+
+        Hackathon hackathon = hackathonService.getById(hackathonId);
+        Team team = teamService.getById(utente.getTeam().getId());
+
+        Sottomissione sottomissione = hackathon.getSottomissioni().stream()
+                .filter(s -> s.getTeam().getId().equals(team.getId()))
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Nessuna sottomissione trovata per questo team"));
+
+        sottomissione.aggiorna(nuovoContenuto);
+        return sottomissioneService.save(sottomissione);
+    }
+
     public void proclamaVincitore(Long hackathonId, Long teamId) {
         Hackathon hackathon = hackathonService.getById(hackathonId);
         Team team = teamService.getById(teamId);
@@ -77,4 +94,7 @@ public class HackathonFacade {
         hackathon.proclamaVincitore(team);
         hackathonService.save(hackathon);
     }
+
+    // TODO: Aggiornamento Sottomissione. L'invio della sottomissione dovrebbe funzionare.
+    // TODO: Fare un po' di refactoring metodo enorme HackathonFacade.inviaSottomissione
 }

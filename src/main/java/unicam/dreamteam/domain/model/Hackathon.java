@@ -70,7 +70,7 @@ public class Hackathon {
     @ManyToMany(mappedBy = "hackathons", fetch = FetchType.EAGER)
     private Set<Team> teamIscritti = new HashSet<>();
 
-    @OneToMany(mappedBy = "hackathon", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "hackathon", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<Sottomissione> sottomissioni = new HashSet<>();
 
     @Convert(converter = StatoHackathonConverter.class)
