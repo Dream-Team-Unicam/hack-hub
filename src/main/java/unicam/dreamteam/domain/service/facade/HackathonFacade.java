@@ -1,6 +1,7 @@
 package unicam.dreamteam.domain.service.facade;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unicam.dreamteam.domain.model.Hackathon;
@@ -14,7 +15,11 @@ import unicam.dreamteam.domain.service.hackathon.HackathonService;
 import unicam.dreamteam.domain.service.hackathon.sottomissione.SottomissioneService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.HackathonValidator;
+import unicam.dreamteam.domain.validator.StaffValidator;
 import unicam.dreamteam.domain.validator.UtenteValidator;
+import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
+
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +31,36 @@ public class HackathonFacade {
     private final SottomissioneService sottomissioneService;
 
     private final HackathonValidator hackathonValidator;
+
+    private final StaffValidator staffValidator;
     private final UtenteValidator utenteValidator;
+
+    public List<Hackathon> listaHackathon() {
+        return this.hackathonService.getAllHackathons();
+    }
+
+    public Hackathon creaHackathon(HackathonDTO hackathonDTO, Authentication authentication) {
+        Staff currentUser = this.staffService.getByUsername(authentication.getName());
+        Staff giudice = this.staffService.getById(hackathonDTO.getGiudiceId());
+
+        this.staffValidator.validaOrganizzatore(currentUser);
+        this.staffValidator.validaGiudice(giudice);
+
+        return this.hackathonService.save(hackathonDTO, currentUser, giudice);
+    }
+
+    public Hackathon apriIscrizioni(Long hackathonId) {
+        Hackathon hackathon = hackathonService.getById(hackathonId);
+        hackathon.apriIscrizioni();
+        return this.hackathonService.save(hackathon);
+    }
+
+
+    public Hackathon avviaHackathon(Long hackathonId) {
+        Hackathon hackathon = hackathonService.getById(hackathonId);
+        hackathon.avvia();
+        return hackathonService.save(hackathon);
+    }
 
     public Hackathon aggiungiMentore(Long hackathonId, Long mentoreId) {
         Staff mentore = this.staffService.getById(mentoreId);
@@ -54,20 +88,6 @@ public class HackathonFacade {
         hackathon.iscrivi(team);
 
         this.teamService.save(team);
-        return hackathonService.save(hackathon);
-    }
-
-
-    public Hackathon apriIscrizioni(Long hackathonId) {
-        Hackathon hackathon = hackathonService.getById(hackathonId);
-        hackathon.apriIscrizioni();
-        return this.hackathonService.save(hackathon);
-    }
-
-
-    public Hackathon avviaHackathon(Long hackathonId) {
-        Hackathon hackathon = hackathonService.getById(hackathonId);
-        hackathon.avvia();
         return hackathonService.save(hackathon);
     }
 
