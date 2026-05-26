@@ -11,6 +11,11 @@ public class StatoHackathonIscrizione implements StatoHackathon {
     }
 
     @Override
+    public void avvia(Hackathon hackathon) {
+        hackathon.setStato(prossimoStato());
+    }
+
+    @Override
     public StatoHackathon prossimoStato() { return new StatoHackathonInCorso(); }
 
     @Override

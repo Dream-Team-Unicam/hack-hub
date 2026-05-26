@@ -1,4 +1,4 @@
-package unicam.dreamteam.config;
+package unicam.dreamteam.infrastructure.config;
 
 import lombok.AllArgsConstructor;
 import org.jspecify.annotations.NonNull;
@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
-import unicam.dreamteam.infrastructure.repository.StaffRepository;
+import unicam.dreamteam.domain.repository.StaffRepository;
 
 @Component
 @AllArgsConstructor

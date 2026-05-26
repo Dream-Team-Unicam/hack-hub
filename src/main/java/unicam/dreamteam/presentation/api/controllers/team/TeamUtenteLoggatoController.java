@@ -1,7 +1,7 @@
 package unicam.dreamteam.presentation.api.controllers.team;
 
 import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.domain.service.UtenteService;
+import unicam.dreamteam.domain.service.accounts.UtenteService;
 import unicam.dreamteam.domain.service.team.InvitoService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.UtenteValidator;

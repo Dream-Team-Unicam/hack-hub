@@ -55,7 +55,7 @@ public class Hackathon {
     @JoinColumn(name = "giudice_id")
     private Staff giudice;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "hackathon_mentori",
             joinColumns = @JoinColumn(name = "hackathon_id"),
@@ -67,7 +67,7 @@ public class Hackathon {
     @JoinColumn(name = "vincitore_id")
     private Team teamVincitore;
 
-    @ManyToMany(mappedBy = "hackathons")
+    @ManyToMany(mappedBy = "hackathons", fetch = FetchType.EAGER)
     private Set<Team> teamIscritti = new HashSet<>();
 
     @OneToMany(mappedBy = "hackathon", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -137,5 +137,21 @@ public class Hackathon {
     }
     public void iscrivi(Team team) {
         stato.iscrivi(this, team);
+    }
+
+    public void apriIscrizioni() {
+        stato.apriIscrizioni(this);
+    }
+
+    public void avvia() {
+        stato.avvia(this);
+    }
+
+    public void inviaSottomissione(Sottomissione sottomissione) {
+        stato.inviaSottomissione(this, sottomissione);
+    }
+
+    public void proclamaVincitore(Team team) {
+        stato.proclamaVincitore(this, team);
     }
 }

@@ -16,13 +16,12 @@ public class StatoHackathonValutazione implements StatoHackathon {
     public void concludi(Hackathon hackathon) {
         boolean tutteValutate = hackathon.getSottomissioni().stream()
                 .allMatch(s -> s.getValutazione() != null);
-        if (!tutteValutate)
-            throw new HackathonException("Non tutte le sottomissioni sono state valutate");
+        if (!tutteValutate) throw new HackathonException("Non tutte le sottomissioni sono state valutate");
         hackathon.setStato(prossimoStato());
     }
 
     @Override
-    public StatoHackathon prossimoStato() { return new StatoHackathonConcluso(); }
+    public StatoHackathon prossimoStato() { return new StatoHackathonProclamazioneVincitore(); }
 
     @Override
     public String getNome() { return "VALUTAZIONE"; }

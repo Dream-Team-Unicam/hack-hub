@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.infrastructure.repository.StaffRepository;
-import unicam.dreamteam.infrastructure.repository.UtenteRepository;
+import unicam.dreamteam.domain.repository.StaffRepository;
+import unicam.dreamteam.domain.repository.UtenteRepository;
 import unicam.dreamteam.domain.service.security.Autenticabile;
 
 import java.util.ArrayList;

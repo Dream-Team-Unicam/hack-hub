@@ -1,13 +1,12 @@
-package unicam.dreamteam.domain.service;
+package unicam.dreamteam.domain.service.hackathon;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
-import org.springframework.transaction.annotation.Transactional;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.builder.HackathonBuilder;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.validator.RuoloValidator;
-import unicam.dreamteam.infrastructure.repository.HackathonRepository;
+import unicam.dreamteam.domain.repository.HackathonRepository;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
@@ -38,6 +37,10 @@ public class HackathonService {
         this.ruoloValidator.validaGiudice(giudice.getRuolo());
 
         return this.hackathonRepository.findAllByGiudiceId(giudice.getId());
+    }
+
+    public Hackathon save(Hackathon hackathon) {
+        return this.hackathonRepository.save(hackathon);
     }
 
     public Hackathon save(HackathonDTO request, Staff organizzatore, Staff giudice) {

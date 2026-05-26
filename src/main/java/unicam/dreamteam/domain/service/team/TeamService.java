@@ -3,8 +3,8 @@ package unicam.dreamteam.domain.service.team;
 import unicam.dreamteam.domain.exception.team.TeamException;
 import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.infrastructure.repository.TeamRepository;
-import unicam.dreamteam.infrastructure.repository.UtenteRepository;
+import unicam.dreamteam.domain.repository.TeamRepository;
+import unicam.dreamteam.domain.repository.UtenteRepository;
 
 
 import jakarta.persistence.EntityNotFoundException;
@@ -33,6 +33,10 @@ public class TeamService {
                 )
         );
         return team.get();
+    }
+
+    public Team save(Team team) {
+        return this.teamRepository.save(team);
     }
 
     public Team creaTeam(String nome, String descrizione, Utente owner) {

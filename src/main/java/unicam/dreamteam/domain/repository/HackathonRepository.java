@@ -1,4 +1,4 @@
-package unicam.dreamteam.infrastructure.repository;
+package unicam.dreamteam.domain.repository;
 
 import org.springframework.stereotype.Repository;
 import unicam.dreamteam.domain.model.Hackathon;

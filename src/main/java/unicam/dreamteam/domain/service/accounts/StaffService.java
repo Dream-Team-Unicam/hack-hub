@@ -1,4 +1,4 @@
-package unicam.dreamteam.domain.service;
+package unicam.dreamteam.domain.service.accounts;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.validator.RuoloValidator;
-import unicam.dreamteam.infrastructure.repository.StaffRepository;
+import unicam.dreamteam.domain.repository.StaffRepository;
 
 import java.util.List;
 import java.util.Optional;

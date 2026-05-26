@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.Set;
 
 public class HackathonBuilder implements Builder<Hackathon> {
-
     // Campi obbligatori
     private String nome;
     private String regolamento;

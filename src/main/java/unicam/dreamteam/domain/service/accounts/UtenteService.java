@@ -1,10 +1,10 @@
-package unicam.dreamteam.domain.service;
+package unicam.dreamteam.domain.service.accounts;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.infrastructure.repository.UtenteRepository;
+import unicam.dreamteam.domain.repository.UtenteRepository;
 
 import java.util.Optional;
 

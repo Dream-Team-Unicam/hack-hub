@@ -1,15 +1,14 @@
 package unicam.dreamteam.domain.service.team;
 
-import org.springframework.transaction.annotation.Transactional;
 import unicam.dreamteam.domain.model.Invito;
 import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.state.invito.StatoInvito;
 import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.validator.UtenteValidator;
-import unicam.dreamteam.infrastructure.repository.InvitoRepository;
-import unicam.dreamteam.infrastructure.repository.TeamRepository;
-import unicam.dreamteam.infrastructure.repository.UtenteRepository;
+import unicam.dreamteam.domain.repository.InvitoRepository;
+import unicam.dreamteam.domain.repository.TeamRepository;
+import unicam.dreamteam.domain.repository.UtenteRepository;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;

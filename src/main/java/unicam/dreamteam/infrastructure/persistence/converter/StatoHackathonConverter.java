@@ -19,6 +19,7 @@ public class StatoHackathonConverter implements AttributeConverter<StatoHackatho
             case "ISCRIZIONE"    -> new StatoHackathonIscrizione();
             case "IN_CORSO"    -> new StatoHackathonInCorso();
             case "VALUTAZIONE"    -> new StatoHackathonValutazione();
+            case "PROCLAMAZIONE_VINCITORE" -> new StatoHackathonProclamazioneVincitore();
             case "CONCLUSO" -> new StatoHackathonConcluso();
             default -> throw new IllegalArgumentException(String.format("Stato sconosciuto: %s", name));
         };

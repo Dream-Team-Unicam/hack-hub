@@ -2,6 +2,7 @@ package unicam.dreamteam.domain.model.sottomissione;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.Utente;
 
 @Entity
@@ -21,13 +22,13 @@ public class Valutazione {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "giudice_id", nullable = false)
-    private Utente giudice;
+    private Staff giudice;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sottomissione_id", nullable = false)
     private Sottomissione sottomissione;
 
-    public Valutazione(Sottomissione sottomissione, Integer punteggio, String giudizio, Utente giudice) {
+    public Valutazione(Sottomissione sottomissione, Integer punteggio, String giudizio, Staff giudice) {
         this.sottomissione = sottomissione;
         this.punteggio = punteggio;
         this.giudizio = giudizio;

@@ -1,4 +1,4 @@
-package unicam.dreamteam.config;
+package unicam.dreamteam.infrastructure.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

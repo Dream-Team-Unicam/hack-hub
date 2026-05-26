@@ -11,8 +11,14 @@ public interface StatoHackathon {
     default void iscrivi(Hackathon hackathon, Team team) {
         throw new HackathonException("Iscrizioni non aperte");
     }
+    default void avvia(Hackathon hackathon) {
+        throw new HackathonException("Non è possibile avviare l'hackathon in questo stato.");
+    }
     default void inviaSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
-        throw new HackathonException("Hackathon non in corso");
+        throw new HackathonException("Hackathon non in corso. ");
+    }
+    default void proclamaVincitore(Hackathon hackathon, Team team) {
+        throw new HackathonException("Hackathon non in fase di proclamazione.");
     }
     default void valuta(Hackathon hackathon, Sottomissione sottomissione, Valutazione valutazione) {
         throw new HackathonException("Hackathon non in fase di valutazione");
@@ -20,8 +26,11 @@ public interface StatoHackathon {
     default void concludi(Hackathon hackathon) {
         throw new HackathonException("Operazione non permessa in questo stato");
     }
+    default void apriIscrizioni(Hackathon hackathon) {
+        throw new HackathonException("Iscrizioni già aperte oppure operazione non permessa in questo stato.");
+    }
+
 
     StatoHackathon prossimoStato();
-
     String getNome();
 }
