@@ -3,7 +3,6 @@ package unicam.dreamteam.domain.model.sottomissione;
 import jakarta.persistence.*;
 import lombok.Getter;
 import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
 
 @Entity
 @Table(name = "valutazioni")

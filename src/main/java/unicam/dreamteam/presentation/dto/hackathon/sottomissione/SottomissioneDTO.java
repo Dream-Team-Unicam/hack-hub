@@ -9,7 +9,7 @@ public record SottomissioneDTO(
         LocalDate dataCaricamento,
         LocalDate dataUltimoAggiornamento,
         String contenuto,
-        TeamResponse teamResponse,
+        TeamResponse team,
         Long hackathonId,
         String hackathonNome,
         ValutazioneDTO valutazione

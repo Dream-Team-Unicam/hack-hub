@@ -1,9 +1,11 @@
 package unicam.dreamteam.domain.model.sottomissione;
 
-import jakarta.persistence.*;
-import lombok.Getter;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.Team;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -12,6 +14,7 @@ import java.util.Objects;
 @Table(name = "sottomissioni")
 @Access(AccessType.FIELD)
 @Getter
+@Setter
 public class Sottomissione {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

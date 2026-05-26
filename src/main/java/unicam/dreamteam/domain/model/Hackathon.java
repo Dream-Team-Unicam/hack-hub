@@ -151,6 +151,11 @@ public class Hackathon {
         stato.inviaSottomissione(this, sottomissione);
     }
 
+    public boolean hasSottomissione(Team team) {
+        return sottomissioni.stream()
+                .anyMatch(s -> s.getTeam().getId().equals(team.getId()));
+    }
+
     public void proclamaVincitore(Team team) {
         stato.proclamaVincitore(this, team);
     }

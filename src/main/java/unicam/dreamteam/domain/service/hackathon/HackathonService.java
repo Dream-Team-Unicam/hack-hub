@@ -1,14 +1,13 @@
 package unicam.dreamteam.domain.service.hackathon;
 
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.ValidationException;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.builder.HackathonBuilder;
 import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.validator.RuoloValidator;
 import unicam.dreamteam.domain.repository.HackathonRepository;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
+import unicam.dreamteam.domain.validator.StaffValidator;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 
 import java.util.List;
@@ -18,7 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class HackathonService {
     private final HackathonRepository hackathonRepository;
-    private final RuoloValidator ruoloValidator;
+    private final StaffValidator staffValidator;
 
     public Hackathon getById(Long id) {
         Optional<Hackathon> hackathon = this.hackathonRepository.findById(id);
@@ -34,7 +33,7 @@ public class HackathonService {
     }
 
     public List<Hackathon> getAllByGiudice(Staff giudice) {
-        this.ruoloValidator.validaGiudice(giudice.getRuolo());
+        this.staffValidator.validaGiudice(giudice);
 
         return this.hackathonRepository.findAllByGiudiceId(giudice.getId());
     }
@@ -44,7 +43,7 @@ public class HackathonService {
     }
 
     public Hackathon save(HackathonDTO request, Staff organizzatore, Staff giudice) {
-        this.ruoloValidator.validaGiudice(giudice.getRuolo());
+        this.staffValidator.validaGiudice(giudice);
 
         Hackathon newHackathon = new HackathonBuilder()
                 .nome(request.getNome())
@@ -60,50 +59,21 @@ public class HackathonService {
                 .giudice(giudice)
                 .build();
 
-        return this.hackathonRepository.save(newHackathon);
+        return save(newHackathon);
     }
 
-    public Hackathon aggiungi(Long hackathonId, Staff mentore) {
-        this.ruoloValidator.validaMentore(mentore.getRuolo());
-
-        Hackathon hackathon = hackathonRepository.findById(hackathonId)
-                .orElseThrow(() -> new EntityNotFoundException("Hackathon.id=" + hackathonId));
-
-        if (hackathon.getMentori().contains(mentore)) throw new ValidationException(
-                "Mentore già nell'Hackathon"
-        );
+    public Hackathon aggiungiMentore(Hackathon hackathon, Staff mentore) {
+        this.staffValidator.validaMentore(mentore);
 
         hackathon.aggiungiMentore(mentore);
-        hackathonRepository.save(hackathon);
-
-        // ricarica con tutti i dettagli
-        return hackathonRepository.findById(hackathonId)
-                .orElseThrow();
+        return save(hackathon);
     }
 
-    public Hackathon remove(Long hackathonId, Staff mentore) {
-        this.ruoloValidator.validaMentore(mentore.getRuolo());
-
-        Hackathon hackathon = hackathonRepository.findById(hackathonId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Hackathon.id=%s",hackathonId)));
+    public Hackathon rimuoviMentore(Hackathon hackathon, Staff mentore) {
+        this.staffValidator.validaMentore(mentore);
 
         hackathon.getMentori().remove(mentore);
-        return hackathonRepository.save(hackathon);
-    }
-
-    public Hackathon rimuovi(Long hackathonId, Staff mentore) {
-        this.ruoloValidator.validaMentore(mentore.getRuolo());
-
-        Hackathon hackathon = hackathonRepository.findById(hackathonId)
-                .orElseThrow(() -> new EntityNotFoundException("Hackathon.id=" + hackathonId));
-
-
-        hackathon.aggiungiMentore(mentore);
-        hackathonRepository.save(hackathon);
-
-        // ricarica con tutti i dettagli
-        return hackathonRepository.findById(hackathonId)
-                .orElseThrow();
+        return save(hackathon);
     }
 
     public List<Hackathon> getAllHackathons() {

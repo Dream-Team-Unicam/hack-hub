@@ -10,7 +10,7 @@ import unicam.dreamteam.presentation.dto.hackathon.sottomissione.ValutazioneDTO;
 @Component
 @AllArgsConstructor
 public class SottomissioneMapper {
-
+    private final AccountMapper accountMapper;
     private final TeamMapper teamMapper;
 
     public SottomissioneDTO toResponse(Sottomissione sottomissione) {
@@ -31,8 +31,7 @@ public class SottomissioneMapper {
                 valutazione.getId(),
                 valutazione.getPunteggio(),
                 valutazione.getGiudizio(),
-                valutazione.getGiudice().getId(),
-                valutazione.getGiudice().getUsername()
+                accountMapper.toResponse(valutazione.getGiudice())
         );
     }
 }

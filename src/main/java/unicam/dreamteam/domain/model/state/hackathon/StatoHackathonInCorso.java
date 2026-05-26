@@ -7,6 +7,7 @@ public class StatoHackathonInCorso implements StatoHackathon {
         @Override
     public void inviaSottomissione(Hackathon hackathon, Sottomissione sottomissione) {
         hackathon.getSottomissioni().add(sottomissione);
+
     }
 
     @Override

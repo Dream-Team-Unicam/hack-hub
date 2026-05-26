@@ -1,6 +1,6 @@
 package unicam.dreamteam.infrastructure.exception.ruolo;
 
-import unicam.dreamteam.domain.exception.ruolo.RuoloNonAutorizzatoException;
+import unicam.dreamteam.domain.exception.ruolo.RuoloException;
 import unicam.dreamteam.infrastructure.exception.Response;
 
 import org.springframework.http.HttpStatus;
@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class RuoloExceptionHandler {
-    @ExceptionHandler(RuoloNonAutorizzatoException.class)
-    public ResponseEntity<Response> handleRuoloNonAutorizzatoException(RuoloNonAutorizzatoException exception) {
+    @ExceptionHandler(RuoloException.class)
+    public ResponseEntity<Response> handleRuoloNonAutorizzatoException(RuoloException exception) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         Response error = new Response(
                 status.value(),
