@@ -60,7 +60,12 @@ public class HackathonFacade {
         return this.hackathonService.getAllByTeam(utente.getTeam());
     }
 
-    private List<Hackathon> listaHackathonByStaff(Staff staff) {
+    public List<Hackathon> listaHackathonByStaffUsername(String username) {
+        Staff staff = this.staffService.getByUsername(username);
+        return this.hackathonService.getAllByStaff(staff);
+    }
+
+    public List<Hackathon> listaHackathonByStaff(Staff staff) {
         return this.hackathonService.getAllByStaff(staff);
     }
 

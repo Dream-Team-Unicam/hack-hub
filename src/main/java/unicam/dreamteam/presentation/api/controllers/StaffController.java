@@ -3,6 +3,7 @@ package unicam.dreamteam.presentation.api.controllers;
 import org.springframework.security.core.Authentication;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.service.facade.HackathonFacade;
 import unicam.dreamteam.domain.service.hackathon.HackathonService;
 import unicam.dreamteam.domain.service.accounts.StaffService;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
@@ -24,8 +25,9 @@ import unicam.dreamteam.presentation.mapper.HackathonMapper;
 @PreAuthorize("isAuthenticated()")
 @AllArgsConstructor
 public class StaffController {
+    private HackathonFacade hackathonFacade;
+
     private StaffService staffService;
-    private HackathonService hackathonService;
     private AccountMapper accountMapper;
     private HackathonMapper hackathonMapper;
 
@@ -68,7 +70,6 @@ public class StaffController {
     }
 
 
-
     @GetMapping("/mentori")
     @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZZATORE')")
     public List<AccountResponse> getAllMentori() {
@@ -78,22 +79,10 @@ public class StaffController {
                 .toList();
     }
 
-    @GetMapping("/giudici/hackathons")
-    @PreAuthorize("hasRole('GIUDICE')")
-    public List<HackathonDTO> getAllGiudiceHackathons(Authentication authentication) {
-        Staff currentUser = this.staffService.getByUsername(authentication.getName());
-        return this.hackathonService.getAllByGiudice(currentUser)
-                .stream()
-                .map(hackathonMapper::toResponse)
-                .toList();
-    }
-
-    @GetMapping("/mentori/hackathons")
-    @PreAuthorize("hasRole('MENTORE')")
-    public List<HackathonDTO> getAllMetoreHackathons(Authentication authentication) {
-        Staff currentUser = this.staffService.getByUsername(authentication.getName());
-        return this.hackathonService.getAllByGiudice(currentUser)
-                .stream()
+    @GetMapping("/hackathons")
+    @PreAuthorize("hasAnyRole('GIUDICE', 'ORGANIZZATORE', 'MENTORE')")
+    public List<HackathonDTO> getAllStaffHackathons(Authentication authentication) {
+        return this.hackathonFacade.listaHackathonByUsername(authentication.getName()).stream()
                 .map(hackathonMapper::toResponse)
                 .toList();
     }

@@ -31,7 +31,7 @@ public class HackathonController {
                         .toList()
         );
     }
-
+    
     @GetMapping("/me")
     @PreAuthorize("hasAnyRole('ORGANIZZATORE', 'GIUDICE', 'MENTORE')")
     public ResponseEntity<List<HackathonDTO>> getAllMine(Authentication authentication) {
