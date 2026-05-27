@@ -12,6 +12,7 @@ import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloUtente;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
+import unicam.dreamteam.domain.service.facade.InvitoFacade;
 import unicam.dreamteam.domain.service.security.Autenticabile;
 import unicam.dreamteam.domain.service.security.SecurityService;
 import unicam.dreamteam.domain.service.team.InvitoService;
@@ -28,13 +29,8 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @AllArgsConstructor
 public class InvitoController {
-    private InvitoService invitoService;
-    private TeamService teamService;
-    private SecurityService securityService;
-    private UtenteService utenteService;
-
+    private InvitoFacade invitoFacade;
     private InvitoMapper invitoMapper;
-    private UtenteValidator utenteValidator;
 
     /**
      * Restituisce gli inviti in stato pendente, per staff con ruolo {@code ADMIN}. Se l'utente ha il ruolo {@code UTENTE} vengono
@@ -46,20 +42,11 @@ public class InvitoController {
     @GetMapping()
     @PreAuthorize("hasAnyRole('ADMIN', 'UTENTE')")
     public ResponseEntity<List<InvitoResponse>> index(Authentication authentication) {
-        Autenticabile account = securityService.getAccountByUsername(authentication.getName());
-        if (account.getRuolo().equals(RuoloUtente.UTENTE)) {
-            Utente utente = (Utente) account;
-            return ResponseEntity.ok(
-                    this.invitoService.getAllByUtenteAndStato(utente, new StatoInvitoPendente()).stream()
-                            .map(this.invitoMapper::toResponse)
-                            .toList()
-            );
-        }
-
         return ResponseEntity.ok(
-                this.invitoService.getAllByStato(new StatoInvitoPendente()).stream()
+                this.invitoFacade.getAllByPendentiByAccountUsername(authentication.getName()).stream()
                         .map(this.invitoMapper::toResponse)
-                        .toList());
+                        .toList()
+        );
     }
 
     /**
@@ -70,15 +57,13 @@ public class InvitoController {
      * @return le informazioni dell'invito creato, vedi {@link InvitoResponse}
      */
     // TODO: Gestione Dimensione Massima Team per hackathon
-    // TODO: Utente tecnicamente non puo' invitare se stesso nel suo team perchè è già in un team.
+    // TODO: Utente tecnicamente non puo' invitare se stesso nel suo team perchè è già in un team. (Gestirlo?)
     @PostMapping()
     @PreAuthorize("hasRole('UTENTE')")
     public ResponseEntity<InvitoResponse> invita(@Valid @RequestBody InvitaMembroRequest request, Authentication authentication) {
-        Utente currentUser = this.utenteService.getByUsername(authentication.getName());
-        this.utenteValidator.validaInTeam(currentUser); // Da mettere nel service
         return ResponseEntity.ok(this.invitoMapper.toResponse(
-                this.invitoService.invita(
-                        currentUser.getTeam(),
+                this.invitoFacade.invita(
+                        authentication.getName(),
                         request.usernameUtenteInvitato()
                 )
         ));
@@ -88,8 +73,9 @@ public class InvitoController {
     @PreAuthorize("hasRole('UTENTE')")
     public ResponseEntity<InvitoResponse> accetta(@Valid @RequestBody Long idTeam, Authentication authentication) {
         return ResponseEntity.ok(this.invitoMapper.toResponse(
-                this.invitoService.accetta(
-                        getInvitoByTeamId(idTeam, authentication)
+                this.invitoFacade.accetta(
+                        idTeam,
+                        authentication.getName()
                 )
         ));
     }
@@ -98,16 +84,10 @@ public class InvitoController {
     @PreAuthorize("hasRole('UTENTE')")
     public ResponseEntity<InvitoResponse> rifiuta(@Valid @RequestBody Long idTeam, Authentication authentication) {
         return ResponseEntity.ok(this.invitoMapper.toResponse(
-                this.invitoService.rifiuta(
-                        getInvitoByTeamId(idTeam, authentication)
+                this.invitoFacade.rifiuta(
+                        idTeam,
+                        authentication.getName()
                 )
         ));
-    }
-
-
-    private Invito getInvitoByTeamId(Long idTeam, Authentication authentication) {
-        Utente currentUser = this.utenteService.getByUsername(authentication.getName());
-        Team team = this.teamService.getById(idTeam);
-        return this.invitoService.getByTeamAndUtenteInvitato(team, currentUser);
     }
 }

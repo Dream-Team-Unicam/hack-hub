@@ -5,10 +5,14 @@ import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.users.ruolo.RuoloUtente;
 import unicam.dreamteam.domain.service.accounts.StaffService;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
 import unicam.dreamteam.domain.service.hackathon.HackathonService;
 import unicam.dreamteam.domain.service.hackathon.sottomissione.SottomissioneService;
+import unicam.dreamteam.domain.service.security.Autenticabile;
+import unicam.dreamteam.domain.service.security.SecurityService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.HackathonValidator;
 import unicam.dreamteam.domain.validator.StaffValidator;
@@ -25,6 +29,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class HackathonFacade {
+    private final SecurityService securityService;
     private final HackathonService hackathonService;
     private final TeamService teamService;
     private final UtenteService utenteService;
@@ -37,7 +42,26 @@ public class HackathonFacade {
     private final UtenteValidator utenteValidator;
 
     public List<Hackathon> listaHackathon() {
-        return this.hackathonService.getAllHackathons();
+        return this.hackathonService.getAll();
+    }
+
+    public List<Hackathon> listaHackathonByUsername(String username) {
+        Autenticabile account = securityService.getAccountByUsername(username);
+
+        if (account instanceof Utente utente) return listaHackathonByUtente(utente);
+        if (account instanceof Staff staff) return listaHackathonByStaff(staff);
+
+        return List.of();
+    }
+
+    private List<Hackathon> listaHackathonByUtente(Utente utente) {
+        utenteValidator.validaInTeam(utente);
+
+        return this.hackathonService.getAllByTeam(utente.getTeam());
+    }
+
+    private List<Hackathon> listaHackathonByStaff(Staff staff) {
+        return this.hackathonService.getAllByStaff(staff);
     }
 
     public Hackathon creaHackathon(HackathonDTO hackathonDTO, Authentication authentication) {
@@ -46,8 +70,7 @@ public class HackathonFacade {
 
         this.staffValidator.validaOrganizzatore(currentUser);
         this.staffValidator.validaGiudice(giudice);
-
-        return this.hackathonService.save(hackathonDTO, currentUser, giudice);
+        return this.hackathonService.crea(hackathonDTO, currentUser, giudice);
     }
 
     public Hackathon apriIscrizioni(Long hackathonId) {

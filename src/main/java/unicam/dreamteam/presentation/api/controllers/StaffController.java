@@ -82,7 +82,16 @@ public class StaffController {
     @PreAuthorize("hasRole('GIUDICE')")
     public List<HackathonDTO> getAllGiudiceHackathons(Authentication authentication) {
         Staff currentUser = this.staffService.getByUsername(authentication.getName());
+        return this.hackathonService.getAllByGiudice(currentUser)
+                .stream()
+                .map(hackathonMapper::toResponse)
+                .toList();
+    }
 
+    @GetMapping("/mentori/hackathons")
+    @PreAuthorize("hasRole('MENTORE')")
+    public List<HackathonDTO> getAllMetoreHackathons(Authentication authentication) {
+        Staff currentUser = this.staffService.getByUsername(authentication.getName());
         return this.hackathonService.getAllByGiudice(currentUser)
                 .stream()
                 .map(hackathonMapper::toResponse)

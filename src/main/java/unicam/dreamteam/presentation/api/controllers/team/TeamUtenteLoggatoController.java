@@ -2,6 +2,8 @@ package unicam.dreamteam.presentation.api.controllers.team;
 
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
+import unicam.dreamteam.domain.service.facade.InvitoFacade;
+import unicam.dreamteam.domain.service.facade.TeamFacade;
 import unicam.dreamteam.domain.service.team.InvitoService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.UtenteValidator;
@@ -26,23 +28,22 @@ import java.util.List;
 @PreAuthorize("hasRole('UTENTE')")
 @AllArgsConstructor
 public class TeamUtenteLoggatoController {
-    private final TeamService teamService;
-    private final UtenteService utenteService;
-    private final InvitoService invitoService;
+    private final TeamFacade teamFacade;
+    private final InvitoFacade invitoFacade;
 
     private final TeamMapper teamMapper;
     private final InvitoMapper invitoMapper;
-    private final UtenteValidator validator;
 
     /**
      * Mostra le informazioni del proprio team.
      */
     @GetMapping
-    public ResponseEntity<TeamResponse> getMyTeam(Authentication authentication) {
-        Utente currentUser = this.utenteService.getByUsername(authentication.getName());
-        this.validator.validaInTeam(currentUser);
-
-        return ResponseEntity.ok(this.teamMapper.toResponse(currentUser.getTeam()));
+    public ResponseEntity<TeamResponse> myTeamInfo(Authentication authentication) {
+        return ResponseEntity.ok(this.teamMapper.toResponse(
+                this.teamFacade.getTeamByUsername(
+                        authentication.getName()
+                )
+        ));
     }
 
     /**
@@ -50,10 +51,8 @@ public class TeamUtenteLoggatoController {
      */
     @GetMapping("/inviti")
     public ResponseEntity<List<InvitoResponse>> invitiDelTeam(Authentication authentication) {
-        Utente currentUser = this.utenteService.getByUsername(authentication.getName());
-
         return ResponseEntity.ok(
-                this.invitoService.getAllByUtentesTeam(currentUser).stream()
+                this.invitoFacade.getAllPendentiByUtenteUsername(authentication.getName()).stream()
                         .map(this.invitoMapper::toResponse)
                         .toList()
         );

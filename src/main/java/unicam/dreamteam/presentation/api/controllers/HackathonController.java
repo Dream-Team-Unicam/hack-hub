@@ -32,6 +32,16 @@ public class HackathonController {
         );
     }
 
+    @GetMapping("/me")
+    @PreAuthorize("hasAnyRole('ORGANIZZATORE', 'GIUDICE', 'MENTORE')")
+    public ResponseEntity<List<HackathonDTO>> getAllMine(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.hackathonFacade.listaHackathon().stream()
+                        .map(this.hackathonMapper::toResponse)
+                        .toList()
+        );
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ORGANIZZATORE')")

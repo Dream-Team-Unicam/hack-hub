@@ -3,6 +3,7 @@ package unicam.dreamteam.presentation.api.controllers.team;
 import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
+import unicam.dreamteam.domain.service.facade.TeamFacade;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.presentation.dto.team.requests.CreateTeamRequest;
 import unicam.dreamteam.presentation.dto.team.response.TeamResponse;
@@ -22,15 +23,14 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @AllArgsConstructor
 public class TeamController {
-    private final TeamService teamService;
-    private final UtenteService utenteService;
+    private final TeamFacade teamFacade;
     private final TeamMapper teamMapper;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<TeamResponse>> getAllTeamsByAccount(Authentication authentication) {
+    public ResponseEntity<List<TeamResponse>> index() {
         return ResponseEntity.ok(
-                teamService.getAll().stream()
+                this.teamFacade.getAllTeams().stream()
                         .map(teamMapper::toResponse)
                         .toList()
         );
@@ -39,14 +39,11 @@ public class TeamController {
     @PostMapping()
     @PreAuthorize("hasRole('UTENTE')")
     public ResponseEntity<TeamResponse> creaTeam(@Valid @RequestBody CreateTeamRequest request, Authentication authentication) {
-        Utente currentUser = this.utenteService.getByUsername(authentication.getName());
-
-        Team newTeam = this.teamService.creaTeam(
-                request.name(),
-                request.descrizione(),
-                currentUser
-        );
-
-        return ResponseEntity.ok(this.teamMapper.toResponse(newTeam));
+        return ResponseEntity.ok(this.teamMapper.toResponse(
+                this.teamFacade.creaTeam(
+                        request,
+                        authentication.getName()
+                )
+        ));
     }
 }

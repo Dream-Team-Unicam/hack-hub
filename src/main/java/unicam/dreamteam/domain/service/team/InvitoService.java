@@ -25,18 +25,12 @@ public class InvitoService {
     private UtenteRepository utenteRepository;
     private UtenteValidator utenteValidator;
 
-    public Invito invita(Team team, String usernameUtenteInvitato) {
-        Optional<Utente> opUtenteInvitato = this.utenteRepository.findByUsername(usernameUtenteInvitato);
-        if (opUtenteInvitato.isEmpty()) throw new EntityNotFoundException(
-                String.format("Utente.username=%s", usernameUtenteInvitato));
-
-        Utente utenteInvitato = opUtenteInvitato.get();
-
+    public Invito invita(Team team, Utente utenteInvitato) {
         if (this.invitoRepository.existsByUtenteIdAndTeamId(utenteInvitato.getId(), team.getId()))
             throw new EntityExistsException(String.format("Invito.Team.id=%s,Invito.Utente.id=%s, Invito.Utente.username=%s",
                     team.getId(),
                     utenteInvitato.getId(),
-                    usernameUtenteInvitato
+                    utenteInvitato.getUsername()
             ));
 
         Invito newInvito = new Invito(
