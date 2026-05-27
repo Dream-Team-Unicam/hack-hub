@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class HackathonController {
     private HackathonFacade hackathonFacade;
-
     private SottomissioneMapper sottomissioneMapper;
     private HackathonMapper hackathonMapper;
 
@@ -47,7 +46,7 @@ public class HackathonController {
         );
     }
 
-    @PostMapping("/{hackathonId}/add/mentore/{mentoreId}")
+    @PostMapping("/{hackathonId}/mentore/add/{mentoreId}")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> aggiungiMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId) {
@@ -61,7 +60,7 @@ public class HackathonController {
         );
     }
 
-    @DeleteMapping("/{hackathonId}/mentori/{mentoreId}")
+    @PostMapping("/{hackathonId}/mentori/remove/{mentoreId}")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> rimuoviMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId) {
         return ResponseEntity.ok(

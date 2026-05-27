@@ -38,6 +38,24 @@ public class HackathonService {
         return this.hackathonRepository.findAllByGiudiceId(giudice.getId());
     }
 
+    public Hackathon aggiungiMentore(Hackathon hackathon, Staff mentore) {
+        this.staffValidator.validaMentore(mentore);
+
+        hackathon.aggiungiMentore(mentore);
+        return save(hackathon);
+    }
+
+    public Hackathon rimuoviMentore(Hackathon hackathon, Staff mentore) {
+        this.staffValidator.validaMentore(mentore);
+
+        hackathon.getMentori().remove(mentore);
+        return save(hackathon);
+    }
+
+    public List<Hackathon> getAllHackathons() {
+        return hackathonRepository.findAll();
+    }
+
     public Hackathon save(Hackathon hackathon) {
         return this.hackathonRepository.save(hackathon);
     }
@@ -58,27 +76,6 @@ public class HackathonService {
                 .organizzatore(organizzatore)
                 .giudice(giudice)
                 .build();
-
         return save(newHackathon);
     }
-
-    public Hackathon aggiungiMentore(Hackathon hackathon, Staff mentore) {
-        this.staffValidator.validaMentore(mentore);
-
-        hackathon.aggiungiMentore(mentore);
-        return save(hackathon);
-    }
-
-    public Hackathon rimuoviMentore(Hackathon hackathon, Staff mentore) {
-        this.staffValidator.validaMentore(mentore);
-
-        hackathon.getMentori().remove(mentore);
-        return save(hackathon);
-    }
-
-    public List<Hackathon> getAllHackathons() {
-        return hackathonRepository.findAll();
-    }
-
-
 }
