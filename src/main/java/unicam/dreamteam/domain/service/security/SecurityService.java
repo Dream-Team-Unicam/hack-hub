@@ -1,13 +1,14 @@
 package unicam.dreamteam.domain.service.security;
 
 import jakarta.persistence.EntityNotFoundException;
+import unicam.dreamteam.domain.model.users.Autenticabile;
 import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.repository.StaffRepository;
 import unicam.dreamteam.domain.repository.UtenteRepository;
 import unicam.dreamteam.domain.service.security.token.TokenProvider;
-import unicam.dreamteam.presentation.dto.security.response.TokenResponse;
+import unicam.dreamteam.presentation.dto.security.TokenDTO;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -27,7 +28,7 @@ public class SecurityService implements IAuthentication {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public TokenResponse login(String username, String password) {
+    public TokenDTO login(String username, String password) {
         try { // Try/Catch per normalizzare exception di getAccountByUsername (NotFound->BadCredentials)
             Autenticabile account = getAccountByUsername(username);
             if (passwordEncoder.matches(password, account.getPassword()))
@@ -53,7 +54,7 @@ public class SecurityService implements IAuthentication {
      * @throws BadCredentialsException se esiste già un account con lo stesso {@code username} o la stessa {@code email}
      */
     @Override
-    public TokenResponse register(String username, String email, String password) {
+    public TokenDTO register(String username, String email, String password) {
         checkAccountUniqueUsernameAndEmail(username, email);
 
         Utente utente = new Utente(username, email, passwordEncoder.encode(password));
@@ -61,7 +62,7 @@ public class SecurityService implements IAuthentication {
         return getTokenResponse(utente);
     }
 
-    public TokenResponse creaStaff(String username, String email, String password, RuoloStaff ruolo) {
+    public TokenDTO creaStaff(String username, String email, String password, RuoloStaff ruolo) {
         checkAccountUniqueUsernameAndEmail(username, email);
 
         Staff staff = new Staff(username, email, passwordEncoder.encode(password), ruolo);
@@ -100,7 +101,7 @@ public class SecurityService implements IAuthentication {
         return staffRepository.existsByEmail(email);
     }
 
-    private TokenResponse getTokenResponse(Autenticabile account) {
+    private TokenDTO getTokenResponse(Autenticabile account) {
         User user = new User(
                 account.getUsername(),
                 account.getPassword(),
@@ -109,7 +110,7 @@ public class SecurityService implements IAuthentication {
         Map<String, Object> claims = new HashMap<>();
 
         String token = tokenProvider.generateToken(claims, user);
-        return new TokenResponse(token, String.valueOf(tokenProvider.getExpirationTime()), "Bearer");
+        return new TokenDTO(token, String.valueOf(tokenProvider.getExpirationTime()), "Bearer");
     }
 
     public Autenticabile getAccountByUsername(String username) {

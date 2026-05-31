@@ -2,22 +2,22 @@ package unicam.dreamteam.presentation.mapper;
 
 import lombok.AllArgsConstructor;
 import unicam.dreamteam.domain.model.Invito;
-import unicam.dreamteam.presentation.dto.team.response.InvitoResponse;
+import unicam.dreamteam.presentation.dto.team.InvitoDTO;
 
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class InvitoMapper implements IMapper<Invito, InvitoResponse> {
+public class InvitoMapper implements IMapper<Invito, InvitoDTO> {
     private TeamMapper teamMapper;
     private AccountMapper accountMapper;
 
     @Override
-    public InvitoResponse toResponse(Invito invito) {
-        return new InvitoResponse(
+    public InvitoDTO toDTO(Invito invito) {
+        return new InvitoDTO(
                 invito.getId(),
-                this.teamMapper.toResponse(invito.getTeam()),
-                this.accountMapper.toResponse(invito.getUtente()),
+                this.teamMapper.toSimpleDTO(invito.getTeam()),
+                this.accountMapper.toDTO(invito.getUtente()),
                 invito.getDataInvito(),
                 invito.getStato().getNome()
         );

@@ -1,25 +1,32 @@
 package unicam.dreamteam.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import unicam.dreamteam.domain.model.state.invito.StatoInvito;
 import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.infrastructure.persistence.converter.StatoInvitoConverter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "inviti")
 @Access(AccessType.FIELD)
 @Getter
+@Setter
+@NoArgsConstructor
 public class Invito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate dataInvito;
+    private LocalDateTime dataInvito;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "team_id", nullable = false)
@@ -36,11 +43,8 @@ public class Invito {
     public Invito(Team team, Utente destinatario) {
         this.team = team;
         this.utente = destinatario;
-        this.dataInvito = LocalDate.now();
+        this.dataInvito = LocalDateTime.now();
         this.stato = new StatoInvitoPendente();
-    }
-
-    public Invito() {
     }
 
     public void accetta() {

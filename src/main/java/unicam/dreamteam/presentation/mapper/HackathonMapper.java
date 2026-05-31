@@ -12,28 +12,34 @@ public class HackathonMapper implements IMapper<Hackathon, HackathonDTO> {
     private AccountMapper accountMapper;
 
     @Override
-    public HackathonDTO toResponse(Hackathon hackathon) {
-        return new HackathonDTO(
-                hackathon.getId(),
-                hackathon.getNome(),
-                hackathon.getDescrizione(),
-                hackathon.getRegolamento(),
-                hackathon.getDataInizio(),
-                hackathon.getDataFine(),
-                hackathon.getDataScadenzaIscrizioni(),
-                hackathon.getLuogo(),
-                hackathon.getPremioDenaro(),
-                hackathon.getDimMaxTeam(),
-                hackathon.getStato().getNome(),
-                hackathon.getOrganizzatore() == null ? null : this.accountMapper.toResponse(hackathon.getOrganizzatore()),
-                hackathon.getGiudice() == null ? null : this.accountMapper.toResponse(hackathon.getGiudice()),
-                hackathon.getMentori().stream()
-                        .map(this.accountMapper::toResponse)
-                        .toList(),
-                hackathon.getTeamIscritti().stream()
-                        .map(this.teamMapper::toResponse)
-                        .toList(),
-                hackathon.getTeamVincitore() == null ? null : teamMapper.toResponse(hackathon.getTeamVincitore())
-        );
+    public HackathonDTO toDTO(Hackathon hackathon) {
+        HackathonDTO dto = new HackathonDTO();
+        dto.setId(hackathon.getId());
+        dto.setNome(hackathon.getNome());
+        dto.setDescrizione(hackathon.getDescrizione());
+        dto.setRegolamento(hackathon.getRegolamento());
+        dto.setDataInizio(hackathon.getDataInizio());
+        dto.setDataFine(hackathon.getDataFine());
+        dto.setDataScadenzaIscrizioni(hackathon.getDataScadenzaIscrizioni());
+        dto.setLuogo(hackathon.getLuogo());
+        dto.setPremioDenaro(hackathon.getPremioDenaro());
+        dto.setDimMaxTeam(hackathon.getDimMaxTeam());
+        dto.setStato(hackathon.getStato().getNome());
+        dto.setOrganizzatore(hackathon.getOrganizzatore() == null ? null : accountMapper.toDTO(hackathon.getOrganizzatore()));
+        dto.setGiudice(hackathon.getGiudice() == null ? null : accountMapper.toDTO(hackathon.getGiudice()));
+        dto.setMentori(hackathon.getMentori().stream().map(accountMapper::toDTO).toList());
+        dto.setTeamIscritti(hackathon.getTeamIscritti().stream().map(teamMapper::toSimpleDTO).toList());
+        dto.setTeamVincitore(hackathon.getTeamVincitore() == null ? null : teamMapper.toDTO(hackathon.getTeamVincitore()));
+        return dto;
+    }
+
+    public HackathonDTO toSimpleDTO(Hackathon hackathon) {
+        HackathonDTO dto = new HackathonDTO();
+        dto.setId(hackathon.getId());
+        dto.setNome(hackathon.getNome());
+        dto.setDescrizione(hackathon.getDescrizione());
+        dto.setDataInizio(hackathon.getDataInizio());
+        dto.setDataFine(hackathon.getDataFine());
+        return dto;
     }
 }

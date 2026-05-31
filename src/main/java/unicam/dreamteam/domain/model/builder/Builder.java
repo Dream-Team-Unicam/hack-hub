@@ -9,4 +9,6 @@ public interface Builder<T> {
      * @throws IllegalStateException se lo stato del builder non è valido
      */
     T build();
+
+    Builder<T> reset();
 }

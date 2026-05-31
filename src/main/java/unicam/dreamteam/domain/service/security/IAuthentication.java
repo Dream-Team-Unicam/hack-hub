@@ -1,8 +1,8 @@
 package unicam.dreamteam.domain.service.security;
 
-import unicam.dreamteam.presentation.dto.security.response.TokenResponse;
+import unicam.dreamteam.presentation.dto.security.TokenDTO;
 
 public interface IAuthentication {
-    TokenResponse login(String username, String password);
-    TokenResponse register(String username, String email, String password);
+    TokenDTO login(String username, String password);
+    TokenDTO register(String username, String email, String password);
 }

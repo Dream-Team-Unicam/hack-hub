@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 import unicam.dreamteam.domain.exception.hackathon.HackathonException;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.Team;
+import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
+import unicam.dreamteam.domain.model.state.hackathon.StatoHackathonValutazione;
 import unicam.dreamteam.domain.model.users.Staff;
 
 @Component
@@ -13,7 +15,7 @@ public class HackathonValidator {
         throw new HackathonException("Il team non è iscritto a questo hackathon");
     }
 
-    public void validaTeamHaInvitoSottomissione(Hackathon hackathon, Team team) {
+    public void validaTeamHaInviatoSottomissione(Hackathon hackathon, Team team) {
         if (!hackathon.hasSottomissione(team)) throw new HackathonException(
                 String.format(
                         "Il team(id=%s, nome=%s) non ha ancora inviato una sottomissione. (Hackathon.id=%s, Hackathon.nome=%s)",
@@ -23,7 +25,7 @@ public class HackathonValidator {
         );
     }
 
-    public void validaTeamNonHaInvitoSottomissione(Hackathon hackathon, Team team) {
+    public void validaTeamNonHaInviatoSottomissione(Hackathon hackathon, Team team) {
         if (hackathon.hasSottomissione(team)) throw new HackathonException(
                 String.format(
                         "Il team(id=%s, nome=%s) ha già inviato una sottomissione. (Hackathon.id=%s, Hackathon.nome=%s)",
@@ -55,5 +57,26 @@ public class HackathonValidator {
                         hackathon.getNome()
                 )
         );
+    }
+
+    public void validaTutteSottomissioniValutate(Hackathon hackathon) {
+        if (hackathon.getSottomissioni().stream().allMatch(Sottomissione::isValutata)) return;
+        throw new HackathonException("Non tutte le sottomissioni sono valutate.");
+    }
+
+    public void validaHackathonGiudicatoDa(Hackathon hackathon, Staff giudice) {
+        if(hackathon.getGiudice().equals(giudice)) return;
+        throw new HackathonException(
+                String.format(
+                    "Hackathon(nome=%s) non è assegnato al giudice(username=%s).",
+                    hackathon.getNome(),
+                    giudice.getUsername()
+                )
+        );
+    }
+
+    public void validaHackathonInValutazione(Hackathon hackathon) {
+        if(hackathon.getStato() instanceof StatoHackathonValutazione) return;
+        throw new HackathonException("L'hackathon non è in fase di valutazione.");
     }
 }

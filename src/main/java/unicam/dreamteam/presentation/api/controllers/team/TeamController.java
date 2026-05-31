@@ -1,13 +1,8 @@
 package unicam.dreamteam.presentation.api.controllers.team;
 
-import unicam.dreamteam.domain.model.Team;
-import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.domain.service.accounts.UtenteService;
 import unicam.dreamteam.domain.service.facade.TeamFacade;
-import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.presentation.dto.team.requests.CreateTeamRequest;
-import unicam.dreamteam.presentation.dto.team.response.TeamResponse;
-import unicam.dreamteam.presentation.mapper.TeamMapper;
+import unicam.dreamteam.presentation.dto.team.TeamDTO;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,26 +19,23 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamController {
     private final TeamFacade teamFacade;
-    private final TeamMapper teamMapper;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<TeamResponse>> index() {
+    public ResponseEntity<List<TeamDTO>> index() {
         return ResponseEntity.ok(
-                this.teamFacade.getAllTeams().stream()
-                        .map(teamMapper::toResponse)
-                        .toList()
+                this.teamFacade.getAllTeams()
         );
     }
 
     @PostMapping()
     @PreAuthorize("hasRole('UTENTE')")
-    public ResponseEntity<TeamResponse> creaTeam(@Valid @RequestBody CreateTeamRequest request, Authentication authentication) {
-        return ResponseEntity.ok(this.teamMapper.toResponse(
+    public ResponseEntity<TeamDTO> creaTeam(@Valid @RequestBody CreateTeamRequest request, Authentication authentication) {
+        return ResponseEntity.ok(
                 this.teamFacade.creaTeam(
                         request,
                         authentication.getName()
                 )
-        ));
+        );
     }
 }

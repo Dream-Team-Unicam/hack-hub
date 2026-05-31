@@ -1,14 +1,14 @@
 package unicam.dreamteam.presentation.api.controllers.team;
 
-import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.domain.service.accounts.UtenteService;
+import org.springframework.web.bind.annotation.PostMapping;
+import unicam.dreamteam.domain.service.facade.HackathonFacade;
 import unicam.dreamteam.domain.service.facade.InvitoFacade;
+import unicam.dreamteam.domain.service.facade.SottomissioneFacade;
 import unicam.dreamteam.domain.service.facade.TeamFacade;
-import unicam.dreamteam.domain.service.team.InvitoService;
-import unicam.dreamteam.domain.service.team.TeamService;
-import unicam.dreamteam.domain.validator.UtenteValidator;
-import unicam.dreamteam.presentation.dto.team.response.InvitoResponse;
-import unicam.dreamteam.presentation.dto.team.response.TeamResponse;
+import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
+import unicam.dreamteam.presentation.dto.hackathon.sottomissione.SottomissioneDTO;
+import unicam.dreamteam.presentation.dto.team.InvitoDTO;
+import unicam.dreamteam.presentation.dto.team.TeamDTO;
 import unicam.dreamteam.presentation.mapper.InvitoMapper;
 import unicam.dreamteam.presentation.mapper.TeamMapper;
 
@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+/**
+ * Controller per endpoints del team di cui fa parte l'utente.
+ */
 @RestController
 @RequestMapping("/api/team")
 @PreAuthorize("hasRole('UTENTE')")
@@ -30,31 +33,57 @@ import java.util.List;
 public class TeamUtenteLoggatoController {
     private final TeamFacade teamFacade;
     private final InvitoFacade invitoFacade;
-
-    private final TeamMapper teamMapper;
-    private final InvitoMapper invitoMapper;
+    private final HackathonFacade hackathonFacade;
+    private final SottomissioneFacade sottomissioneFacade;
 
     /**
      * Mostra le informazioni del proprio team.
      */
     @GetMapping
-    public ResponseEntity<TeamResponse> myTeamInfo(Authentication authentication) {
-        return ResponseEntity.ok(this.teamMapper.toResponse(
-                this.teamFacade.getTeamByUsername(
-                        authentication.getName()
-                )
-        ));
+    public ResponseEntity<TeamDTO> myTeamInfo(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.teamFacade.getTeamByUsername(authentication.getName())
+        );
+    }
+
+    /**
+     * Esce dal team. (Se è l'ultimo membro del team si elimina.)
+     */
+    @PostMapping("/esci")
+    public ResponseEntity<TeamDTO> esci(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.teamFacade.esciDalTeam(authentication.getName())
+        );
     }
 
     /**
      * Mostra gli inviti del proprio team. (Quelli inviati dal proprio team)
      */
     @GetMapping("/inviti")
-    public ResponseEntity<List<InvitoResponse>> invitiDelTeam(Authentication authentication) {
+    public ResponseEntity<List<InvitoDTO>> inviti(Authentication authentication) {
         return ResponseEntity.ok(
-                this.invitoFacade.getAllPendentiByUtenteUsername(authentication.getName()).stream()
-                        .map(this.invitoMapper::toResponse)
-                        .toList()
+                this.invitoFacade.getAllPendentiTeamByUtenteUsername(authentication.getName())
+        );
+    }
+
+    /**
+     * Mostra tutti gli Hackathon a cui il team è iscritto.
+     */
+    @GetMapping("/hackathons")
+    public ResponseEntity<List<HackathonDTO>> hackathons(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.hackathonFacade.listaHackathonByUsername(
+                        authentication.getName()
+                )
+        );
+    }
+
+    @GetMapping("/sottomissioni")
+    public ResponseEntity<List<SottomissioneDTO>> sottomissioni(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.sottomissioneFacade.listaSottomissioniByUtenteUsername(
+                        authentication.getName()
+                )
         );
     }
 }

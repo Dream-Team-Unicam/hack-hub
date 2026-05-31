@@ -1,13 +1,15 @@
-package unicam.dreamteam.infrastructure.exception;
+package unicam.dreamteam.infrastructure.api.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class Response {
     private int code;
@@ -22,22 +24,5 @@ public class Response {
         this.status = status;
         this.message = message;
         this.timestamp = LocalDateTime.now();
-    }
-
-    @Override
-    public String toString() {
-        return """
-            {
-                "status": %s,
-                "error": "%s",
-                "message": "%s",
-                "timestamp": "%s"
-            }
-            """.formatted(
-                    code,
-                    status,
-                    message,
-                    timestamp.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))
-        );
     }
 }

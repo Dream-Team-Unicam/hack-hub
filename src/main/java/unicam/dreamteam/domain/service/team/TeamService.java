@@ -49,7 +49,11 @@ public class TeamService {
         Team newTeam = new Team(nome, descrizione);
         newTeam = teamRepository.save(newTeam);
         newTeam.aggiungiMembro(owner);
-        utenteRepository.save(owner);
-        return teamRepository.save(newTeam);
+        this.utenteRepository.save(owner);
+        return save(newTeam);
+    }
+
+    public void delete(Team team) {
+        teamRepository.deleteById(team.getId());
     }
 }

@@ -1,4 +1,4 @@
-package unicam.dreamteam.domain.service.security;
+package unicam.dreamteam.domain.model.users;
 
 import unicam.dreamteam.domain.model.users.ruolo.Ruolo;
 

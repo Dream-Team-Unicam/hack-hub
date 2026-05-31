@@ -20,6 +20,11 @@ public interface StatoHackathon {
     default void proclamaVincitore(Hackathon hackathon, Team team) {
         throw new HackathonException("Hackathon non in fase di proclamazione.");
     }
+
+    default void avviaValutazione(Hackathon hackathon) {
+        throw new HackathonException("Non è possibile avviare la valutazione in questo stato.");
+    }
+
     default void valuta(Hackathon hackathon, Sottomissione sottomissione, Valutazione valutazione) {
         throw new HackathonException("Hackathon non in fase di valutazione");
     }

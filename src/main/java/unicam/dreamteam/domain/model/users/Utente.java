@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.Setter;
 import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloUtente;
-import unicam.dreamteam.domain.service.security.Autenticabile;
 
 import java.util.Objects;
 
@@ -17,7 +16,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Utente implements Autenticabile {
+public class Utente implements Autenticabile, MembroTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, unique = true)
@@ -46,10 +45,6 @@ public class Utente implements Autenticabile {
         this.email = email;
         this.password = password;
         this.ruolo = RuoloUtente.UTENTE;
-    }
-
-    public boolean hasTeam() {
-        return this.team != null;
     }
 
     @Override

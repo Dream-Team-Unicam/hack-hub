@@ -2,6 +2,7 @@ package unicam.dreamteam.domain.service.facade;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import unicam.dreamteam.domain.exception.invito.InvitoException;
 import unicam.dreamteam.domain.model.Invito;
 import unicam.dreamteam.domain.model.Team;
 import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
@@ -9,78 +10,97 @@ import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloUtente;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
-import unicam.dreamteam.domain.service.security.Autenticabile;
+import unicam.dreamteam.domain.model.users.Autenticabile;
 import unicam.dreamteam.domain.service.security.SecurityService;
 import unicam.dreamteam.domain.service.team.InvitoService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.UtenteValidator;
+import unicam.dreamteam.presentation.dto.team.InvitoDTO;
+import unicam.dreamteam.presentation.mapper.InvitoMapper;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class InvitoFacade {
+    // Service
     private final SecurityService securityService;
     private final InvitoService invitoService;
     private final UtenteService utenteService;
-    private final TeamService teamService;
 
+    // Validator
     private UtenteValidator utenteValidator;
 
-    public List<Invito> getAllByPendentiByAccountUsername(String username) {
+    // Mapper
+    private final InvitoMapper invitoMapper;
+
+    public List<InvitoDTO> getAllByPendentiByAccountUsername(String username) {
         Autenticabile account = this.securityService.getAccountByUsername(username);
         if (account.getRuolo() == RuoloStaff.ADMIN) return getAllPendenti();
         if (account.getRuolo() == RuoloUtente.UTENTE) return getAllPendentiByUtente((Utente) account);
         return List.of(); // :)
     }
 
-    public List<Invito> getAllPendenti() {
-        return this.invitoService.getAllByStato(new StatoInvitoPendente());
+    public List<InvitoDTO> getAllPendenti() {
+        return this.invitoService.getAllByStato(new StatoInvitoPendente()).stream()
+                .map(this.invitoMapper::toDTO)
+                .toList();
     }
 
-    public List<Invito> getAllPendentiByUtenteUsername(String username) {
+    public List<InvitoDTO> getAllPendentiByUtenteUsername(String username) {
         Utente utente = this.utenteService.getByUsername(username);
         return getAllPendentiByUtente(utente);
     }
 
-    public List<Invito> getAllPendentiByUtente(Utente utente) {
-        return this.invitoService.getAllByUtenteAndStato(utente, new StatoInvitoPendente());
+    public List<InvitoDTO> getAllPendentiByUtente(Utente utente) {
+        return this.invitoService.getAllByUtenteAndStato(utente, new StatoInvitoPendente()).stream()
+                .map(this.invitoMapper::toDTO)
+                .toList();
     }
 
-    public List<Invito> getAllPendentiTeamByUtenteUsername(String username) {
+    public List<InvitoDTO> getAllPendentiTeamByUtenteUsername(String username) {
         Utente utente = this.utenteService.getByUsername(username);
         return getAllPendentiTeamByUtente(utente);
     }
 
-    public List<Invito> getAllPendentiTeamByUtente(Utente utente) {
-        return this.invitoService.getAllByUtentesTeam(utente);
+    public List<InvitoDTO> getAllPendentiTeamByUtente(Utente utente) {
+        this.utenteValidator.validaInTeam(utente);
+        return this.invitoService.getAllByUtentesTeam(utente.getTeam()).stream()
+                .map(this.invitoMapper::toDTO)
+                .toList();
     }
 
-    public Invito invita(String usernameUtenteMembroTeam, String usernameUtenteInvitato) {
+    public InvitoDTO invita(String usernameUtenteMembroTeam, String usernameUtenteInvitato) {
         Utente currentUser = this.utenteService.getByUsername(usernameUtenteMembroTeam);
         this.utenteValidator.validaInTeam(currentUser);
 
         Utente utenteInvitato = this.utenteService.getByUsername(usernameUtenteInvitato);
 
-        return this.invitoService.invita(currentUser.getTeam(), utenteInvitato);
+        return this.invitoMapper.toDTO(
+                this.invitoService.invita(currentUser.getTeam(), utenteInvitato)
+        );
     }
 
-    public Invito accetta(Long teamId, String username) {
+    public InvitoDTO accettaInvito(Long invitoId, String username) {
         Utente utente = this.utenteService.getByUsername(username);
         this.utenteValidator.validaNotInTeam(utente);
+        Invito invito = this.invitoService.getById(invitoId);
+        if (!invito.getUtente().equals(utente)) throw new InvitoException("Invito non di tua proprietà.");
 
-        Team team = this.teamService.getById(teamId);
-
-        return this.invitoService.accetta(
-                this.invitoService.getByTeamAndUtenteInvitato(team, utente)
-        );
+        return this.invitoMapper.toDTO(
+                this.invitoService.accetta(
+                    invito
+        ));
     }
-    public Invito rifiuta(Long teamId, String username) {
-        Utente utente = this.utenteService.getByUsername(username);
-        Team team = this.teamService.getById(teamId);
 
-        return this.invitoService.rifiuta(
-                this.invitoService.getByTeamAndUtenteInvitato(team, utente)
-        );
+    public InvitoDTO rifiutaInvito(Long invitoId, String username) {
+        Utente utente = this.utenteService.getByUsername(username);
+        Invito invito = this.invitoService.getById(invitoId);
+        if (!invito.getUtente().equals(utente)) throw new InvitoException("Invito non di tua proprietà.");
+
+        return this.invitoMapper.toDTO(
+                this.invitoService.rifiuta(
+                        invito
+                ));
     }
 }

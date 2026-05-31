@@ -1,5 +1,6 @@
 package unicam.dreamteam.domain.model.sottomissione;
 
+import lombok.AccessLevel;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.Team;
 
@@ -7,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -18,13 +19,13 @@ import java.util.Objects;
 public class Sottomissione {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate dataCaricamento;
+    private LocalDateTime dataCaricamento;
 
-    @Column
-    private LocalDate dataUltimoAggiornamento;
+    private LocalDateTime dataUltimoAggiornamento;
 
     @Column(nullable = false)
     private String contenuto;
@@ -44,7 +45,7 @@ public class Sottomissione {
         this.contenuto = contenuto;
         this.team = team;
         this.hackathon = hackathon;
-        this.dataCaricamento = LocalDate.now();
+        this.dataCaricamento = LocalDateTime.now();
         this.dataUltimoAggiornamento = dataCaricamento;
     }
 
@@ -54,15 +55,10 @@ public class Sottomissione {
     public void aggiorna(String nuovoContenuto) {
         if (isValutata()) throw new RuntimeException("Non consentito aggiornare una sottomissione valutata.");
         this.contenuto = nuovoContenuto;
-        this.dataUltimoAggiornamento = LocalDate.now();
+        this.dataUltimoAggiornamento = LocalDateTime.now();
     }
 
     public boolean isValutata() {
         return this.valutazione != null;
-    }
-
-    public void setValutazione(Valutazione valutazione) {
-        if (!Objects.equals(valutazione.getSottomissione().getId(), this.id)) throw new RuntimeException("La valutazione non è assegnata alla sottomissione corretta.");
-        this.valutazione = valutazione;
     }
 }

@@ -1,13 +1,14 @@
 package unicam.dreamteam.presentation.api.controllers;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.service.facade.HackathonFacade;
-import unicam.dreamteam.domain.service.hackathon.HackathonService;
 import unicam.dreamteam.domain.service.accounts.StaffService;
+import unicam.dreamteam.domain.service.facade.SottomissioneFacade;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
-import unicam.dreamteam.presentation.dto.security.response.AccountResponse;
+import unicam.dreamteam.presentation.dto.hackathon.sottomissione.SottomissioneDTO;
+import unicam.dreamteam.presentation.dto.security.AccountDTO;
 import unicam.dreamteam.presentation.mapper.AccountMapper;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,65 +26,88 @@ import unicam.dreamteam.presentation.mapper.HackathonMapper;
 @PreAuthorize("isAuthenticated()")
 @AllArgsConstructor
 public class StaffController {
+    // Facade
     private HackathonFacade hackathonFacade;
+    private SottomissioneFacade sottomissioneFacade;
 
+    // Service
     private StaffService staffService;
+
+    // Mapper
     private AccountMapper accountMapper;
     private HackathonMapper hackathonMapper;
 
-
     @GetMapping()
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<AccountResponse> getAll() {
-        return this.staffService.getAll()
-                .stream()
-                .map(accountMapper::toResponse)
-                .toList();
+    public ResponseEntity<List<AccountDTO>> getAll() {
+        return ResponseEntity.ok(
+                this.staffService.getAll()
+                    .stream()
+                    .map(accountMapper::toDTO)
+                    .toList()
+        );
     }
 
     @GetMapping("/admins")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<AccountResponse> getAllAdmins() {
-        return this.staffService.getAllByRuolo(RuoloStaff.ADMIN)
-                .stream()
-                .map(accountMapper::toResponse)
-                .toList();
+    public ResponseEntity<List<AccountDTO>> getAllAdmins() {
+        return ResponseEntity.ok(
+                this.staffService.getAllByRuolo(RuoloStaff.ADMIN)
+                    .stream()
+                    .map(accountMapper::toDTO)
+                    .toList()
+        );
 
     }
 
     @GetMapping("/giudici")
     @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZZATORE')")
-    public List<AccountResponse> getAllGiudici() {
-        return this.staffService.getAllByRuolo(RuoloStaff.GIUDICE)
-                .stream()
-                .map(accountMapper::toResponse)
-                .toList();
+    public ResponseEntity<List<AccountDTO>> getAllGiudici() {
+        return ResponseEntity.ok(
+                this.staffService.getAllByRuolo(RuoloStaff.GIUDICE)
+                    .stream()
+                    .map(accountMapper::toDTO)
+                    .toList()
+        );
     }
 
     @GetMapping("/organizzatori")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<AccountResponse> getAllOrganizzatori() {
-        return this.staffService.getAllByRuolo(RuoloStaff.ORGANIZZATORE)
-                .stream()
-                .map(accountMapper::toResponse)
-                .toList();
+    public ResponseEntity<List<AccountDTO>> getAllOrganizzatori() {
+        return ResponseEntity.ok(
+                this.staffService.getAllByRuolo(RuoloStaff.ORGANIZZATORE)
+                    .stream()
+                    .map(accountMapper::toDTO)
+                    .toList()
+        );
     }
 
 
     @GetMapping("/mentori")
     @PreAuthorize("hasAnyRole('ADMIN', 'ORGANIZZATORE')")
-    public List<AccountResponse> getAllMentori() {
-        return this.staffService.getAllByRuolo(RuoloStaff.MENTORE)
-                .stream()
-                .map(accountMapper::toResponse)
-                .toList();
+    public ResponseEntity<List<AccountDTO>> getAllMentori() {
+        return ResponseEntity.ok(
+                this.staffService.getAllByRuolo(RuoloStaff.MENTORE)
+                    .stream()
+                    .map(accountMapper::toDTO)
+                    .toList()
+        );
     }
 
     @GetMapping("/hackathons")
     @PreAuthorize("hasAnyRole('GIUDICE', 'ORGANIZZATORE', 'MENTORE')")
-    public List<HackathonDTO> getAllStaffHackathons(Authentication authentication) {
-        return this.hackathonFacade.listaHackathonByUsername(authentication.getName()).stream()
-                .map(hackathonMapper::toResponse)
-                .toList();
+    public ResponseEntity<List<HackathonDTO>> getAllStaffHackathons(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.hackathonFacade.listaHackathonByStaffUsername(
+                    authentication.getName()
+        ));
+    }
+
+    @GetMapping("/sottomissioni")
+    @PreAuthorize("hasRole('GIUDICE')")
+    public ResponseEntity<List<SottomissioneDTO>> listaSottomissioniGiudice(Authentication authentication) {
+        return ResponseEntity.ok(
+                sottomissioneFacade.listaSottomissioniByGiudice(authentication.getName())
+        );
     }
 }

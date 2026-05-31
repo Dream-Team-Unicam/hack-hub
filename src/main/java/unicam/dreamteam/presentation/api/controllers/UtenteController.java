@@ -4,8 +4,8 @@ import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
 import unicam.dreamteam.domain.service.team.InvitoService;
-import unicam.dreamteam.presentation.dto.security.response.AccountResponse;
-import unicam.dreamteam.presentation.dto.team.response.InvitoResponse;
+import unicam.dreamteam.presentation.dto.security.AccountDTO;
+import unicam.dreamteam.presentation.dto.team.InvitoDTO;
 import unicam.dreamteam.presentation.mapper.AccountMapper;
 import unicam.dreamteam.presentation.mapper.InvitoMapper;
 
@@ -14,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -28,17 +27,17 @@ public class UtenteController {
     private final InvitoMapper invitoMapper;
 
     @GetMapping()
-    public ResponseEntity<AccountResponse> index(Authentication authentication) {
+    public ResponseEntity<AccountDTO> index(Authentication authentication) {
         Utente utente = utenteService.getByUsername(authentication.getName());
-        return ResponseEntity.ok(this.accountMapper.toResponse(utente));
+        return ResponseEntity.ok(this.accountMapper.toDTO(utente));
     }
 
     @GetMapping("/inviti")
-    public ResponseEntity<List<InvitoResponse>> getAllInviti(Authentication authentication) {
+    public ResponseEntity<List<InvitoDTO>> getAllInviti(Authentication authentication) {
         Utente utente = utenteService.getByUsername(authentication.getName());
         return ResponseEntity.ok(
                 this.invitoService.getAllByUtenteAndStato(utente, new StatoInvitoPendente()).stream()
-                        .map(this.invitoMapper::toResponse)
+                        .map(this.invitoMapper::toDTO)
                         .toList());
     }
 }

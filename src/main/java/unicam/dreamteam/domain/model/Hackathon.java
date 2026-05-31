@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,13 +35,13 @@ public class Hackathon {
     private String regolamento;
 
     @Column(nullable = false)
-    private LocalDate dataInizio;
+    private LocalDateTime dataInizio;
 
     @Column(nullable = false)
-    private LocalDate dataFine;
+    private LocalDateTime dataFine;
 
     @Column(nullable = false)
-    private LocalDate dataScadenzaIscrizioni;
+    private LocalDateTime dataScadenzaIscrizioni;
 
     private String luogo;
     private Double premioDenaro;
@@ -85,9 +85,9 @@ public class Hackathon {
             String nome,
             String descrizione,
             String regolamento,
-            LocalDate dataInizio,
-            LocalDate dataFine,
-            LocalDate dataScadenzaIscrizioni,
+            LocalDateTime dataInizio,
+            LocalDateTime dataFine,
+            LocalDateTime dataScadenzaIscrizioni,
             String luogo,
             Double premioDenaro,
             Integer dimMaxTeam,
@@ -111,9 +111,9 @@ public class Hackathon {
             String nome,
             String descrizione,
             String regolamento,
-            LocalDate dataInizio,
-            LocalDate dataFine,
-            LocalDate dataScadenzaIscrizioni,
+            LocalDateTime dataInizio,
+            LocalDateTime dataFine,
+            LocalDateTime dataScadenzaIscrizioni,
             String luogo,
             Double premioDenaro,
             Integer dimMaxTeam,
@@ -133,30 +133,34 @@ public class Hackathon {
     }
 
     public void aggiungiMentore(Staff mentore) {
-        mentori.add(mentore);
+        this.mentori.add(mentore);
     }
     public void iscrivi(Team team) {
-        stato.iscrivi(this, team);
+        this.stato.iscrivi(this, team);
     }
 
     public void apriIscrizioni() {
-        stato.apriIscrizioni(this);
+        this.stato.apriIscrizioni(this);
     }
 
     public void avvia() {
-        stato.avvia(this);
+        this.stato.avvia(this);
     }
 
     public void inviaSottomissione(Sottomissione sottomissione) {
-        stato.inviaSottomissione(this, sottomissione);
+        this.stato.inviaSottomissione(this, sottomissione);
     }
 
     public boolean hasSottomissione(Team team) {
-        return sottomissioni.stream()
+        return this.sottomissioni.stream()
                 .anyMatch(s -> s.getTeam().getId().equals(team.getId()));
     }
 
     public void proclamaVincitore(Team team) {
-        stato.proclamaVincitore(this, team);
+        this.stato.proclamaVincitore(this, team);
+    }
+
+    public void avviaValutazione() {
+        this.stato.avviaValutazione(this);
     }
 }

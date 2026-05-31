@@ -1,14 +1,15 @@
 package unicam.dreamteam.presentation.mapper;
 
+import unicam.dreamteam.domain.model.users.Autenticabile;
+import unicam.dreamteam.presentation.dto.security.AccountDTO;
+
 import org.springframework.stereotype.Component;
-import unicam.dreamteam.domain.service.security.Autenticabile;
-import unicam.dreamteam.presentation.dto.security.response.AccountResponse;
 
 @Component
-public class AccountMapper implements IMapper<Autenticabile, AccountResponse> {
+public class AccountMapper implements IMapper<Autenticabile, AccountDTO> {
     @Override
-    public AccountResponse toResponse(Autenticabile autenticabile) {
-        return new AccountResponse(
+    public AccountDTO toDTO(Autenticabile autenticabile) {
+        return new AccountDTO(
                 autenticabile.getId(),
                 autenticabile.getUsername(),
                 autenticabile.getEmail(),

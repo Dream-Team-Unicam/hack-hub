@@ -1,10 +1,8 @@
 package unicam.dreamteam.presentation.api.controllers;
 
 import unicam.dreamteam.domain.service.facade.HackathonFacade;
+import unicam.dreamteam.domain.service.facade.SottomissioneFacade;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
-import unicam.dreamteam.presentation.dto.hackathon.sottomissione.SottomissioneDTO;
-import unicam.dreamteam.presentation.mapper.HackathonMapper;
-import unicam.dreamteam.presentation.mapper.SottomissioneMapper;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,21 +12,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import unicam.dreamteam.presentation.dto.team.TeamDTO;
 
 @RestController
 @RequestMapping("/api/hackathons")
 @AllArgsConstructor
 public class HackathonController {
     private HackathonFacade hackathonFacade;
-    private SottomissioneMapper sottomissioneMapper;
-    private HackathonMapper hackathonMapper;
 
     @GetMapping
     public ResponseEntity<List<HackathonDTO>> index() {
         return ResponseEntity.ok(
-                this.hackathonFacade.listaHackathon().stream()
-                        .map(this.hackathonMapper::toResponse)
-                        .toList()
+                this.hackathonFacade.listaHackathon()
+        );
+    }
+
+    @GetMapping("/{hackathonId}")
+    public ResponseEntity<HackathonDTO> getById(@PathVariable Long hackathonId) {
+        return ResponseEntity.ok(
+                this.hackathonFacade.getHackathonById(hackathonId)
         );
     }
     
@@ -36,9 +38,7 @@ public class HackathonController {
     @PreAuthorize("hasAnyRole('ORGANIZZATORE', 'GIUDICE', 'MENTORE')")
     public ResponseEntity<List<HackathonDTO>> getAllMine(Authentication authentication) {
         return ResponseEntity.ok(
-                this.hackathonFacade.listaHackathon().stream()
-                        .map(this.hackathonMapper::toResponse)
-                        .toList()
+                this.hackathonFacade.listaHackathon()
         );
     }
 
@@ -47,11 +47,9 @@ public class HackathonController {
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> creaHackathon(@RequestBody HackathonDTO request, Authentication authentication) {
         return ResponseEntity.ok(
-                this.hackathonMapper.toResponse(
-                        this.hackathonFacade.creaHackathon(
-                                request,
-                                authentication
-                        )
+                this.hackathonFacade.creaHackathon(
+                        request,
+                        authentication.getName()
                 )
         );
     }
@@ -61,11 +59,9 @@ public class HackathonController {
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> aggiungiMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId) {
         return ResponseEntity.ok(
-                this.hackathonMapper.toResponse(
-                        this.hackathonFacade.aggiungiMentore(
-                                hackathonId,
-                                mentoreId
-                        )
+                this.hackathonFacade.aggiungiMentore(
+                        hackathonId,
+                        mentoreId
                 )
         );
     }
@@ -74,11 +70,9 @@ public class HackathonController {
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> rimuoviMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId) {
         return ResponseEntity.ok(
-                hackathonMapper.toResponse(
-                        hackathonFacade.rimuoviMentore(
-                                hackathonId,
-                                mentoreId
-                        )
+                hackathonFacade.rimuoviMentore(
+                        hackathonId,
+                        mentoreId
                 )
         );
     }
@@ -87,10 +81,8 @@ public class HackathonController {
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> apriIscrizioni(@PathVariable Long hackathonId) {
         return ResponseEntity.ok(
-                hackathonMapper.toResponse(
-                        hackathonFacade.apriIscrizioni(
-                                hackathonId
-                        )
+                hackathonFacade.apriIscrizioni(
+                        hackathonId
                 )
         );
     }
@@ -99,11 +91,9 @@ public class HackathonController {
     @PreAuthorize("hasAnyRole('UTENTE', 'TEAM_LEADER')")
     public ResponseEntity<HackathonDTO> iscriviTeam(@PathVariable Long hackathonId, Authentication authentication) {
         return ResponseEntity.ok(
-                this.hackathonMapper.toResponse(
-                        this.hackathonFacade.iscriviTeam(
-                                hackathonId,
-                                authentication.getName() // Username dell'utente loggato.
-                        )
+                this.hackathonFacade.iscriviTeam(
+                        hackathonId,
+                        authentication.getName() // Username dell'utente loggato.
                 )
         );
     }
@@ -112,36 +102,23 @@ public class HackathonController {
     @PreAuthorize("hasRole('ORGANIZZATORE')")
     public ResponseEntity<HackathonDTO> avviaHackathon(@PathVariable Long hackathonId) {
         return ResponseEntity.ok(
-                hackathonMapper.toResponse(
-                        hackathonFacade.avviaHackathon(hackathonId)
-                )
+              this.hackathonFacade.avviaHackathon(hackathonId)
         );
     }
 
-    @PostMapping("/{hackathonId}/sottomissioni/send")
-    @PreAuthorize("hasAnyRole('UTENTE', 'TEAM_MEMBER', 'TEAM_LEADER')")
-    public ResponseEntity<SottomissioneDTO> inviaSottomissione(@PathVariable Long hackathonId, @RequestBody String contenuto, Authentication authentication) {
-        return ResponseEntity.ok(
-                this.sottomissioneMapper.toResponse(
-                        this.hackathonFacade.inviaSottomissione(
-                                hackathonId,
-                                authentication.getName(), // Username utente loggato
-                                contenuto
-                        )
-                )
-        );
+    @PostMapping("/{hackathonId}/avvia-valutazione")
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public ResponseEntity<HackathonDTO> avviaValutazione(@PathVariable Long hackathonId) {
+        return ResponseEntity.ok(hackathonFacade.avviaValutazione(hackathonId));
     }
 
-    @PostMapping("/{hackathonId}/sottomissioni/update")
-    @PreAuthorize("hasAnyRole('UTENTE', 'TEAM_MEMBER', 'TEAM_LEADER')")
-    public ResponseEntity<SottomissioneDTO> aggiornaSottomissione(@PathVariable Long hackathonId, @RequestBody String nuovoContenuto, Authentication authentication) {
+    @PostMapping("/{hackathonId}/proclama-vincitore")
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public ResponseEntity<HackathonDTO> proclamaVincitore(@PathVariable Long hackathonId, @RequestBody TeamDTO teamVincitore) {
         return ResponseEntity.ok(
-                sottomissioneMapper.toResponse(
-                        hackathonFacade.aggiornaSottomissione(
-                                hackathonId,
-                                authentication.getName(), // Username utente loggato
-                                nuovoContenuto
-                        )
+                this.hackathonFacade.proclamaVincitore(
+                        hackathonId,
+                        teamVincitore.getId()
                 )
         );
     }

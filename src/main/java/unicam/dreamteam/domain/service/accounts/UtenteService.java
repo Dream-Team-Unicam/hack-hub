@@ -39,4 +39,8 @@ public class UtenteService {
 
         return utente.get();
     }
+
+    public Utente save(Utente utente) {
+        return this.utenteRepository.save(utente);
+    }
 }

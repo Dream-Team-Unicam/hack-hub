@@ -1,5 +1,5 @@
 package unicam.dreamteam.presentation.mapper;
 
 public interface IMapper<O, D>{
-    D toResponse(O Object);
+    D toDTO(O Object);
 }

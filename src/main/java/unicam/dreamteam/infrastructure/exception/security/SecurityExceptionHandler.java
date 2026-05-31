@@ -1,6 +1,6 @@
 package unicam.dreamteam.infrastructure.exception.security;
 
-import unicam.dreamteam.infrastructure.exception.Response;
+import unicam.dreamteam.infrastructure.api.response.Response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

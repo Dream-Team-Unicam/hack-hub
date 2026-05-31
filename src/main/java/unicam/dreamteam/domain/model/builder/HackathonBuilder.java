@@ -1,149 +1,101 @@
 package unicam.dreamteam.domain.model.builder;
 
-import unicam.dreamteam.domain.exception.team.TeamException;
 import unicam.dreamteam.domain.model.Hackathon;
 import unicam.dreamteam.domain.model.users.Staff;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.time.LocalDateTime;
 
 public class HackathonBuilder implements Builder<Hackathon> {
-    // Campi obbligatori
-    private String nome;
-    private String regolamento;
-    private LocalDate dataInizio;
-    private LocalDate dataFine;
-    private LocalDate dataScadenzaIscrizioni;
-    private Staff organizzatore;
-    private Staff giudice;
+    private Hackathon hackathon;
 
-    // Campi opzionali
-    private String descrizione;
-    private String luogo;
-    private Double premioDenaro;
-    private Integer dimMaxTeam;
-    private final Set<Staff> mentori = new HashSet<>();
-
+    public HackathonBuilder() {
+        this.hackathon = new Hackathon();
+    }
 
     public HackathonBuilder nome(String nome) {
-        this.nome = nome;
+        hackathon.setNome(nome);
         return this;
     }
 
     public HackathonBuilder descrizione(String descrizione) {
-        this.descrizione = descrizione;
+        hackathon.setDescrizione(descrizione);
         return this;
     }
 
     public HackathonBuilder regolamento(String regolamento) {
-        this.regolamento = regolamento;
+        hackathon.setRegolamento(regolamento);
         return this;
     }
 
-    public HackathonBuilder dataInizio(LocalDate dataInizio) {
-        this.dataInizio = dataInizio;
+    public HackathonBuilder dataInizio(LocalDateTime dataInizio) {
+        hackathon.setDataInizio(dataInizio);
         return this;
     }
 
-    public HackathonBuilder dataFine(LocalDate dataFine) {
-        this.dataFine = dataFine;
+    public HackathonBuilder dataFine(LocalDateTime dataFine) {
+        hackathon.setDataFine(dataFine);
         return this;
     }
 
-    public HackathonBuilder dataScadenzaIscrizioni(LocalDate dataScadenzaIscrizioni) {
-        this.dataScadenzaIscrizioni = dataScadenzaIscrizioni;
+    public HackathonBuilder dataScadenzaIscrizioni(LocalDateTime data) {
+        hackathon.setDataScadenzaIscrizioni(data);
         return this;
     }
 
     public HackathonBuilder luogo(String luogo) {
-        this.luogo = luogo;
+        hackathon.setLuogo(luogo);
         return this;
     }
 
-    public HackathonBuilder premioDenaro(Double premioDenaro) {
-        this.premioDenaro = premioDenaro;
+    public HackathonBuilder premioDenaro(Double premio) {
+        hackathon.setPremioDenaro(premio);
         return this;
     }
 
-    public HackathonBuilder dimMaxTeam(Integer dimMaxTeam) {
-        this.dimMaxTeam = dimMaxTeam;
+    public HackathonBuilder dimMaxTeam(Integer dim) {
+        hackathon.setDimMaxTeam(dim);
         return this;
     }
 
     public HackathonBuilder organizzatore(Staff organizzatore) {
-        this.organizzatore = organizzatore;
+        hackathon.setOrganizzatore(organizzatore);
         return this;
     }
 
     public HackathonBuilder giudice(Staff giudice) {
-        this.giudice = giudice;
-        return this;
-    }
-
-    public HackathonBuilder aggiungiMentore(Staff mentore) {
-        Objects.requireNonNull(mentore, "Il mentore non può essere null");
-        this.mentori.add(mentore);
-        return this;
-    }
-
-    public HackathonBuilder mentori(Set<Staff> mentori) {
-        Objects.requireNonNull(mentori, "L'insieme dei mentori non può essere null");
-        this.mentori.clear();
-        this.mentori.addAll(mentori);
+        hackathon.setGiudice(giudice);
         return this;
     }
 
     @Override
     public Hackathon build() {
         validate();
-
-        Hackathon hackathon = new Hackathon(
-                this.nome,
-                this.descrizione,
-                this.regolamento,
-                this.dataInizio,
-                this.dataFine,
-                this.dataScadenzaIscrizioni,
-                this.luogo,
-                this.premioDenaro,
-                this.dimMaxTeam,
-                this.organizzatore,
-                this.giudice
-        );
-
-        this.mentori.forEach(hackathon::aggiungiMentore);
         return hackathon;
     }
 
-    private void validate() {
-        Objects.requireNonNull(nome, "Il nome è obbligatorio");
-        Objects.requireNonNull(regolamento, "Il regolamento è obbligatorio");
-        Objects.requireNonNull(dataInizio, "La data di inizio è obbligatoria");
-        Objects.requireNonNull(dataFine, "La data di fine è obbligatoria");
-        Objects.requireNonNull(dataScadenzaIscrizioni, "La data di scadenza iscrizioni è obbligatoria");
-        Objects.requireNonNull(organizzatore, "L'organizzatore è obbligatorio");
+    @Override
+    public HackathonBuilder reset() {
+        this.hackathon = new Hackathon();
+        return this;
+    }
 
-        if (nome.isBlank()) {
-            throw new IllegalStateException("Il nome non può essere vuoto");
-        }
-        if (regolamento.isBlank()) {
-            throw new IllegalStateException("Il regolamento non può essere vuoto");
-        }
-        if (dataFine.isBefore(dataInizio)) {
-            throw new IllegalStateException(
-                    "La data di fine non può precedere la data di inizio");
-        }
-        if (!dataScadenzaIscrizioni.isBefore(dataInizio)) {
-            throw new IllegalStateException(
-                    "La scadenza delle iscrizioni deve precedere la data di inizio");
-        }
-        if (premioDenaro != null && premioDenaro < 0) {
-            throw new IllegalStateException("Il premio in denaro non può essere negativo");
-        }
-        if (dimMaxTeam != null && dimMaxTeam <= 0) {
-            throw new TeamException("La dimensione massima del team deve essere positiva");
-        }
+    private void validate() {
+        if (hackathon.getNome() == null || hackathon.getNome().isBlank())
+            throw new IllegalStateException("nome è obbligatorio");
+        if (hackathon.getRegolamento() == null || hackathon.getRegolamento().isBlank())
+            throw new IllegalStateException("regolamento è obbligatorio");
+        if (hackathon.getDataInizio() == null)
+            throw new IllegalStateException("dataInizio è obbligatoria");
+        if (hackathon.getDataFine() == null)
+            throw new IllegalStateException("dataFine è obbligatoria");
+        if (hackathon.getDataScadenzaIscrizioni() == null)
+            throw new IllegalStateException("dataScadenzaIscrizioni è obbligatoria");
+        if (hackathon.getOrganizzatore() == null)
+            throw new IllegalStateException("organizzatore è obbligatorio");
+        if (!hackathon.getDataFine().isAfter(hackathon.getDataInizio()))
+            throw new IllegalStateException("dataFine deve essere successiva a dataInizio");
+        if (!hackathon.getDataScadenzaIscrizioni().isBefore(hackathon.getDataInizio()))
+            throw new IllegalStateException("dataScadenzaIscrizioni deve precedere dataInizio");
     }
 }

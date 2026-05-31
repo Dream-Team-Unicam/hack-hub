@@ -1,21 +1,25 @@
 package unicam.dreamteam.domain.model;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import unicam.dreamteam.domain.model.state.ticket.StatoRichiestaSupporto;
 import unicam.dreamteam.domain.model.users.Staff;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "richieste_supporto")
 @Getter
-// TODO: USO LOMBOK
+@Setter
 public class RichiestaSupporto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false)
@@ -26,6 +30,8 @@ public class RichiestaSupporto {
 
     @Column(nullable = false)
     private LocalDate dataApertura;
+
+    private LocalDateTime dataInvio;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mentore_id")
@@ -40,10 +46,9 @@ public class RichiestaSupporto {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatoRichiestaSupporto stato; // TODO: Cambiare in State Pattern?
+    private StatoRichiestaSupporto stato;
 
     public RichiestaSupporto() {
-
     }
 
     public RichiestaSupporto(String oggetto, String descrizione, LocalDate dataApertura, StatoRichiestaSupporto stato) {
@@ -51,18 +56,5 @@ public class RichiestaSupporto {
         this.descrizione = descrizione;
         this.dataApertura = dataApertura;
         this.stato = stato;
-    }
-
-
-    public void setOggetto(String oggetto) {
-        this.oggetto = oggetto;
-    }
-
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
-    }
-
-    public void setDataApertura(LocalDate dataApertura) {
-        this.dataApertura = dataApertura;
     }
 }

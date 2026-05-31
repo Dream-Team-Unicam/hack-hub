@@ -1,7 +1,6 @@
 package unicam.dreamteam.domain.model.users;
 
 import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
-import unicam.dreamteam.domain.service.security.Autenticabile;
 
 import jakarta.persistence.*;
 

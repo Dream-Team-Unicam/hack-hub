@@ -35,4 +35,9 @@ public class Valutazione {
     }
 
     public Valutazione() {}
+
+    public void aggiorna(Integer punteggio, String giudizio) {
+        this.punteggio = punteggio;
+        this.giudizio = giudizio;
+    }
 }

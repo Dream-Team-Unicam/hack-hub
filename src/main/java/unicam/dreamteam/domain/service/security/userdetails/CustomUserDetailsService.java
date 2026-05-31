@@ -13,7 +13,7 @@ import unicam.dreamteam.domain.model.users.Staff;
 import unicam.dreamteam.domain.model.users.Utente;
 import unicam.dreamteam.domain.repository.StaffRepository;
 import unicam.dreamteam.domain.repository.UtenteRepository;
-import unicam.dreamteam.domain.service.security.Autenticabile;
+import unicam.dreamteam.domain.model.users.Autenticabile;
 
 import java.util.ArrayList;
 import java.util.List;

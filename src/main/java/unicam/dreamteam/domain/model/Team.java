@@ -28,7 +28,7 @@ public class Team {
     @Setter
     private String descrizione;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private final Set<Sottomissione> sottomissioni = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -73,6 +73,10 @@ public class Team {
     public void rimuoviMembro(Utente utente) {
         membri.remove(utente);
         utente.setTeam(null);
+    }
+
+    public boolean isEmpty() {
+        return this.membri.isEmpty();
     }
 
     @Override

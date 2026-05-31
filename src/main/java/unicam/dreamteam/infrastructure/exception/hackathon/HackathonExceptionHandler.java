@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import unicam.dreamteam.domain.exception.hackathon.HackathonException;
-import unicam.dreamteam.infrastructure.exception.Response;
+import unicam.dreamteam.infrastructure.api.response.Response;
 
 import java.time.LocalDateTime;
 

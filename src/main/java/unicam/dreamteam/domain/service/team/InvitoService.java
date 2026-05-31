@@ -72,9 +72,8 @@ public class InvitoService {
         return invito.get();
     }
 
-    public List<Invito> getAllByUtentesTeam(Utente utente) {
-        this.utenteValidator.validaInTeam(utente);
-        return this.invitoRepository.findByTeamIdAndStato(utente.getTeam().getId(), new StatoInvitoPendente());
+    public List<Invito> getAllByUtentesTeam(Team team) {
+        return this.invitoRepository.findByTeamIdAndStato(team.getId(), new StatoInvitoPendente());
     }
 
     public List<Invito> getAllByUtenteAndStato(Utente utenteInvitato, StatoInvito statoInvito) {
@@ -94,5 +93,12 @@ public class InvitoService {
                 utente.getId(),
                 team.getId()
         );
+    }
+
+    public Invito getById(Long invitoId) {
+        Optional<Invito> invito = this.invitoRepository.findById(invitoId);
+        if(invito.isEmpty()) throw new EntityNotFoundException(String.format("Invito non trovato con l'id=%s", invitoId));
+
+        return invito.get();
     }
 }

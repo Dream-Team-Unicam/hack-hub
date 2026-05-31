@@ -1,6 +1,6 @@
-package unicam.dreamteam.presentation.dto.security.response;
+package unicam.dreamteam.presentation.dto.security;
 
-public record AccountResponse(
+public record AccountDTO(
         Long id,
         String username,
         String email,
