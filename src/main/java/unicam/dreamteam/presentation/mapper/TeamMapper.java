@@ -2,7 +2,7 @@ package unicam.dreamteam.presentation.mapper;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import unicam.dreamteam.domain.model.Team;
+import unicam.dreamteam.domain.model.entity.Team;
 import unicam.dreamteam.presentation.dto.team.TeamDTO;
 
 @Component

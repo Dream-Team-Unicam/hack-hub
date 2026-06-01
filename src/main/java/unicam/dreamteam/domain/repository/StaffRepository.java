@@ -2,8 +2,8 @@ package unicam.dreamteam.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.entity.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.ruolo.RuoloStaff;
 
 import java.util.List;
 import java.util.Optional;

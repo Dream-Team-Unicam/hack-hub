@@ -1,10 +1,10 @@
 package unicam.dreamteam.domain.service.hackathon;
 
 import jakarta.persistence.EntityNotFoundException;
-import unicam.dreamteam.domain.model.Hackathon;
-import unicam.dreamteam.domain.model.Team;
+import unicam.dreamteam.domain.model.entity.Hackathon;
+import unicam.dreamteam.domain.model.entity.Team;
 import unicam.dreamteam.domain.model.builder.HackathonBuilder;
-import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.Staff;
 import unicam.dreamteam.domain.repository.HackathonRepository;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;

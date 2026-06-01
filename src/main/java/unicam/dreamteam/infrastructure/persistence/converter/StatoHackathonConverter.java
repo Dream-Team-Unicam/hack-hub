@@ -2,7 +2,7 @@ package unicam.dreamteam.infrastructure.persistence.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import unicam.dreamteam.domain.model.state.hackathon.*;
+import unicam.dreamteam.domain.model.entity.state.hackathon.*;
 
 @Converter(autoApply = true)
 public class StatoHackathonConverter implements AttributeConverter<StatoHackathon, String> {

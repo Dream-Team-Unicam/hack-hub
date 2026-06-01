@@ -1,14 +1,13 @@
 package unicam.dreamteam.domain.service.facade;
 
 import org.springframework.security.access.AccessDeniedException;
-import unicam.dreamteam.domain.exception.hackathon.SottomissionException;
-import unicam.dreamteam.domain.model.Hackathon;
-import unicam.dreamteam.domain.model.Team;
-import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
-import unicam.dreamteam.domain.model.sottomissione.Valutazione;
-import unicam.dreamteam.domain.model.users.Autenticabile;
-import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.Hackathon;
+import unicam.dreamteam.domain.model.entity.Team;
+import unicam.dreamteam.domain.model.entity.sottomissione.Sottomissione;
+import unicam.dreamteam.domain.model.entity.sottomissione.Valutazione;
+import unicam.dreamteam.domain.model.entity.users.Autenticabile;
+import unicam.dreamteam.domain.model.entity.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.service.accounts.StaffService;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
 import unicam.dreamteam.domain.service.hackathon.HackathonService;

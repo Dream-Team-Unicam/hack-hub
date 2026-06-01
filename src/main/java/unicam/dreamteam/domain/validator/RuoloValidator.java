@@ -1,7 +1,7 @@
 package unicam.dreamteam.domain.validator;
 
-import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
-import unicam.dreamteam.domain.model.users.ruolo.RuoloUtente;
+import unicam.dreamteam.domain.model.entity.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.entity.users.ruolo.RuoloUtente;
 import unicam.dreamteam.domain.exception.ruolo.RuoloException;
 
 import org.springframework.stereotype.Component;

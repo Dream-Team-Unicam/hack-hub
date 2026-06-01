@@ -1,13 +1,13 @@
 package unicam.dreamteam.domain.service.facade;
 
-import unicam.dreamteam.domain.model.Hackathon;
-import unicam.dreamteam.domain.model.Team;
-import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.Hackathon;
+import unicam.dreamteam.domain.model.entity.Team;
+import unicam.dreamteam.domain.model.entity.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.service.accounts.StaffService;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
 import unicam.dreamteam.domain.service.hackathon.HackathonService;
-import unicam.dreamteam.domain.model.users.Autenticabile;
+import unicam.dreamteam.domain.model.entity.users.Autenticabile;
 import unicam.dreamteam.domain.service.security.SecurityService;
 import unicam.dreamteam.domain.service.team.TeamService;
 import unicam.dreamteam.domain.validator.HackathonValidator;

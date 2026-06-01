@@ -1,7 +1,7 @@
 package unicam.dreamteam.presentation.api.controllers;
 
-import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.state.invito.StatoInvitoPendente;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.service.accounts.UtenteService;
 import unicam.dreamteam.domain.service.team.InvitoService;
 import unicam.dreamteam.presentation.dto.security.AccountDTO;

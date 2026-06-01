@@ -1,10 +1,10 @@
 package unicam.dreamteam.domain.service.security;
 
 import jakarta.persistence.EntityNotFoundException;
-import unicam.dreamteam.domain.model.users.Autenticabile;
-import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
-import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.entity.users.Autenticabile;
+import unicam.dreamteam.domain.model.entity.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.Utente;
+import unicam.dreamteam.domain.model.entity.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.repository.StaffRepository;
 import unicam.dreamteam.domain.repository.UtenteRepository;
 import unicam.dreamteam.domain.service.security.token.TokenProvider;

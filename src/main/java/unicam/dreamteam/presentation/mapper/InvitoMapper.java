@@ -1,7 +1,7 @@
 package unicam.dreamteam.presentation.mapper;
 
 import lombok.AllArgsConstructor;
-import unicam.dreamteam.domain.model.Invito;
+import unicam.dreamteam.domain.model.entity.Invito;
 import unicam.dreamteam.presentation.dto.team.InvitoDTO;
 
 import org.springframework.stereotype.Component;

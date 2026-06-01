@@ -4,10 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
-import unicam.dreamteam.domain.model.state.hackathon.StatoHackathon;
-import unicam.dreamteam.domain.model.state.hackathon.StatoHackathonValutazione;
-import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.entity.sottomissione.Sottomissione;
 
 import java.util.List;
 import java.util.Optional;

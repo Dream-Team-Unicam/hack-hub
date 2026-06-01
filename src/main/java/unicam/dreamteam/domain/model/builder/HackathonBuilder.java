@@ -1,9 +1,8 @@
 package unicam.dreamteam.domain.model.builder;
 
-import unicam.dreamteam.domain.model.Hackathon;
-import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.entity.Hackathon;
+import unicam.dreamteam.domain.model.entity.users.Staff;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class HackathonBuilder implements Builder<Hackathon> {

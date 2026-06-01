@@ -3,8 +3,8 @@ package unicam.dreamteam.domain.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import unicam.dreamteam.domain.model.Invito;
-import unicam.dreamteam.domain.model.state.invito.StatoInvito;
+import unicam.dreamteam.domain.model.entity.Invito;
+import unicam.dreamteam.domain.model.entity.state.invito.StatoInvito;
 
 import java.util.List;
 import java.util.Optional;

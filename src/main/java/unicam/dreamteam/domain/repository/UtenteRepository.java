@@ -2,7 +2,7 @@ package unicam.dreamteam.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 
 import java.util.Optional;
 

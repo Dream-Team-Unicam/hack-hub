@@ -2,7 +2,7 @@ package unicam.dreamteam.presentation.api.controllers;
 
 import jakarta.validation.ValidationException;
 import org.springframework.web.bind.annotation.*;
-import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.entity.users.ruolo.RuoloStaff;
 import unicam.dreamteam.presentation.dto.security.requests.LoginRequest;
 import unicam.dreamteam.presentation.dto.security.requests.RegisterRequest;
 import unicam.dreamteam.presentation.dto.security.AccountDTO;

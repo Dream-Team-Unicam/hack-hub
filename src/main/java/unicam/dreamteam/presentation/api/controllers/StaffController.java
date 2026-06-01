@@ -2,7 +2,7 @@ package unicam.dreamteam.presentation.api.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.entity.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.service.facade.HackathonFacade;
 import unicam.dreamteam.domain.service.accounts.StaffService;
 import unicam.dreamteam.domain.service.facade.SottomissioneFacade;

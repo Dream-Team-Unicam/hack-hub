@@ -2,7 +2,7 @@ package unicam.dreamteam.presentation.mapper;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import unicam.dreamteam.domain.model.Hackathon;
+import unicam.dreamteam.domain.model.entity.Hackathon;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 
 @Component

@@ -1,8 +1,8 @@
 package unicam.dreamteam.domain.service.team;
 
 import unicam.dreamteam.domain.exception.team.TeamException;
-import unicam.dreamteam.domain.model.Team;
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.Team;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.repository.TeamRepository;
 import unicam.dreamteam.domain.repository.UtenteRepository;
 

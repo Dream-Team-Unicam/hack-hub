@@ -2,11 +2,11 @@ package unicam.dreamteam.domain.validator;
 
 import org.springframework.stereotype.Component;
 import unicam.dreamteam.domain.exception.hackathon.HackathonException;
-import unicam.dreamteam.domain.model.Hackathon;
-import unicam.dreamteam.domain.model.Team;
-import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
-import unicam.dreamteam.domain.model.state.hackathon.StatoHackathonValutazione;
-import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.entity.Hackathon;
+import unicam.dreamteam.domain.model.entity.Team;
+import unicam.dreamteam.domain.model.entity.sottomissione.Sottomissione;
+import unicam.dreamteam.domain.model.entity.state.hackathon.StatoHackathonValutazione;
+import unicam.dreamteam.domain.model.entity.users.Staff;
 
 @Component
 public class HackathonValidator {

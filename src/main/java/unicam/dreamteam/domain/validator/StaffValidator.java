@@ -2,7 +2,7 @@ package unicam.dreamteam.domain.validator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.Staff;
 
 @Component
 @AllArgsConstructor

@@ -1,6 +1,6 @@
 package unicam.dreamteam.presentation.mapper.sottomissione;
 
-import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
+import unicam.dreamteam.domain.model.entity.sottomissione.Sottomissione;
 import unicam.dreamteam.presentation.dto.hackathon.sottomissione.SottomissioneDTO;
 import unicam.dreamteam.presentation.mapper.HackathonMapper;
 import unicam.dreamteam.presentation.mapper.IMapper;

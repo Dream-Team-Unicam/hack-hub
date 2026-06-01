@@ -1,10 +1,10 @@
 package unicam.dreamteam.domain.service.team;
 
-import unicam.dreamteam.domain.model.Invito;
-import unicam.dreamteam.domain.model.Team;
-import unicam.dreamteam.domain.model.state.invito.StatoInvito;
-import unicam.dreamteam.domain.model.state.invito.StatoInvitoPendente;
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.Invito;
+import unicam.dreamteam.domain.model.entity.Team;
+import unicam.dreamteam.domain.model.entity.state.invito.StatoInvito;
+import unicam.dreamteam.domain.model.entity.state.invito.StatoInvitoPendente;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.validator.UtenteValidator;
 import unicam.dreamteam.domain.repository.InvitoRepository;
 import unicam.dreamteam.domain.repository.TeamRepository;

@@ -1,7 +1,7 @@
 package unicam.dreamteam.presentation.dto.team.requests;
 
 import jakarta.validation.constraints.NotBlank;
-import unicam.dreamteam.domain.model.Invito;
+import unicam.dreamteam.domain.model.entity.Invito;
 
 import java.util.Set;
 

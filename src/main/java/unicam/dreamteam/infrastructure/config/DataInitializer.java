@@ -6,8 +6,8 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.ruolo.RuoloStaff;
+import unicam.dreamteam.domain.model.entity.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.ruolo.RuoloStaff;
 import unicam.dreamteam.domain.repository.StaffRepository;
 
 @Component

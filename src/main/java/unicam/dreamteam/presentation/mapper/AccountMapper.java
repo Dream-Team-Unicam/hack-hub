@@ -1,6 +1,6 @@
 package unicam.dreamteam.presentation.mapper;
 
-import unicam.dreamteam.domain.model.users.Autenticabile;
+import unicam.dreamteam.domain.model.entity.users.Autenticabile;
 import unicam.dreamteam.presentation.dto.security.AccountDTO;
 
 import org.springframework.stereotype.Component;

@@ -1,6 +1,6 @@
 package unicam.dreamteam.domain.validator;
 
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.exception.team.TeamException;
 
 import org.springframework.stereotype.Component;

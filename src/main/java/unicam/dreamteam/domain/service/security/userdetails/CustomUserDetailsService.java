@@ -9,11 +9,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import unicam.dreamteam.domain.model.users.Staff;
-import unicam.dreamteam.domain.model.users.Utente;
+import unicam.dreamteam.domain.model.entity.users.Staff;
+import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.repository.StaffRepository;
 import unicam.dreamteam.domain.repository.UtenteRepository;
-import unicam.dreamteam.domain.model.users.Autenticabile;
+import unicam.dreamteam.domain.model.entity.users.Autenticabile;
 
 import java.util.ArrayList;
 import java.util.List;

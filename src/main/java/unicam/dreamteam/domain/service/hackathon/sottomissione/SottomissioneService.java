@@ -3,15 +3,12 @@ package unicam.dreamteam.domain.service.hackathon.sottomissione;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import unicam.dreamteam.domain.model.Hackathon;
-import unicam.dreamteam.domain.model.Team;
-import unicam.dreamteam.domain.model.sottomissione.Sottomissione;
-import unicam.dreamteam.domain.model.state.hackathon.StatoHackathonValutazione;
-import unicam.dreamteam.domain.model.users.Staff;
+import unicam.dreamteam.domain.model.entity.Hackathon;
+import unicam.dreamteam.domain.model.entity.Team;
+import unicam.dreamteam.domain.model.entity.sottomissione.Sottomissione;
+import unicam.dreamteam.domain.model.entity.users.Staff;
 import unicam.dreamteam.domain.repository.SottomissioneRepository;
-import unicam.dreamteam.presentation.dto.hackathon.sottomissione.SottomissioneDTO;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
