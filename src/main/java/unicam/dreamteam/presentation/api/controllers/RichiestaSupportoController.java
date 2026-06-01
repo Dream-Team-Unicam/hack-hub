@@ -21,7 +21,7 @@ public class RichiestaSupportoController {
 
     @GetMapping
     @PreAuthorize("hasRole('MENTORE')")
-    public ResponseEntity<List<RichiestaSupportoDTO>> getMie(Authentication authentication) {
+    public ResponseEntity<List<RichiestaSupportoDTO>> index(Authentication authentication) {
         return ResponseEntity.ok(
                 this.richiestaSupportoFacade.getByMentoreUsername(authentication.getName())
         );

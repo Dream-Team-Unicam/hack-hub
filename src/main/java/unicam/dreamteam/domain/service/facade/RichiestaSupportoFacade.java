@@ -71,7 +71,7 @@ public class RichiestaSupportoFacade {
         utenteValidator.validaInTeam(utente);
 
         return richiestaSupportoService.getAllByTeam(utente.getTeam()).stream()
-                .map(richiestaSupportoMapper::toDTO)
+                .map(richiestaSupportoMapper::toSimpleDTO)
                 .toList();
     }
 

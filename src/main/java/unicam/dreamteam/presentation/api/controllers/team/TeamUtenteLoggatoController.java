@@ -1,14 +1,12 @@
 package unicam.dreamteam.presentation.api.controllers.team;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import unicam.dreamteam.domain.service.facade.HackathonFacade;
-import unicam.dreamteam.domain.service.facade.InvitoFacade;
-import unicam.dreamteam.domain.service.facade.SottomissioneFacade;
-import unicam.dreamteam.domain.service.facade.TeamFacade;
+import unicam.dreamteam.domain.service.facade.*;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 import unicam.dreamteam.presentation.dto.hackathon.sottomissione.SottomissioneDTO;
 import unicam.dreamteam.presentation.dto.team.InvitoDTO;
 import unicam.dreamteam.presentation.dto.team.TeamDTO;
+import unicam.dreamteam.presentation.dto.team.richiesteSupporto.RichiestaSupportoDTO;
 import unicam.dreamteam.presentation.mapper.InvitoMapper;
 import unicam.dreamteam.presentation.mapper.TeamMapper;
 
@@ -35,6 +33,7 @@ public class TeamUtenteLoggatoController {
     private final InvitoFacade invitoFacade;
     private final HackathonFacade hackathonFacade;
     private final SottomissioneFacade sottomissioneFacade;
+    private final RichiestaSupportoFacade richiestaSupportoFacade;
 
     /**
      * Mostra le informazioni del proprio team.
@@ -82,6 +81,15 @@ public class TeamUtenteLoggatoController {
     public ResponseEntity<List<SottomissioneDTO>> sottomissioni(Authentication authentication) {
         return ResponseEntity.ok(
                 this.sottomissioneFacade.listaSottomissioniByUtenteUsername(
+                        authentication.getName()
+                )
+        );
+    }
+
+    @GetMapping("/richieste-supporto")
+    public ResponseEntity<List<RichiestaSupportoDTO>> richiesteSupporto(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.richiestaSupportoFacade.getByTeamUsername(
                         authentication.getName()
                 )
         );
