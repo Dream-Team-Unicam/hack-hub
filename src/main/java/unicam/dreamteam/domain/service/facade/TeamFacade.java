@@ -48,21 +48,20 @@ public class TeamFacade {
         return this.teamMapper.toDTO(team);
     }
 
-    public TeamDTO esciDalTeam(String username) {
-        Utente currentUser = utenteService.getByUsername(username);
-        utenteValidator.validaInTeam(currentUser);
+    public String esciDalTeam(String username) {
+        Utente utente = utenteService.getByUsername(username);
+        this.utenteValidator.validaInTeam(utente);
 
-        Team team = currentUser.getTeam();
-        team.rimuoviMembro(currentUser);
-        utenteService.save(currentUser);  // ← salva utente con team = null
+        Team team = utente.getTeam();
+        team.rimuoviMembro(utente);
+        utenteService.save(utente); // salva utente.team_id = null in entrambi i rami
 
-        if (team.getMembri().isEmpty()) {
-            team.getSottomissioni().clear();
-            teamService.save(team);
+        if (team.isEmpty()) {
             teamService.delete(team);
-            return new TeamDTO();
+            return "Sei uscito dal team. Il team è stato eliminato poiché eri l'ultimo membro.";
         }
 
-        return teamMapper.toDTO(teamService.save(team));
+        teamService.save(team);
+        return "Sei uscito dal team con successo.";
     }
 }

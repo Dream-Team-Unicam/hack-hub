@@ -50,7 +50,7 @@ public class TeamUtenteLoggatoController {
      * Esce dal team. (Se è l'ultimo membro del team si elimina.)
      */
     @PostMapping("/esci")
-    public ResponseEntity<TeamDTO> esci(Authentication authentication) {
+    public ResponseEntity<String> esci(Authentication authentication) {
         return ResponseEntity.ok(
                 this.teamFacade.esciDalTeam(authentication.getName())
         );
