@@ -1,5 +1,6 @@
 package unicam.dreamteam.presentation.api.controllers.team;
 
+import unicam.dreamteam.domain.service.facade.HackathonFacade;
 import unicam.dreamteam.domain.service.facade.TeamFacade;
 import unicam.dreamteam.presentation.dto.team.requests.CreateTeamRequest;
 import unicam.dreamteam.presentation.dto.team.TeamDTO;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TeamController {
     private final TeamFacade teamFacade;
+    private final HackathonFacade hackathonFacade;
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
@@ -37,5 +39,14 @@ public class TeamController {
                         authentication.getName()
                 )
         );
+    }
+
+    @PostMapping("/{hackathonId}/paga-vincitore")
+    @PreAuthorize("hasRole('ORGANIZZATORE')")
+    public ResponseEntity<String> pagaVincitore(
+            @PathVariable Long hackathonId,
+            Authentication authentication) {
+        hackathonFacade.pagaVincitore(hackathonId, authentication.getName());
+        return ResponseEntity.ok("Pagato");
     }
 }

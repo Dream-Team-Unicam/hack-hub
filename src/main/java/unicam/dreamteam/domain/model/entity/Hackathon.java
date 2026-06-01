@@ -78,6 +78,8 @@ public class Hackathon {
     @Column(nullable = false)
     private StatoHackathon stato = new StatoHackathonCreato();
 
+    private boolean teamVincitorePagato = false;
+
     public Hackathon(
             Long id,
             String nome,

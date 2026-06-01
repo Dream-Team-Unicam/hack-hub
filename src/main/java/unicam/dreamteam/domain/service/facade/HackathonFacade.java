@@ -1,8 +1,10 @@
 package unicam.dreamteam.domain.service.facade;
 
+import unicam.dreamteam.domain.adapter.PagamentoAdapter;
 import unicam.dreamteam.domain.exception.hackathon.HackathonException;
 import unicam.dreamteam.domain.model.entity.Hackathon;
 import unicam.dreamteam.domain.model.entity.Team;
+import unicam.dreamteam.domain.model.entity.state.hackathon.StatoHackathonConcluso;
 import unicam.dreamteam.domain.model.entity.users.Staff;
 import unicam.dreamteam.domain.model.entity.users.Utente;
 import unicam.dreamteam.domain.service.accounts.StaffService;
@@ -39,9 +41,12 @@ public class HackathonFacade {
     private final HackathonMapper hackathonMapper;
     private final TeamMapper teamMapper;
 
+    // Validator
     private final HackathonValidator hackathonValidator;
     private final StaffValidator staffValidator;
     private final UtenteValidator utenteValidator;
+
+    private final PagamentoAdapter pagamentoAdapter;
 
     public List<HackathonDTO> listaHackathon() {
         return this.hackathonService.getAll().stream()
@@ -201,5 +206,21 @@ public class HackathonFacade {
         Hackathon hackathon = this.hackathonService.getById(hackathonId);
         if (hackathon.getTeamVincitore() == null) throw new HackathonException("Team vincitore ancora non proclamato");
         return this.teamMapper.toDTO(hackathon.getTeamVincitore());
+    }
+
+    public void pagaVincitore(Long hackathonId, String username) {
+        Staff organizzatore = staffService.getByUsername(username);
+        staffValidator.validaOrganizzatore(organizzatore);
+
+        Hackathon hackathon = hackathonService.getById(hackathonId);
+
+        if (hackathon.getTeamVincitore() == null)
+            throw new HackathonException("Nessun vincitore proclamato per questo hackathon.");
+
+        this.pagamentoAdapter.pagaPremio(
+                hackathon.getId(),
+                hackathon.getTeamVincitore().getId(),
+                hackathon.getPremioDenaro()
+        );
     }
 }
