@@ -1,4 +1,4 @@
-package unicam.dreamteam.presentation.dto.team;
+package unicam.dreamteam.presentation.dto.team.richiesteSupporto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

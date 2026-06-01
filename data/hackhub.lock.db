@@ -1,6 +1,6 @@
 #FileLock
-#Mon Jun 01 03:39:16 CEST 2026
+#Mon Jun 01 03:56:49 CEST 2026
 hostName=DESKTOP-7V94GD4.homenet.telecomitalia.it
-id=19e80d5ce0e421cb309363f0a0247ade3bac41cfb5c
+id=19e80e5df957d45332d593e2ca02c01475537b634fd
 method=file
-server=192.168.1.205\:1632
+server=192.168.1.205\:10083

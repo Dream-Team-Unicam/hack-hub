@@ -1,4 +1,4 @@
-package unicam.dreamteam.presentation.dto.team;
+package unicam.dreamteam.presentation.dto.team.richiesteSupporto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import unicam.dreamteam.presentation.dto.security.AccountDTO;
+import unicam.dreamteam.presentation.dto.team.TeamDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;

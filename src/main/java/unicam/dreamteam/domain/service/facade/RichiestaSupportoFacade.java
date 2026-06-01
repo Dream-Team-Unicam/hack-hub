@@ -16,7 +16,7 @@ import unicam.dreamteam.domain.service.team.RichiestaSupportoService;
 import unicam.dreamteam.domain.validator.HackathonValidator;
 import unicam.dreamteam.domain.validator.StaffValidator;
 import unicam.dreamteam.domain.validator.UtenteValidator;
-import unicam.dreamteam.presentation.dto.team.RichiestaSupportoDTO;
+import unicam.dreamteam.presentation.dto.team.richiesteSupporto.RichiestaSupportoDTO;
 import unicam.dreamteam.presentation.mapper.RichiestaSupportoMapper;
 
 import java.time.LocalDateTime;
@@ -54,7 +54,7 @@ public class RichiestaSupportoFacade {
                 utente.getTeam(),
                 mentore
         );
-        return richiestaSupportoMapper.toDTO(richiesta);
+        return richiestaSupportoMapper.toSimpleDTO(richiesta);
     }
 
     public List<RichiestaSupportoDTO> getByMentoreUsername(String username) {
@@ -62,7 +62,7 @@ public class RichiestaSupportoFacade {
         staffValidator.validaMentore(mentore);
 
         return richiestaSupportoService.getAllByMentore(mentore).stream()
-                .map(richiestaSupportoMapper::toDTO)
+                .map(richiestaSupportoMapper::toSimpleDTO)
                 .toList();
     }
 

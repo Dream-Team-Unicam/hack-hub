@@ -1,12 +1,14 @@
 package unicam.dreamteam.presentation.api.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import unicam.dreamteam.domain.service.facade.RichiestaSupportoFacade;
-import unicam.dreamteam.presentation.dto.team.RichiestaSupportoDTO;
+import unicam.dreamteam.presentation.dto.team.richiesteSupporto.PrenotaCallRequest;
+import unicam.dreamteam.presentation.dto.team.richiesteSupporto.RichiestaSupportoDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,10 +48,10 @@ public class RichiestaSupportoController {
     @PreAuthorize("hasRole('MENTORE')")
     public ResponseEntity<RichiestaSupportoDTO> prenotaCall(
             @PathVariable Long richiestaId,
-            @RequestBody LocalDateTime dataOra,
+            @RequestBody PrenotaCallRequest request,
             Authentication authentication) {
         return ResponseEntity.ok(
-                richiestaSupportoFacade.prenotaCall(richiestaId, dataOra, authentication.getName())
+                richiestaSupportoFacade.prenotaCall(richiestaId, request.dataOra(), authentication.getName())
         );
     }
 }

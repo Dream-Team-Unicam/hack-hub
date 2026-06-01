@@ -38,8 +38,8 @@ public class RichiestaSupporto {
     @JoinColumn(name = "team_id", nullable = false)
     private Team team;
 
-    @OneToMany(mappedBy = "richiestaSupporto", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final Set<Call> calls  = new HashSet<>();
+    @OneToMany(mappedBy = "richiestaSupporto", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private final Set<Call> calls = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -111,4 +111,19 @@ public class GlobalExceptionHandler {
                 .status(status)
                 .body(error);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Response> handleRuntimeException(RuntimeException exception) {
+        HttpStatus status = HttpStatus.NOT_IMPLEMENTED;
+        Response error = new Response(
+                status.value(),
+                status.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now()
+        );
+
+        return ResponseEntity
+                .status(status)
+                .body(error);
+    }
 }
