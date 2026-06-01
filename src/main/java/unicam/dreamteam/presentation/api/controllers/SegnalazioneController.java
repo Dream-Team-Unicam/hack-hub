@@ -16,6 +16,19 @@ import java.util.List;
 public class SegnalazioneController {
     private final SegnalazioneFacade segnalazioneFacade;
 
+    /**
+     * Visualizzazione di tutte le segnalazioni che possiamo gestire.
+     */
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ORGANIZZATORE', 'ADMIN')")
+    public ResponseEntity<List<SegnalazioneDTO>> getAll(Authentication authentication) {
+        return ResponseEntity.ok(
+                this.segnalazioneFacade.getAllByStaffUsername(
+                        authentication.getName()
+                )
+        );
+    }
+
     @PostMapping("/hackathon/{hackathonId}/team/{teamId}")
     @PreAuthorize("hasRole('MENTORE')")
     public ResponseEntity<SegnalazioneDTO> segnalaTeam(
@@ -24,14 +37,13 @@ public class SegnalazioneController {
             @RequestBody String descrizione,
             Authentication authentication) {
         return ResponseEntity.ok(
-                segnalazioneFacade.segnalaTeam(hackathonId, teamId, descrizione, authentication.getName())
+                this.segnalazioneFacade.segnalaTeam(
+                        hackathonId,
+                        teamId,
+                        descrizione,
+                        authentication.getName()
+                )
         );
-    }
-
-    @GetMapping
-    @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<List<SegnalazioneDTO>> getAll() {
-        return ResponseEntity.ok(segnalazioneFacade.getAll());
     }
 
     @GetMapping("/team/{teamId}")

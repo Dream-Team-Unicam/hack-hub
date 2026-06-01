@@ -50,7 +50,7 @@ public class SottomissioneFacade {
         staffValidator.validaGiudice(giudice);
 
         return sottomissioneService.getAllByGiudice(giudice).stream()
-                .map(sottomissioneMapper::toDTO)
+                .map(sottomissioneMapper::toSimpleDTO)
                 .toList();
     }
 
@@ -61,12 +61,12 @@ public class SottomissioneFacade {
         Hackathon hackathon = hackathonService.getById(hackathonId);
         Team team = utente.getTeam();
 
-        this.hackathonValidator.validTeamIscrittoHackathon(hackathon, team);
+        this.hackathonValidator.validaTeamIscrittoHackathon(hackathon, team);
         this.hackathonValidator.validaTeamNonHaInviatoSottomissione(hackathon, team);
 
         Sottomissione sottomissione = new Sottomissione(contenuto, team, hackathon);
         hackathon.inviaSottomissione(sottomissione);
-        return  this.sottomissioneMapper.toDTO(
+        return  this.sottomissioneMapper.toSimpleDTO(
                 sottomissioneService.save(sottomissione)
         );
     }
@@ -78,13 +78,13 @@ public class SottomissioneFacade {
         Hackathon hackathon = hackathonService.getById(hackathonId);
         Team team = utente.getTeam();
 
-        this.hackathonValidator.validTeamIscrittoHackathon(hackathon, team);
+        this.hackathonValidator.validaTeamIscrittoHackathon(hackathon, team);
         this.hackathonValidator.validaTeamHaInviatoSottomissione(hackathon, team);
 
         Sottomissione sottomissione = this.sottomissioneService.getByHackathonAndTeam(hackathon, team);
 
         sottomissione.aggiorna(nuovoContenuto);
-        return this.sottomissioneMapper.toDTO(
+        return this.sottomissioneMapper.toSimpleDTO(
                 sottomissioneService.save(sottomissione)
         );
     }
@@ -106,7 +106,7 @@ public class SottomissioneFacade {
         if (!hackathon.getGiudice().equals(staff) && !hackathon.getOrganizzatore().equals(staff))
             throw new AccessDeniedException("Non puoi operare in questo hackathon.");
 
-        return this.sottomissioneMapper.toDTO(sottomissione);
+        return this.sottomissioneMapper.toSimpleDTO(sottomissione);
     }
 
     public SottomissioneDTO getSottomissioneByIdAndUtente(Long sottomissioneId, Utente utente) {
@@ -119,7 +119,7 @@ public class SottomissioneFacade {
                 String.format("Nessuna sottomissione trovata con l'id = %s.", sottomissioneId)
         );
 
-        return this.sottomissioneMapper.toDTO(sottomissione);
+        return this.sottomissioneMapper.toSimpleDTO(sottomissione);
     }
 
     public List<SottomissioneDTO> listaSottomissioniByUtenteUsername(String username) {
@@ -149,6 +149,6 @@ public class SottomissioneFacade {
             sottomissione.setValutazione(valutazione);
         }
 
-        return sottomissioneMapper.toDTO(sottomissioneService.save(sottomissione));
+        return sottomissioneMapper.toSimpleDTO(sottomissioneService.save(sottomissione));
     }
 }

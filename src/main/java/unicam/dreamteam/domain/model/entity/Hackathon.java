@@ -159,7 +159,7 @@ public class Hackathon {
     }
 
     public void concludiValutazione() {
-        this.stato.
+        this.stato.concludiValutazione(this);
     }
 
     public void proclamaVincitore(Team team) {

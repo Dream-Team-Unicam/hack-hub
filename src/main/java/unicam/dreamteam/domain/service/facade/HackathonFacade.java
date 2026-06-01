@@ -1,5 +1,6 @@
 package unicam.dreamteam.domain.service.facade;
 
+import unicam.dreamteam.domain.exception.hackathon.HackathonException;
 import unicam.dreamteam.domain.model.entity.Hackathon;
 import unicam.dreamteam.domain.model.entity.Team;
 import unicam.dreamteam.domain.model.entity.users.Staff;
@@ -18,7 +19,9 @@ import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import unicam.dreamteam.presentation.dto.team.TeamDTO;
 import unicam.dreamteam.presentation.mapper.HackathonMapper;
+import unicam.dreamteam.presentation.mapper.TeamMapper;
 
 import java.util.List;
 
@@ -34,6 +37,7 @@ public class HackathonFacade {
 
     // Mapper
     private final HackathonMapper hackathonMapper;
+    private final TeamMapper teamMapper;
 
     private final HackathonValidator hackathonValidator;
     private final StaffValidator staffValidator;
@@ -193,4 +197,9 @@ public class HackathonFacade {
         );
     }
 
+    public TeamDTO getTeamVincitore(Long hackathonId) {
+        Hackathon hackathon = this.hackathonService.getById(hackathonId);
+        if (hackathon.getTeamVincitore() == null) throw new HackathonException("Team vincitore ancora non proclamato");
+        return this.teamMapper.toDTO(hackathon.getTeamVincitore());
+    }
 }

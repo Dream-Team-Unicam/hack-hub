@@ -1,7 +1,6 @@
 package unicam.dreamteam.presentation.api.controllers;
 
 import unicam.dreamteam.domain.service.facade.HackathonFacade;
-import unicam.dreamteam.domain.service.facade.SottomissioneFacade;
 import unicam.dreamteam.presentation.dto.hackathon.HackathonDTO;
 
 import org.springframework.http.ResponseEntity;
@@ -134,6 +133,15 @@ public class HackathonController {
                         hackathonId,
                         teamVincitore.getId(),
                         authentication.getName()
+                )
+        );
+    }
+
+    @GetMapping("/{hackathonId}/team-vincitore")
+    public ResponseEntity<TeamDTO> proclamaVincitore(@PathVariable Long hackathonId) {
+        return ResponseEntity.ok(
+                this.hackathonFacade.getTeamVincitore(
+                        hackathonId
                 )
         );
     }

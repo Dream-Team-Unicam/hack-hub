@@ -40,6 +40,7 @@ public class HackathonMapper implements IMapper<Hackathon, HackathonDTO> {
         dto.setDescrizione(hackathon.getDescrizione());
         dto.setDataInizio(hackathon.getDataInizio());
         dto.setDataFine(hackathon.getDataFine());
+        dto.setStato(hackathon.getStato().getNome());
         return dto;
     }
 }

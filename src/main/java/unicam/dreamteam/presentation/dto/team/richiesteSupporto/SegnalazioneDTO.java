@@ -22,4 +22,6 @@ public class SegnalazioneDTO {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm") private LocalDateTime dataSegnalazione;
     private AccountDTO mentore;
     private TeamDTO teamSegnalato;
+    private Long hackathonId;
+    private String hackathonNome;
 }

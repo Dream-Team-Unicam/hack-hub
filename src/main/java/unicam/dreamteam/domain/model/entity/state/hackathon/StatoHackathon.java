@@ -43,4 +43,8 @@ public interface StatoHackathon {
 
     StatoHackathon prossimoStato();
     String getNome();
+
+    default boolean equals(StatoHackathon stato) {
+        return getNome().equals(stato.getNome());
+    }
 }

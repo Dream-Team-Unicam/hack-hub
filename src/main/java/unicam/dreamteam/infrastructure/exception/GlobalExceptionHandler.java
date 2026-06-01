@@ -3,6 +3,7 @@ package unicam.dreamteam.infrastructure.exception;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ValidationException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -67,6 +68,17 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Response> handleMethodNotSupported(HttpRequestMethodNotSupportedException exception) {
+        HttpStatus status = HttpStatus.METHOD_NOT_ALLOWED;
+        return ResponseEntity.status(status).body(new Response(
+                status.value(),
+                status.getReasonPhrase(),
+                String.format("Metodo '%s' non supportato per questo endpoint.", exception.getMethod()),
+                LocalDateTime.now()
+        ));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Response> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
@@ -114,7 +126,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Response> handleRuntimeException(RuntimeException exception) {
-        HttpStatus status = HttpStatus.NOT_IMPLEMENTED;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         Response error = new Response(
                 status.value(),
                 status.getReasonPhrase(),

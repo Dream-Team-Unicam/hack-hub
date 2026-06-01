@@ -45,8 +45,7 @@ public class RichiestaSupportoFacade {
         Staff mentore = staffService.getById(mentoreId);
         staffValidator.validaMentore(mentore);
 
-        if (!hackathon.getMentori().contains(mentore))
-            throw new HackathonException("Il mentore non è assegnato a questo hackathon.");
+        this.hackathonValidator.validaHackathonAssegnatoA(hackathon, mentore);
 
         RichiestaSupporto richiesta = richiestaSupportoService.crea(
                 request.getOggetto(),
@@ -81,8 +80,7 @@ public class RichiestaSupportoFacade {
 
         RichiestaSupporto richiesta = richiestaSupportoService.getById(richiestaId);
 
-        if (!richiesta.getMentore().equals(mentore))
-            throw new AccessDeniedException("Non sei il mentore di questa richiesta.");
+        if (!richiesta.getMentore().equals(mentore)) throw new AccessDeniedException("Non sei il mentore di questa richiesta.");
 
         calendarAdapter.prenotaSlot(richiesta, dataOra);
         return richiestaSupportoMapper.toDTO(richiesta);
