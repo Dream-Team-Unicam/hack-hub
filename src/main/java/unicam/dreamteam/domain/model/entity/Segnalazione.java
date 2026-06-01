@@ -5,6 +5,7 @@ import lombok.Getter;
 import unicam.dreamteam.domain.model.entity.users.Staff;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "segnalazioni")
@@ -19,7 +20,7 @@ public class Segnalazione {
     private String descrizione;
 
     @Column(nullable = false)
-    private LocalDate dataSegnalazione;
+    private LocalDateTime dataSegnalazione;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "mentore_id", nullable = false)
@@ -33,7 +34,7 @@ public class Segnalazione {
         this.descrizione = descrizione;
         this.mentore = mentore;
         this.teamSegnalato = teamSegnalato;
-        this.dataSegnalazione = LocalDate.now();
+        this.dataSegnalazione = LocalDateTime.now();
     }
 
     public Segnalazione() {}

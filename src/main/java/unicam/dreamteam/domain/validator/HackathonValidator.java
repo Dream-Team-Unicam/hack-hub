@@ -75,8 +75,14 @@ public class HackathonValidator {
         );
     }
 
-    public void validaHackathonInValutazione(Hackathon hackathon) {
-        if(hackathon.getStato() instanceof StatoHackathonValutazione) return;
-        throw new HackathonException("L'hackathon non è in fase di valutazione.");
+    public void validaHackathonOrganizzatoDa(Hackathon hackathon, Staff organizzatore) {
+        if(hackathon.getOrganizzatore().equals(organizzatore)) return;
+        throw new HackathonException(
+                String.format(
+                        "L'organizzatore(username=%s) non gestisce questo Hackathon(nome=%s).",
+                        organizzatore.getUsername(),
+                        hackathon.getNome()
+                )
+        );
     }
 }

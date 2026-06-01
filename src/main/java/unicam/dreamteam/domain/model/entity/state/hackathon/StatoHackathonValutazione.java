@@ -13,7 +13,7 @@ public class StatoHackathonValutazione implements StatoHackathon {
     }
 
     @Override
-    public void concludi(Hackathon hackathon) {
+    public void concludiValutazione(Hackathon hackathon) {
         boolean tutteValutate = hackathon.getSottomissioni().stream()
                 .allMatch(s -> s.getValutazione() != null);
         if (!tutteValutate) throw new HackathonException("Non tutte le sottomissioni sono state valutate");

@@ -28,6 +28,11 @@ public interface StatoHackathon {
     default void valuta(Hackathon hackathon, Sottomissione sottomissione, Valutazione valutazione) {
         throw new HackathonException("Hackathon non in fase di valutazione");
     }
+
+    default void concludiValutazione(Hackathon hackathon) {
+        throw new HackathonException("Non è possibile avviare la valutazione in questo stato.");
+    }
+
     default void concludi(Hackathon hackathon) {
         throw new HackathonException("Operazione non permessa in questo stato");
     }

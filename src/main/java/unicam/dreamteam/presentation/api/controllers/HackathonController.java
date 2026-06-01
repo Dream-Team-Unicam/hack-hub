@@ -33,14 +33,6 @@ public class HackathonController {
                 this.hackathonFacade.getHackathonById(hackathonId)
         );
     }
-    
-    @GetMapping("/me")
-    @PreAuthorize("hasAnyRole('ORGANIZZATORE', 'GIUDICE', 'MENTORE')")
-    public ResponseEntity<List<HackathonDTO>> getAllMine(Authentication authentication) {
-        return ResponseEntity.ok(
-                this.hackathonFacade.listaHackathon()
-        );
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,32 +49,35 @@ public class HackathonController {
     @PostMapping("/{hackathonId}/mentore/add/{mentoreId}")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> aggiungiMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId) {
+    public ResponseEntity<HackathonDTO> aggiungiMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId, Authentication authentication) {
         return ResponseEntity.ok(
                 this.hackathonFacade.aggiungiMentore(
                         hackathonId,
-                        mentoreId
+                        mentoreId,
+                        authentication.getName()
                 )
         );
     }
 
     @PostMapping("/{hackathonId}/mentori/remove/{mentoreId}")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> rimuoviMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId) {
+    public ResponseEntity<HackathonDTO> rimuoviMentore(@PathVariable Long hackathonId, @PathVariable Long mentoreId, Authentication authentication) {
         return ResponseEntity.ok(
                 hackathonFacade.rimuoviMentore(
                         hackathonId,
-                        mentoreId
+                        mentoreId,
+                        authentication.getName()
                 )
         );
     }
 
     @PostMapping("/{hackathonId}/apri-iscrizioni")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> apriIscrizioni(@PathVariable Long hackathonId) {
+    public ResponseEntity<HackathonDTO> apriIscrizioni(@PathVariable Long hackathonId, Authentication authentication) {
         return ResponseEntity.ok(
                 hackathonFacade.apriIscrizioni(
-                        hackathonId
+                        hackathonId,
+                        authentication.getName()
                 )
         );
     }
@@ -100,25 +95,45 @@ public class HackathonController {
 
     @PostMapping("/{hackathonId}/avvia")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> avviaHackathon(@PathVariable Long hackathonId) {
+    public ResponseEntity<HackathonDTO> avviaHackathon(@PathVariable Long hackathonId, Authentication authentication) {
         return ResponseEntity.ok(
-              this.hackathonFacade.avviaHackathon(hackathonId)
+              this.hackathonFacade.avviaHackathon(
+                      hackathonId,
+                      authentication.getName()
+              )
         );
     }
 
     @PostMapping("/{hackathonId}/avvia-valutazione")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> avviaValutazione(@PathVariable Long hackathonId) {
-        return ResponseEntity.ok(hackathonFacade.avviaValutazione(hackathonId));
+    public ResponseEntity<HackathonDTO> avviaValutazione(@PathVariable Long hackathonId, Authentication authentication) {
+        return ResponseEntity.ok(
+                hackathonFacade.avviaValutazione(
+                        hackathonId,
+                        authentication.getName()
+                )
+        );
+    }
+
+    @PostMapping("/{hackathonId}/concludi-valutazione")
+    @PreAuthorize("hasRole('GIUDICE')")
+    public ResponseEntity<HackathonDTO> concludiValutazione(@PathVariable Long hackathonId, Authentication authentication) {
+        return ResponseEntity.ok(
+                hackathonFacade.concludiValutazione(
+                        hackathonId,
+                        authentication.getName()
+                )
+        );
     }
 
     @PostMapping("/{hackathonId}/proclama-vincitore")
     @PreAuthorize("hasRole('ORGANIZZATORE')")
-    public ResponseEntity<HackathonDTO> proclamaVincitore(@PathVariable Long hackathonId, @RequestBody TeamDTO teamVincitore) {
+    public ResponseEntity<HackathonDTO> proclamaVincitore(@PathVariable Long hackathonId, @RequestBody TeamDTO teamVincitore, Authentication authentication) {
         return ResponseEntity.ok(
                 this.hackathonFacade.proclamaVincitore(
                         hackathonId,
-                        teamVincitore.getId()
+                        teamVincitore.getId(),
+                        authentication.getName()
                 )
         );
     }

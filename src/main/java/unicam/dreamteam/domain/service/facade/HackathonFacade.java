@@ -83,8 +83,12 @@ public class HackathonFacade {
         );
     }
 
-    public HackathonDTO apriIscrizioni(Long hackathonId) {
+    public HackathonDTO apriIscrizioni(Long hackathonId, String username) {
+        Staff staff = this.staffService.getByUsername(username);
         Hackathon hackathon = this.hackathonService.getById(hackathonId);
+
+        this.hackathonValidator.validaHackathonOrganizzatoDa(hackathon, staff);
+
         hackathon.apriIscrizioni();
         return this.hackathonMapper.toDTO(
                 this.hackathonService.save(hackathon)
@@ -92,17 +96,24 @@ public class HackathonFacade {
     }
 
 
-    public HackathonDTO avviaHackathon(Long hackathonId) {
+    public HackathonDTO avviaHackathon(Long hackathonId, String username) {
+        Staff staff = this.staffService.getByUsername(username);
         Hackathon hackathon = this.hackathonService.getById(hackathonId);
+
+        this.hackathonValidator.validaHackathonOrganizzatoDa(hackathon, staff);
+
         hackathon.avvia();
         return this.hackathonMapper.toDTO(
                 this.hackathonService.save(hackathon)
         );
     }
 
-    public HackathonDTO aggiungiMentore(Long hackathonId, Long mentoreId) {
+    public HackathonDTO aggiungiMentore(Long hackathonId, Long mentoreId, String username) {
+        Staff staff = this.staffService.getByUsername(username);
         Staff mentore = this.staffService.getById(mentoreId);
         Hackathon hackathon = this.hackathonService.getById(hackathonId);
+
+        this.hackathonValidator.validaHackathonOrganizzatoDa(hackathon, staff);
 
         this.hackathonValidator.validaHackathonNonHaMentore(hackathon, mentore);
         return this.hackathonMapper.toDTO(
@@ -110,9 +121,12 @@ public class HackathonFacade {
         );
     }
 
-    public HackathonDTO rimuoviMentore(Long hackathonId, Long mentoreId) {
+    public HackathonDTO rimuoviMentore(Long hackathonId, Long mentoreId, String username) {
+        Staff staff = this.staffService.getByUsername(username);
         Staff mentore = this.staffService.getById(mentoreId);
         Hackathon hackathon = this.hackathonService.getById(hackathonId);
+
+        this.hackathonValidator.validaHackathonOrganizzatoDa(hackathon, staff);
 
         this.hackathonValidator.validaHackathonHaMentore(hackathon, mentore);
         return this.hackathonMapper.toDTO(
@@ -123,7 +137,7 @@ public class HackathonFacade {
     @Transactional
     public HackathonDTO iscriviTeam(Long hackathonId, String username) {
         Utente utente = this.utenteService.getByUsername(username);
-        utenteValidator.validaInTeam(utente);
+        this.utenteValidator.validaInTeam(utente);
 
         Hackathon hackathon = this.hackathonService.getById(hackathonId);
         Team team = utente.getTeam();
@@ -135,16 +149,36 @@ public class HackathonFacade {
         );
     }
 
-    public HackathonDTO avviaValutazione(Long hackathonId) {
+    public HackathonDTO avviaValutazione(Long hackathonId, String username) {
+        Staff staff = this.staffService.getByUsername(username);
         Hackathon hackathon = hackathonService.getById(hackathonId);
+
+        this.hackathonValidator.validaHackathonOrganizzatoDa(hackathon, staff);
+
         hackathon.avviaValutazione();
-        return hackathonMapper.toDTO(hackathonService.save(hackathon));
+        return this.hackathonMapper.toSimpleDTO(
+                this.hackathonService.save(hackathon)
+        );
     }
 
-    public HackathonDTO proclamaVincitore(Long hackathonId, Long teamId) {
+    public HackathonDTO concludiValutazione(Long hackathonId, String username) {
+        Staff staff = this.staffService.getByUsername(username);
+        Hackathon hackathon = hackathonService.getById(hackathonId);
+
+        this.hackathonValidator.validaHackathonGiudicatoDa(hackathon, staff);
+
+        hackathon.concludiValutazione();
+        return this.hackathonMapper.toSimpleDTO(
+                this.hackathonService.save(hackathon)
+        );
+    }
+
+    public HackathonDTO proclamaVincitore(Long hackathonId, Long teamId, String username) {
         Hackathon hackathon = this.hackathonService.getById(hackathonId);
+        Staff staff = this.staffService.getByUsername(username);
 
         this.hackathonValidator.validaTutteSottomissioniValutate(hackathon);
+        this.hackathonValidator.validaHackathonOrganizzatoDa(hackathon, staff);
 
         Team team = this.teamService.getById(teamId);
         hackathon.proclamaVincitore(team);
@@ -158,4 +192,5 @@ public class HackathonFacade {
                 this.hackathonService.getById(hackathonId)
         );
     }
+
 }

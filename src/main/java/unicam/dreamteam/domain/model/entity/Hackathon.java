@@ -1,14 +1,13 @@
 package unicam.dreamteam.domain.model.entity;
 
+import lombok.*;
 import unicam.dreamteam.domain.model.entity.users.Staff;
 import unicam.dreamteam.domain.model.entity.sottomissione.Sottomissione;
 import unicam.dreamteam.domain.model.entity.state.hackathon.StatoHackathon;
 import unicam.dreamteam.domain.model.entity.state.hackathon.StatoHackathonCreato;
 import unicam.dreamteam.infrastructure.persistence.converter.StatoHackathonConverter;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +17,8 @@ import java.util.Set;
 @Access(AccessType.FIELD)
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Hackathon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,9 +77,6 @@ public class Hackathon {
     @Convert(converter = StatoHackathonConverter.class)
     @Column(nullable = false)
     private StatoHackathon stato = new StatoHackathonCreato();
-
-    public Hackathon() {
-    }
 
     public Hackathon(
             Long id,
@@ -156,11 +154,15 @@ public class Hackathon {
                 .anyMatch(s -> s.getTeam().getId().equals(team.getId()));
     }
 
-    public void proclamaVincitore(Team team) {
-        this.stato.proclamaVincitore(this, team);
-    }
-
     public void avviaValutazione() {
         this.stato.avviaValutazione(this);
+    }
+
+    public void concludiValutazione() {
+        this.stato.
+    }
+
+    public void proclamaVincitore(Team team) {
+        this.stato.proclamaVincitore(this, team);
     }
 }
